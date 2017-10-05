@@ -273,10 +273,10 @@
             <h4>Example</h4>
 
             <pre class="example highlight" title="Selectors">
-            {
-                "source": "http://example.org/page1",
-                "selector": "http://example.org/paraselector1"
-            }
+{
+	"source": "http://example.org/page1",
+	"selector": "http://example.org/paraselector1"
+}
             </pre>
 
             <section id="FragmentSelector_def">
@@ -352,14 +352,14 @@
                 <h4>Example</h4>
 
                 <pre class="example highlight" title="Fragment Selector" id="FragmentSelector_ex">
-                {
-                    "source": "http://example.org/video1",
-                    "selector": {
-                      "type": "FragmentSelector",
-                      "conformsTo": "http://www.w3.org/TR/media-frags/",
-                      "value": "t=30,60"
-                    }
-                }
+{
+	"source": "http://example.org/video1",
+	"selector": {
+		"type": "FragmentSelector",
+		"conformsTo": "http://www.w3.org/TR/media-frags/",
+		"value": "t=30,60"
+	}
+}
                 </pre>
             </section>
 
@@ -373,7 +373,8 @@
 				</p>
 
                 <p>
-					<b>Example Use Case:</b> Sally selects a paragraph in a web page that she wishes remove.  Her client calculates a CSS path that cleanly identifies that element to be deleted.
+					<b>Example Use Case:</b> Sally selects a paragraph in a web page that she wishes bookmark.  
+					Her client calculates a CSS path that cleanly identifies that element and stores CSS Selector in its local bookmark store .
 				</p>
 
                 <h4>Model</h4>
@@ -406,13 +407,13 @@
                 <h4>Example</h4>
 
                 <pre class="example highlight" title="CSS Selector" id="CssSelector_ex">
-                {
-                    "source": "http://example.org/page1.html",
-                    "selector": {
-                      "type": "CssSelector",
-                      "value": "#elemid > .elemclass + p"
-                    }
-                }
+{
+	"source": "http://example.org/page1.html",
+	"selector": {
+		"type": "CssSelector",
+		"value": "#elemid > .elemclass + p"
+	}
+}
                 </pre>
             </section>
 
@@ -464,13 +465,13 @@
                 <h4>Example</h4>
 
                 <pre class="example highlight" title="XPath Selector" id="XPathSelector_ex">
-                {
-                    "source": "http://example.org/page1.html",
-                    "selector": {
-                      "type": "XPathSelector",
-                      "value": "/html/body/p[2]/table/tr[2]/td[3]/span"
-                    }
-                }
+{
+	"source": "http://example.org/page1.html",
+	"selector": {
+		"type": "XPathSelector",
+		"value": "/html/body/p[2]/table/tr[2]/td[3]/span"
+	}
+}
                 </pre>
             </section>
 
@@ -545,15 +546,15 @@
                 <h4>Example</h4>
 
                 <pre class="example highlight" title="Text Quote Selector" id="TextQuoteSelector_ex">
-                {
-                    "source": "http://example.org/page1",
-                    "selector": {
-                      "type": "TextQuoteSelector",
-                      "exact": "anotation",
-                      "prefix": "this is an ",
-                      "suffix": " that has some"
-                    }
-                }
+{
+	"source": "http://example.org/page1",
+	"selector": {
+		"type": "TextQuoteSelector",
+		"exact": "anotation",
+		"prefix": "this is an ",
+		"suffix": " that has some"
+	}
+}
                 </pre>
             </section>
 
@@ -615,14 +616,14 @@
             	<h4>Example</h4>
 
 				<pre class="example highlight" title="Text Position Selector" id="TextPositionSelector_ex">
-				{
-					"source": "http://example.org/ebook1",
-					"selector": {
-					"type": "TextPositionSelector",
-					"start": 412,
-					"end": 795
-					}
-				}
+{
+	"source": "http://example.org/ebook1",
+	"selector": {
+		"type": "TextPositionSelector",
+		"start": 412,
+		"end": 795
+	}
+}
 	            </pre>
         	</section>
 
@@ -631,7 +632,9 @@
 
             	<p>Similar to the <a href="#TextPositionSelector_def">Text Position Selector</a>, the Data Position Selector uses the same properties but works at the byte in bitstream level rather than the character in text level.</p>
 
-            	<p><b>Example Use Case:</b> Wendy produces visualizations of regions of online disk images for forensic purposes.  Her client generates the start and end positions from the binary stream, rather than the more human readable display she is using.</p>
+				<p><b>Example Use Case:</b> Wendy produces visualizations of regions of online disk images for as part of her publication.
+					She calculates the start and end positions from the binary stream and stores that as a reference using the DataPositionSelector.
+				</p>
 
 
             	<h4>Model</h4>
@@ -663,14 +666,14 @@
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Data Position Selector" id="DataPositionSelector_ex">
-				{
-					"source": "http://example.org/diskimg1",
-					"selector": {
-					"type": "DataPositionSelector",
-					"start": 4096,
-					"end": 4104
-					}
-				}
+{
+	"source": "http://example.org/diskimg1",
+	"selector": {
+		"type": "DataPositionSelector",
+		"start": 4096,
+		"end": 4104
+	}
+}
 				</pre>
         	</section>
 
@@ -762,7 +765,7 @@
 				
 				<p>
 					<b>Example Use Case:</b> Yadira wants to comment on text in a Web Publication that spreads over two adjacent consituent HTML files (representing the chapters of the book published in a Web Publication).
-					She selects the start and the end of the selection in the respective HTML files, and uses the address of the Web Publication&nbsp;[[wpub]] as a source for the overall Selector.
+					She selects the start and the end of the selection in the respective HTML files; her User Agent calculates the Range Selector using the address of the Web Publication&nbsp;[[wpub]] as a source for the overall Selector.
 				</p>
 
 				<h4>Model</h4>
@@ -794,25 +797,25 @@
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
-				{
-					"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
-					"selector": {
-						"type": "RangeSelector",
-						"startSelector": {
-							"type": "TextQuoteSelector",
-							"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
-							"exact": "Call me Ishmael.",
-							"suffix": "Some years ago"
-						},
-						"endSelector": {
-							"type": "TextQuoteSelector",
-							"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html",
-							"exact": "A hundred black faces turned round",
-							"suffix": " in their rows",
-							"prefix": "sitting in Tophet. "
-						}
-					}
-				}
+{
+	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"selector": {
+		"type": "RangeSelector",
+		"startSelector": {
+			"type": "TextQuoteSelector",
+			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+			"exact": "Call me Ishmael.",
+			"suffix": "Some years ago"
+		},
+		"endSelector": {
+			"type": "TextQuoteSelector",
+			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html",
+			"exact": "A hundred black faces turned round",
+			"suffix": " in their rows",
+			"prefix": "sitting in Tophet. "
+		}
+	}
+}
 				</pre>
 			</section>
 
@@ -844,19 +847,19 @@
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
-				{
-					"source": "http://example.org/page1",
-					"selector": {
-						"type": "FragmentSelector",
-						"value": "para5",
-						"refinedBy": {
-							"type": "TextQuoteSelector",
-							"exact": "Selected Text",
-							"prefix": "text before the ",
-							"suffix": " and text after it"
-						}
-					}
-				}
+{
+	"source": "http://example.org/page1",
+	"selector": {
+		"type": "FragmentSelector",
+		"value": "para5",
+		"refinedBy": {
+			"type": "TextQuoteSelector",
+			"exact": "Selected Text",
+			"prefix": "text before the ",
+			"suffix": " and text after it"
+		}
+	}
+}
 				</pre>
 			</section>
 		</section> <!-- /Selectors -->
@@ -904,12 +907,12 @@
 			<h4>Example</h4>
 
 			<pre class="example highlight" title="State">
-			{
-				"source": "http://example.org/page1",
-				"state": {
-					"id": "http://example.org/state1"
-				}
-			}
+{
+	"source": "http://example.org/page1",
+	"state": {
+		"id": "http://example.org/state1"
+	}
+}
 			</pre>
 
 			<section id="TimeState_def">
@@ -965,14 +968,14 @@
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Time State" id="TimeState_ex">
-				{
-					"source": "http://example.org/page1",
-					"state": {
-						"type": "TimeState",
-						"cached": "http://archive.example.org/copy1",
-						"sourceDate": "2015-07-20T13:30:00Z"
-					}
-				}
+{
+	"source": "http://example.org/page1",
+	"state": {
+		"type": "TimeState",
+		"cached": "http://archive.example.org/copy1",
+		"sourceDate": "2015-07-20T13:30:00Z"
+	}
+}
 				</pre>
 			</section>
 
@@ -1019,13 +1022,13 @@
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="HTTP Request State" id="HttpRequestState_ex">
-				{
-					"source": "http://example.org/resource1",
-					"state": {
-					"type": "HttpRequestState",
-						"value": "Accept: application/pdf"
-					}
-				}
+{
+	"source": "http://example.org/resource1",
+	"state": {
+		"type": "HttpRequestState",
+		"value": "Accept: application/pdf"
+	}
+}
 				</pre>
 			</section>
 
@@ -1145,9 +1148,11 @@
 			</table>
 
 			<div class="note">
-				<p>A fragment identifier is defined for a specific media type. This means that, formally, the fragment identifier syntax and semantics defined in this section should be registered for each media type separately by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
+				<p>
+					A fragment identifier is defined for a specific media type. This means that, formally, the fragment identifier syntax and semantics defined in this section should be registered for each media type separately by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
 					Until such a registration is done, these fragment identifiers have the potential to conflict with other fragments possibly specified by the media type registrations.
-					Consequently, this pattern should only be used when the implementation cannot produce or manage the full representation described above. </p>
+					Consequently, this pattern should only be used when the implementation cannot produce or manage the full representation described above. 
+				</p>
 			</div>
 
 			<section>
