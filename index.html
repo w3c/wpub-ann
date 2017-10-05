@@ -231,7 +231,7 @@
             </table>
         </section>
 
-        <section id="selectors" class="informative">
+        <section id="selectors">
             <h3>Selectors</h3>
 
             <p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
@@ -248,7 +248,21 @@
             <p>
 				A <dfn>Selector</dfn> object is used to describe how to determine the <a>Segment</a> from within the <a>Source</a> resource.
 				The nature of the Selector is dependent on the type of resource, as the methods to describe Segments from various media-types differ. These two entities are encapsulated in a <a>Specific Resource</a>.
-            </p>
+			</p>
+
+			<p>
+				A Selector object MAY also have a <code>source</code> <a>Relationship</a>, relating the selection to a particular resource. In general, this relationship is not necessary, because a Selector inherits the source of its encapsulating <a>SpecificResource</a>. However, there are cases when this relationship is necessary. For example:
+			</p>
+
+			<ul>
+				<li>The inherited source is used to identify the <a href="https://www.w3.org/TR/publishing-linking/#dfn-address" class="externalDFN">address</a> of a Web Publication&nbsp;[[wpub]], and the <code>source</code> relationship is used to identify a specific <a class="externalDFN" href="https://w3c.github.io/wpub/#wp-resources">Web Publication Resource</a>.</li>
+				<li>When the Selector is a <a href="#RangeSelector_def"></a>, the <code>source</code> value can be used to refer to different resources within the same <a>SpecificResource</a>.</li>
+			</ul>
+
+			<p class="note">
+				The ability of using a <code>source</code> within a Selector is the <em>only</em> extension to the Selectors as defined by the Web Annotation Model&nbsp;[[annotation-model]]
+			</p>
+
 
             <p>
 				<b>Example Use Case:</b> Qitara wants to associate a selection of text in a web page with a slice of a dataset.
@@ -268,8 +282,13 @@
 						User Agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.
                     </td>
                 </tr>
-            </table>
-
+                <tr>
+						<td>source</td>
+						<td>Relationship</td>
+						<td>The relationship between a Selector and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
+						<br/>There MUST be at most 1 <code>source</code> relationship associated with a Specific Resource.  The source resource SHOULD be a URL.</td>
+				</tr>
+			</table>
             <h4>Example</h4>
 
             <pre class="example highlight" title="Selectors">
@@ -373,7 +392,7 @@
 				</p>
 
                 <p>
-					<b>Example Use Case:</b> Sally selects a paragraph in a web page that she wishes bookmark.  
+					<b>Example Use Case:</b> Sally selects a paragraph in a one of the chapters of a Web Publications that she wishes bookmark.  
 					Her client calculates a CSS path that cleanly identifies that element and stores CSS Selector in its local bookmark store .
 				</p>
 
@@ -408,9 +427,10 @@
 
                 <pre class="example highlight" title="CSS Selector" id="CssSelector_ex">
 {
-	"source": "http://example.org/page1.html",
+	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "CssSelector",
+		"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html"
 		"value": "#elemid > .elemclass + p"
 	}
 }
@@ -1112,10 +1132,11 @@
 						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
 					</ul>
 				</li>
-				<li>For types and properties other than those specified in the Web Annotation model, the full URL MUST be used.</li>
 			</ul>
 
 			<p>(see the examples below.)</p>
+
+			<p class="ednote">The reference to the Web Publication Resources should be changed to use the short name of the WP specification, as opposed to the editor's draft like now.</p>
 
 			<p>The values SHOULD be percent encoded&nbsp;[[rfc3986]]; the encoding is a MUST for characters that may make the fragment ambiguous, namely:</p>
 
@@ -1178,10 +1199,11 @@
 
 				<p class="ex_title"><a href="#CssSelector_ex">Example</a> for a <a href="#CssSelector_def"></a></p>
 				<pre class="example nohighlight" title="CSS Selector as Fragment" id="CssSelector_frag">
-				http://example.org/page1.html#selector(
+				https://dauwhe.github.io/html-first/MobyDick.wpub(
 					type=CssSelector,
-					value=%23elemid%20>%20.elemclass%20+%20p
-				)
+					source=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html,
+					value=%23elemid%20>%20.elemclass%20+%20p,
+				)				 
 				</pre>
 
 				<p class="ex_title"><a href="#XPathSelector_ex">Example</a> for a <a href="#XPathSelector_def"></a></p>
