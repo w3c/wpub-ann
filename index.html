@@ -145,8 +145,6 @@
 				The data model is defined in [[json]], in the form of JSON objects and keys.
 				The formal specification and the semantics of these originate from a larger model, namely the Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
 				The current document only “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations.
-				The only new feature in this document is the <a href="#frags">section on selector fragments</a>.
-				Although this document is aimed to be self consistent, in case of inconsistencies or errors the&nbsp;[[!annotation-model]] remains the authoritative source.
 			</p>
 
             <section>
@@ -194,7 +192,7 @@
             </section>
         </section>
 
-        <section id="specific_resources">
+        <section id="specific_resources" class="informative">
             <h3>Specific Resources</h3>
             <p>
 				A <a>Specific Resource</a> serves as a wrapper around the selection of another <a>Web Resource</a>. 
@@ -224,11 +222,17 @@
                     <td>Relationship</td>
                     <td>The relationship between a Specific Resource and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
                     <br/>There MUST be exactly 1 <code>source</code> relationship associated with a Specific Resource.  The source resource MAY be described in detail as in the core data model or be just the resource’s URL.</td>
-                </tr>
+				</tr>
+                <tr>
+                    <td>scope</td>
+                    <td>Relationship</td>
+                    <td>The relationship between a Specific Resource and the resource that provides the scope or context for it in this selection.<br/>
+						There MAY be 0 or more scope relationships for each Specific Resource. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
+				</tr>
             </table>
         </section>
 
-        <section id="selectors">
+        <section id="selectors" class="informative">
             <h3>Selectors</h3>
 
             <p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
@@ -247,21 +251,9 @@
 				The nature of the Selector is dependent on the type of resource, as the methods to describe Segments from various media-types differ. These two entities are encapsulated in a <a>Specific Resource</a>.
 			</p>
 
-			<p>
-				A Selector object MAY also have a <code>source</code> <a>Relationship</a>, relating the selection to a particular resource. In general, this relationship is not necessary, because a Selector inherits the source of its encapsulating <a>SpecificResource</a>. However, there are cases when this relationship is necessary. For example:
-			</p>
-
-			<ul>
-				<li>The inherited source is used to identify the <a href="https://www.w3.org/TR/publishing-linking/#dfn-address" class="externalDFN">address</a> of a Web Publication&nbsp;[[wpub]], and the <code>source</code> relationship is used to identify a specific <a class="externalDFN" href="https://w3c.github.io/wpub/#wp-resources">Web Publication Resource</a>.</li>
-				<li>When the Selector is a <a href="#RangeSelector_def"></a>, the <code>source</code> value can be used to refer to different resources within the same <a>SpecificResource</a>.</li>
-			</ul>
-
 			<p class="note">
 				The ability of using a <code>source</code> within a Selector is the <em>only</em> extension to the Selectors as defined by the Web Annotation Model&nbsp;[[annotation-model]]
 			</p>
-
-			<p class=issue data-number=4></p>
-
 
             <p>
 				<b>Example Use Case:</b> Qitara wants to associate a selection of text in a web page with a slice of a dataset.
@@ -281,12 +273,6 @@
 						User Agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.
                     </td>
                 </tr>
-                <tr>
-						<td>source</td>
-						<td>Relationship</td>
-						<td>The relationship between a Selector and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
-						<br/>There MUST be at most 1 <code>source</code> relationship associated with a Specific Resource.  The source resource SHOULD be a URL.</td>
-				</tr>
 			</table>
             <h4>Example</h4>
 
@@ -391,8 +377,9 @@
 				</p>
 
                 <p>
-					<b>Example Use Case:</b> Sally selects a paragraph in a one of the chapters of a Web Publications that she wishes bookmark.  
-					Her client calculates a CSS path that cleanly identifies that element and stores CSS Selector in its local bookmark store .
+					<b>Example Use Case:</b> Sally selects a paragraph in a one of the chapters of a Web Publication that she wishes bookmark.  
+					Her client calculates a CSS path that cleanly identifies that element and stores CSS Selector in its local bookmark store.
+					Because the selection is made as part of a Web Publication (e.g., through the WP aware User Agent), a reference to the Web Publication’s address is also added to the bookmark.
 				</p>
 
                 <h4>Model</h4>
@@ -426,10 +413,10 @@
 
                 <pre class="example highlight" title="CSS Selector" id="CssSelector_ex">
 {
-	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 	"selector": {
 		"type": "CssSelector",
-		"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 		"value": "#elemid > .elemclass + p"
 	}
 }
@@ -776,15 +763,11 @@
 					A Range Selector can be used to identify the beginning and the end of the selection by using other Selectors.
 					In this way, two points can be accurately identified using the most appropriate selection mechanisms, and then linked together to form the selection.
 					The selection consists of everything from the beginning of the starting selector through to the beginning of the ending selector, but not including it.
-					Because any Selector may have its own <code>source</code>, Range Selectors can also be used to bridge over several resources. In those cases, however, the exact semantics for such a selection must be defined by the time of collection the Selection is used for.
 				</p>
-
-				<p class="issue" data-number=1></p>
-				<p class="issue" data-number=2></p>				
 				
 				<p>
-					<b>Example Use Case:</b> Yadira wants to comment on text in a Web Publication that spreads over two adjacent consituent HTML files (representing the chapters of the book published in a Web Publication).
-					She selects the start and the end of the selection in the respective HTML files; her User Agent calculates the Range Selector using the address of the Web Publication&nbsp;[[wpub]] as a source for the overall Selector.
+					<b>Example Use Case:</b> Yadira wants to comment on text in a Web Publication that spreads over several paragraphs.
+					She selects the start and the end of the selection; her User Agent calculates the Range Selector using the first selection as a start and the second selector as the end.
 				</p>
 
 				<h4>Model</h4>
@@ -817,21 +800,19 @@
 
 				<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
 {
-	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 	"selector": {
 		"type": "RangeSelector",
 		"startSelector": {
 			"type": "TextQuoteSelector",
-			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 			"exact": "Call me Ishmael.",
 			"suffix": "Some years ago"
 		},
 		"endSelector": {
 			"type": "TextQuoteSelector",
-			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html",
-			"exact": "A hundred black faces turned round",
-			"suffix": " in their rows",
-			"prefix": "sitting in Tophet. "
+			"exact": "He desires to paint you the dreamiest, ",
+			"prefix": "But here is an artist. ",
+			"suffix": "shadiest, quietest"
 		}
 	}
 }
@@ -1265,21 +1246,18 @@
 
 				<p class="ex_title"><a href="#RangeSelector_ex">Example</a> for a <a href="#RangeSelector_def"></a></p>
 				<pre class="example nohighlight" title="Range Selector as Fragment" id="RangeSelector_frag">
-				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
+					https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html#selector(
 					type=RangeSelector,
 					startSelector=selector(
-						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html,
 						type=TextQuoteSelector,
 						exact=Call%20me%20Ishmael.,
 						suffix=Some%20years%20ago
 					),
 					startSelector=selector(
-						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html,
 						type=TextQuoteSelector,
-						exact=A%20hundred%20black%20faces%20turned%20round,
-						suffix=Some%20years%20ago
-						suffix=%20in%20their%20rows,
-						prefix=sitting%20in%20Tophet.%20
+						exact=He%20desires%20to%20paint%20you%20the dreamiest,%20, 
+						prefix=But%20here%20is%20an%20artist.%20, 
+						suffix=shadiest%2C%20quietest
 					)
 				)
 				</pre>
@@ -1596,6 +1574,7 @@
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Specific Resource</a></td></tr>
+				<tr><td>scope</td><td><a>Specific Resource</a></td></tr>				
 				<tr><td>source</td><td><a>Specific Resource</a></td></tr>
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateEnd</td><td><a href="#TimeState_def">Time State</a></td></tr>
