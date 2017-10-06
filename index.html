@@ -1188,6 +1188,7 @@
 				<li>The (comma separated) “parameters” of the functional notation are:
 					<ul>
 						<li>For the keys <code>refinedBy</code>, <code>startSelector</code>, and <code>endSelector</code> the syntax is <code>key=selector(…)</code>, respectively <code>key=state(…)</code> when appropriate, with the value following, recursively, the same syntax as the full fragment;</li>
+						<li>For the key <code>selectors</code> the content is a comma separated list of selectors;</li>
 						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
 					</ul>
 				</li>
@@ -1352,7 +1353,7 @@
 					),
 					selector(
 						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html
-					)
+					),
 					selector(
 						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c003.html
 						type=TextQuoteSelector,
