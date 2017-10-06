@@ -819,6 +819,80 @@
 				</pre>
 			</section>
 
+			<section id="MultiResourceSelector_def">
+				<h3>Multi Resource Selector</h3>
+
+				<p><em>This section is normative</em></p>
+
+				<p>
+					For some use cases it is required to identify a fragment that spans multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
+					A Multi Resource Selection can be used to identify this span by creating an ordered list of Specific Resources.
+					Except for the first and the last Specific Resources in the list, intermediate Specific Resources are only used to identify <em>full</em> resources (i.e., they only contain the identification of a <a>Source</a>).
+					The selection consists of everything from the beginning of the starting selector in the first Specific Resource, all resources identified by the intermediate Specific Resources in the list (if any), through to the beginning of the ending selector, but not including it.
+				</p>
+
+				<p class=note>
+					A <a href="#RangeSelector_def">Range Selector</a> may be considered as a special case for a Multi Resource Selector, albeit defined much more succinctly.
+				</p>
+					
+				<p>
+					<b>Example Use Case:</b> Előd wants to comment on a text in a Web Publication that spreads over several resources within the Web Publication.
+					He selects the start and the end of the selection in two different constituent resoruces; his User Agent calculates the Multi Resource Selector using the first selection as a start, the second selector as the end, and the resources listed in the <a href="https://w3c.github.io/wpub/#dfn-default-reading-order" class="externalDFN">default reading order</a> of the Web Publication as intermediate selections.
+				</p>
+
+				<p class=ednote>The reference to the TR version of the WPUB document must be used, when available.</p>
+	
+				<h4>Model</h4>
+
+				<table class="model">
+					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<td>type</td>
+						<td>Relationship</td>
+						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
+					</tr>
+					<tr>
+						<td>MultiResourceSelector</td>
+						<td>Class</td>
+						<td>The type of the Multi Resource Selector resource. <br/>Multi Resource Selectors MUST have this class associated with them.</td>
+					</tr>
+					<tr>
+						<td>selectors</td>
+						<td>Relationship</td>
+						<td>A list of Specific Resources. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
+							<br/>The list MUST have at least 2 elements, identifying the start and end selectors for the selection span. 
+						</td>
+					</tr>
+				</table>
+
+				<h4>Example</h4>
+
+				<pre class="example highlight" title="Multi Resource Selector" id="MultiResourceSelector_ex">
+{
+	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"selector": {
+		"type": "MultiResourceSelector",
+		"selectors": [{
+			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+			"selector": {
+				"type": "TextQuoteSelector",
+				"exact": "Call me Ishmael.",
+				"suffix": "Some years ago"                           
+			}
+		},{
+			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html"
+		},{
+			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c003.html",
+			"selector": {
+				"type": "TextQuoteSelector",
+				"exact": "The opposite wall of this entry",
+				"suffix": " was hung"                          
+			}
+		}]
+	}    
+}				</pre>
+			</section>
+
 			<section id="SelectorRefinement_def">
 				<h3>Refinement of Selection</h3>
 
@@ -1180,9 +1254,9 @@
 
 				<p class="ex_title"><a href="#CssSelector_ex">Example</a> for a <a href="#CssSelector_def"></a></p>
 				<pre class="example nohighlight" title="CSS Selector as Fragment" id="CssSelector_frag">
-				https://dauwhe.github.io/html-first/MobyDick.wpub(
+				https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html#selector(
 					type=CssSelector,
-					source=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html,
+					scope=https://dauwhe.github.io/html-first/MobyDick.wpub
 					value=%23elemid%20>%20.elemclass%20+%20p,
 				)				 
 				</pre>
@@ -1258,6 +1332,28 @@
 						exact=He%20desires%20to%20paint%20you%20the dreamiest,%20, 
 						prefix=But%20here%20is%20an%20artist.%20, 
 						suffix=shadiest%2C%20quietest
+					)
+				)
+				</pre>
+
+				<p class="ex_title"><a href="#MultiResourcSelector_ex">Example</a> for a <a href="#MultiResourcSelector_def"></a></p>
+				<pre class="example nohighlight" title="Multi Resource Selector as Fragment" id="MultiResourcSelector_frag">
+				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
+					type=MultiResourceSelector,
+					selector(
+						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html
+						type=TextQuoteSelector,
+						exact=Call%20me%20Ishmael.,
+						suffix=Some%20years%20ago
+					),
+					selector(
+						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html
+					)
+					selector(
+						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c003.html
+						type=TextQuoteSelector,
+						exact=The%20opposite%20wall%20of%20thi%20entry, 
+						suffix=%20was%20hung
 					)
 				)
 				</pre>
@@ -1574,8 +1670,9 @@
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Specific Resource</a></td></tr>
+				<tr><td>selectors</td><td><a>Specific Resource</a></td></tr>				
 				<tr><td>scope</td><td><a>Specific Resource</a></td></tr>				
-				<tr><td>source</td><td><a>Specific Resource</a></td></tr>
+				<tr><td>source</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateEnd</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateStart</td><td><a href="#TimeState_def">Time State</a></td></tr>
