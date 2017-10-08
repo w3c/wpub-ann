@@ -99,7 +99,7 @@
 
 			<p>
 				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
-				The current document only “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations.
+				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations.
 			</p>
 
 			<p class="note">
@@ -115,7 +115,7 @@
         <section id="sotd">
 		</section>
 
-        <section id="introduction">
+        <section id="introduction" class=informative>
             <h2>Introduction</h2>
 
             <p>
@@ -145,11 +145,20 @@
             <p>
 				The data model is defined in [[json]], in the form of JSON objects and keys.
 				The formal specification and the semantics of these originate from a larger model, namely the Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
-				The current document only “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations.
+				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. Compared to the Web Annotation Data Model, however, this document <em>adds</em> two new selectors, namely:
 			</p>
 
-            <section>
+			<ul>
+				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
+				<li><a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> can be used to define a range spanning over a series of resources that are part of the same collection of resources.</li>
+			</ul>
+
+			<p>Both of these new selectors aim the particular requirement of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].</p>
+
+            <section class=normative id="terminology">
 				<h3>Terminology</h3>
+
+				<p><em>This section is normative</em></p>
 				
 				<p>
 					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
@@ -229,7 +238,7 @@
                 <tr>
                     <td>scope</td>
                     <td>Relationship</td>
-                    <td>The relationship between a Specific Resource and the resource that provides the scope or context for it in this selection.<br/>
+                    <td>The relationship between a Specific Resource and the resource that provides the scope or context in this selection.<br/>
 						There MAY be 0 or more scope relationships for each Specific Resource. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
 				</tr>
             </table>
@@ -822,7 +831,7 @@
 				</pre>
 			</section>
 
-			<section id="MultiResourceSelector_def">
+			<section id="MultiResourceSelector_def" class="normative">
 				<h3>Multi Resource Selector</h3>
 
 				<p><em>This section is normative</em></p>
@@ -941,6 +950,75 @@
 	}
 }
 				</pre>
+			</section>
+
+			<section id="EmbeddedResourceSelector_def" class="normative">
+				<h3>Embedded Resource Selector</h3>
+
+				<p><em>This section is normative</em></p>
+
+				<p>
+					For some use cases it is required to identify a resource that part of a group of resources, where that group has its own identity on the Web (and can be identified via its own URL). 
+					An example may be resource representing a chapter as part of a Web Publication&nbsp;[[!wpub]]).
+					An Embedded Resource Selector can be used to identify that resource through the <code>value</code> relationship.
+					This Selector is usually used in conjunction with other Selectors, e.g., through a refinement.
+				</p>
+				
+				<p>
+					<b>Example Use Case:</b> Brianne wants to comment on a text in a Web Publication that spreads over two consecutive resources in a Web Publication. 
+					The user agent cannot use the <a href="#RangeSelector_def">Range Selector</a> with, e.g., <a href="#TextQuoteSelector_def">Text Quote Selectors</a> directly, because those Selectors would rely on the same <a>Source</a>. 
+					Instead, Embedded Resource Selectors are used for the start and the end, each using the <a href="#SelectorRefinement_def">Selector Refinement</a> to identify the necessary quote.
+				</p>
+	
+				<p class="issue" data-number=4></p>
+
+				<h4>Model</h4>
+
+				<table class="model">
+					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<td>type</td>
+						<td>Relationship</td>
+						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>EmbeddedResourceSelector</code>.</td>
+					</tr>
+					<tr>
+						<td>EmbeddedResourceSelector</td>
+						<td>Class</td>
+						<td>The type of the Embedded Resource Selector resource. <br/>Embedded Resource Selectors MUST have this class associated with them.</td>
+					</tr>
+					<tr>
+						<td>value</td>
+						<td>Relationship</td>
+						<td>The URL of the resource within the collection or resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.</td>
+					</tr>
+				</table>
+
+				<h4>Example</h4>
+
+				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
+{
+	"type": "SpecificResource",
+	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"selector": {
+		"type": "RangeSelector",
+		"startSelector": {
+			"type": "EmbeddedResourceSelector",
+			"value": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+			"refinedBy": {
+				"type": "TextQuoteSelector",
+				"exact": "Call me Ishmael"
+			}
+		},
+		"endSelector": {
+			"type": EmbeddedResourceSelector",
+			"value": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html",
+			"refinedBy": {
+				"type": "TextQuoteSelector",
+				"exact": "A hundred black faces turned around"
+			}
+		}
+	}
+}				</pre>
 			</section>
 		</section> <!-- /Selectors -->
 
@@ -1366,11 +1444,35 @@
 				<p class="ex_title"><a href="#SelectorRefinement_ex">Example</a> for a <a href="#SelectorRefinement_def"></a></p>
 				<pre class="example nohighlight" title="Selector Refinement as Fragment" id="SelectorRefinement_frag">
 				http://example.org/page1#selector(
-					type=FragmentSelector,value=para5,
+					type=FragmentSelector,
+					value=para5,
 					refinedBy=selector(
-					type=TextQuoteSelector,exact=Selected%20Text,
-					prefix=text%20before%20the%20,
-					suffix=%20and%20text%20after%20it
+						type=TextQuoteSelector,exact=Selected%20Text,
+						prefix=text%20before%20the%20,
+						suffix=%20and%20text%20after%20it
+					)
+				)
+				</pre>
+
+				<p class="ex_title"><a href="#EmbeddedResourcSelector_ex">Example</a> for an <a href="#EmbeddedesourcSelector_def"></a></p>
+				<pre class="example nohighlight" title="Embedded Resource Selector as Fragment" id="EmbeddedResourcSelector_frag">
+				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
+					type=RangeSelector,
+					startSelector=selector(
+						type=EmbeddedResourceSelector,
+						value=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html
+						refinedBy=selector(
+							type=TextQuoteSelector,
+							exact=Call%20me%20Ishmael.
+						)
+					),
+					endSelector= selector(
+						type=EmbeddedResourceSelector,
+						value=https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html
+						refinedBy=selector(
+							type=TextQuoteSelector,
+							exact=A%20hundred%20black%20faces%20turned%20around, 									
+						)
 					)
 				)
 				</pre>
@@ -1675,9 +1777,8 @@
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Specific Resource</a></td></tr>
-				<tr><td>selectors</td><td><a>Specific Resource</a></td></tr>				
+				<tr><td>selectors</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
 				<tr><td>scope</td><td><a>Specific Resource</a></td></tr>				
-				<tr><td>source</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateEnd</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateStart</td><td><a href="#TimeState_def">Time State</a></td></tr>
@@ -1686,7 +1787,7 @@
 				<tr><td>state</td><td><a href="#states">Specific Resource</a></td></tr>
 				<tr><td>suffix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td class="top_cell">type</td><td>Note: Every object MAY have a <code>type</code>.<br/> <a>Specific Resource</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
-				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
+				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
 			</table>
 		</section>
 		
