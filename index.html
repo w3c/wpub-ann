@@ -908,50 +908,6 @@
 }				</pre>
 			</section>
 
-			<section id="SelectorRefinement_def">
-				<h3>Refinement of Selection</h3>
-
-				<p>
-					It may be easier, more reliable, or more accurate to specify the segment of interest of a resource as a selection of a selection, rather than as a selection of the complete resource.
-					Particularly for resources that contain other resources, such as various packaging formats, this also allows decomposition of the selection mechanisms when the components do not have unique identifiers. 
-					This is accomplished by having selectors chained together, where each refines the results of the previous one.
-				</p>
-
-				<p>
-					<b>Example Use Case:</b> Zara selects a paragraph of text and then a short phrase within it.
-					Her client records the phrase as a TextQuoteSelector that further modifies a FragmentSelector used to identify the paragraph that the phrase is part of.
-				</p>
-
-				<h4>Model</h4>
-
-				<table class="model">
-				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
-					<tr>
-						<td>refinedBy</td>
-						<td>Relationship</td>
-						<td>The relationship between a broader selector and the more specific selector that should be applied to the results of the first. <br/>A Selector MAY be <code>refinedBy</code> 1 or more other Selectors.  If more than 1 is given, then they are considered to be alternatives that will result in the same selection.</td>
-					</tr>
-				</table>
-
-				<h4>Example</h4>
-
-				<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
-{
-	"source": "http://example.org/page1",
-	"selector": {
-		"type": "FragmentSelector",
-		"value": "para5",
-		"refinedBy": {
-			"type": "TextQuoteSelector",
-			"exact": "Selected Text",
-			"prefix": "text before the ",
-			"suffix": " and text after it"
-		}
-	}
-}
-				</pre>
-			</section>
-
 			<section id="EmbeddedResourceSelector_def" class="normative">
 				<h3>Embedded Resource Selector</h3>
 
@@ -961,13 +917,12 @@
 					For some use cases it is required to identify a resource that part of a group of resources, where that group has its own identity on the Web (and can be identified via its own URL). 
 					An example may be resource representing a chapter as part of a Web Publication&nbsp;[[!wpub]]).
 					An Embedded Resource Selector can be used to identify that resource through the <code>value</code> relationship.
-					This Selector is usually used in conjunction with other Selectors, e.g., through a refinement.
+					This Selector is usually used in conjunction with other Selectors, e.g., through a <a href="#SelectorRefinement_def">refinement</a>.
 				</p>
 				
 				<p>
-					<b>Example Use Case:</b> Brianne wants to comment on a text in a Web Publication that spreads over two consecutive resources in a Web Publication. 
-					The user agent cannot use the <a href="#RangeSelector_def">Range Selector</a> with, e.g., <a href="#TextQuoteSelector_def">Text Quote Selectors</a> directly, because those Selectors would rely on the same <a>Source</a>. 
-					Instead, Embedded Resource Selectors are used for the start and the end, each using the <a href="#SelectorRefinement_def">Selector Refinement</a> to identify the necessary quote.
+					<b>Example Use Case:</b> Janine wants to select the cover image of a Web Publication, which is linked to the Web Publication as a whole.
+					She uses an Embedded Resource Selector to designate the image, with the Web Publication’s address as the <a>Source</a> for the selector. 
 				</p>
 	
 				<p class="issue" data-number=4></p>
@@ -994,8 +949,72 @@
 				</table>
 
 				<h4>Example</h4>
-
 				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
+{
+	"type": "SpecificResource",
+	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"selector": {
+		"type": "EmbeddedResourceSelector",
+		"value": "https://dauwhe.github.io/html-first/MobyDickNav/images/moby-dick-book-cover.jpg"
+	}
+}				</pre>
+					
+
+
+
+				
+			</section>
+
+			<section id="SelectorRefinement_def">
+				<h3>Refinement of Selection</h3>
+
+				<p>
+					It may be easier, more reliable, or more accurate to specify the segment of interest of a resource as a selection of a selection, rather than as a selection of the complete resource.
+					Particularly for resources that contain other resources, such as various packaging formats, this also allows decomposition of the selection mechanisms when the components do not have unique identifiers. 
+					This is accomplished by having selectors chained together, where each refines the results of the previous one.
+				</p>
+
+				<p>
+					<b>Example Use Case:</b> Zara selects a paragraph of text and then a short phrase within it.
+					Her client records the phrase as a TextQuoteSelector that further modifies a FragmentSelector used to identify the paragraph that the phrase is part of.
+				</p>
+
+				<p>
+					<b>Example Use Case:</b> Brianne wants to comment on a text in a Web Publication that spreads over two consecutive resources in a Web Publication. 
+					The user agent cannot use the <a href="#RangeSelector_def">Range Selector</a> with, e.g., <a href="#TextQuoteSelector_def">Text Quote Selectors</a> directly, because those Selectors would rely on the same <a>Source</a>. 
+					Instead, Embedded Resource Selectors are used for the start and the end, each using the <a href="#SelectorRefinement_def">Selector Refinement</a> to identify the necessary quote.
+				</p>
+
+				<h4>Model</h4>
+
+				<table class="model">
+				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<td>refinedBy</td>
+						<td>Relationship</td>
+						<td>The relationship between a broader selector and the more specific selector that should be applied to the results of the first. <br/>A Selector MAY be <code>refinedBy</code> 1 or more other Selectors.  If more than 1 is given, then they are considered to be alternatives that will result in the same selection.</td>
+					</tr>
+				</table>
+
+				<h4>Examples</h4>
+
+				<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
+{
+	"source": "http://example.org/page1",
+	"selector": {
+		"type": "FragmentSelector",
+		"value": "para5",
+		"refinedBy": {
+			"type": "TextQuoteSelector",
+			"exact": "Selected Text",
+			"prefix": "text before the ",
+			"suffix": " and text after it"
+		}
+	}
+}
+				</pre>
+
+				<pre class="example highlight" title="Embedded Resource Selector used with Refinement" id="EmbeddedResourceSelectorRefinement_ex">
 {
 	"type": "SpecificResource",
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
@@ -1441,6 +1460,14 @@
 				)
 				</pre>
 
+				<p class="ex_title"><a href="#EmbeddedResourcSelector_ex">Example</a> for an <a href="#EmbeddedesourcSelector_def"></a></p>
+				<pre class="example nohighlight" title="Embedded Resource Selector as Fragment" id="EmbeddedResourcSelector_frag">
+				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
+					type=EmbeddedResourceSelector,
+					value=https://dauwhe.github.io/html-first/MobyDickNav/images/moby-dick-book-cover.jpg
+				)
+				</pre>
+
 				<p class="ex_title"><a href="#SelectorRefinement_ex">Example</a> for a <a href="#SelectorRefinement_def"></a></p>
 				<pre class="example nohighlight" title="Selector Refinement as Fragment" id="SelectorRefinement_frag">
 				http://example.org/page1#selector(
@@ -1454,8 +1481,8 @@
 				)
 				</pre>
 
-				<p class="ex_title"><a href="#EmbeddedResourcSelector_ex">Example</a> for an <a href="#EmbeddedesourcSelector_def"></a></p>
-				<pre class="example nohighlight" title="Embedded Resource Selector as Fragment" id="EmbeddedResourcSelector_frag">
+				<p class="ex_title"><a href="#EmbeddedResourceSelectorRefinement_ex">Example</a> for a <a href="#SelectorRefinement_def"></a></p>
+				<pre class="example nohighlight" title="Embedded Resource Selector Refined in a Range Selector" id="EmbeddedResourcSelectorRefinement_frag">
 				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
 					type=RangeSelector,
 					startSelector=selector(
