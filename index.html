@@ -98,13 +98,12 @@
 			</p>
 
 			<p>
-				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
-				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations.
+				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. That model has been extended by adding two more selector types (see the <a href="introduction">Introduction</a> for further details.)
 			</p>
 
 			<p class="note">
 				This document has been derived from the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note, published by the Web Annotation Working Group. 
-				Some features have been added (e.g., <code>scope</code>), whereas some sections and references have been removed (e.g., reference to RDF or JSON-LD contexts).
+				Some Web Annotation features have been added (e.g., <code>scope</code>), whereas some sections and references have been removed (e.g., reference to RDF or JSON-LD contexts).
 			</p>
 								
 			<p class="issue" data-number=6></p>
@@ -241,7 +240,8 @@
                     <td>The relationship between a Specific Resource and the resource that provides the scope or context in this selection.<br/>
 						There MAY be 0 or more scope relationships for each Specific Resource. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
 				</tr>
-            </table>
+			</table>
+			<p class=issue data-number=10></p>
         </section>
 
         <section id="selectors" class="informative">
@@ -261,10 +261,6 @@
             <p>
 				A <dfn>Selector</dfn> object is used to describe how to determine the <a>Segment</a> from within the <a>Source</a> resource.
 				The nature of the Selector is dependent on the type of resource, as the methods to describe Segments from various media-types differ. These two entities are encapsulated in a <a>Specific Resource</a>.
-			</p>
-
-			<p class="note">
-				The ability of using a <code>source</code> within a Selector is the <em>only</em> extension to the Selectors as defined by the Web Annotation Model&nbsp;[[annotation-model]]
 			</p>
 
             <p>
@@ -854,8 +850,7 @@
 
 				<p class=ednote>The reference to the TR version of the WPUB document must be used, when available.</p>
 	
-				<p class=issue data-number=2></p>
-				<p class="issue" data-number=4></p>
+				<p class=issue data-number=11></p>
 
 				<h4>Model</h4>
 
@@ -925,8 +920,6 @@
 					She uses an Embedded Resource Selector to designate the image, with the Web Publication’s address as the <a>Source</a> for the selector. 
 				</p>
 	
-				<p class="issue" data-number=4></p>
-
 				<h4>Model</h4>
 
 				<table class="model">
@@ -1814,7 +1807,7 @@
 				<tr><td>startSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>state</td><td><a href="#states">Specific Resource</a></td></tr>
 				<tr><td>suffix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td class="top_cell">type</td><td>Note: Every object MAY have a <code>type</code>.<br/> <a>Specific Resource</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
+				<tr><td class="top_cell">type</td><td><a>Specific Resource</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
 				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
 			</table>
 		</section>
