@@ -161,15 +161,15 @@
 				
 				<p>
 					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
-					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.
+					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.
 				</p>
 			
                 <dl>
 					<dt><dfn data-lt="Resource|Resources">Resource</dfn></dt>
-					<dd>An item of interest that MAY be identified by a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.</dd>
+					<dd>An item of interest that MAY be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Web Resource|Web Resources">Web Resource</dfn></dt>
-					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
+					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn data-lt="Specific Resource|SpecificResource">Specific Resource</dfn></dt>
 					<dd>A <a>Resource</a> that serves as a wrapper around the selection of part of another <a>Web Resource</a>. A Specific Resource identifies the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY contain other terms to refine the selection.</dd>
@@ -181,24 +181,21 @@
 					<dd>The part of the <a>Resource</a> that is selected using a Selector.</dd>
 
 					<dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>
-					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.</dd>
+					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
 					<dd>A feature of a <a>Resource</a>, that often has a particular data type.  In the model sections, the term “Property” is used to refer to only those features which are <em>not</em> <a>Relationships</a> and instead have a literal value such as a string, integer, or date.  The valid values for a Property are thus any data type other than object, or an array containing members of that data type if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="Relationship|Relationships">Relationship</dfn></dt>
-					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
-
-					<dt><dfn data-lt="Class|Classes">Class</dfn></dt>
-					<dd><a>Resources</a> may be divided, conceptually, into groups called “classes”; members of a class are known as <a>Instances</a> of that class. Resources are associated with a particular class through <a>typing</a>. Classes are identified by <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>, i.e., they are also <a>Web Resources</a> themselves.</dd>
+					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
-					<dd>A special <a>Relationship</a> that associates an <a>Instance</a> of a class to the <a>Class</a> it belongs to.</dd>
-
-					<dt><dfn data-lt="Instance|Instances">Instance</dfn></dt>
-					<dd>An element of a group of <a>Resources</a> represented by a particular <a>Class</a>.</dd>
+					<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular types of <a data-lt="Selector">Selectors</a> or <a data-lt="State">States</a>.</dd>
                 </dl>
-            </section>
+
+				<p class=ednote>The reference to the TR version of the WPUB document must be used (for the url definition), when available.</p>
+
+			</section>
         </section>
 
         <section id="specific_resources" class="informative">
@@ -317,11 +314,6 @@
 							FragmentSelectors MUST have exactly 1 <code>type</code> and the value MUST be <code>FragmentSelector</code>.</td>
                     </tr>
                     <tr>
-                        <td>FragmentSelector</td>
-                        <td>Class</td>
-                        <td>A resource which describes the Segment through the use of the fragment component of a URL.</td>
-                    </tr>
-                    <tr>
                         <td>value</td>
                         <td>Property</td>
                         <td>The contents of the fragment component of a URL that describes the Segment.<br/>
@@ -400,12 +392,6 @@
                         <td>The class of the Selector.<br/>CssSelectors MUST have exactly 1 <code>type</code> and the value MUST be <code>CssSelector</code>.</td>
                     </tr>
                     <tr>
-                        <td>CssSelector</td>
-                        <td>Class</td>
-                        <td>The type of the CSS Selector resource.
-                        <br/>CSS Selectors MUST have this class associated with them.</td>
-                    </tr>
-                    <tr>
                         <td>value</td>
                         <td>Property</td>
                         <td>The CSS selection path to the Segment.
@@ -459,11 +445,6 @@
                         <td>Relationship</td>
                         <td>The class of the Selector.<br/>XPath Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>XPathSelector</code>.</td>
                     </tr>
-                    <tr>
-                        <td>XPathSelector</td>
-                        <td>Class</td>
-                        <td>The type of the XPath Selector resource.
-                      <br/>XPath Selectors MUST have this class associated with them.</td>
                   </tr>
                   <tr>
                       <td>value</td>
@@ -512,11 +493,6 @@
                         <td>type</td>
                         <td>Relationship</td>
                         <td>The class of the Selector.<br/>Text Quote Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>TextQuoteSelector</code>.</td>
-                    </tr>
-                    <tr>
-                        <td>TextQuoteSelector</td>
-                        <td>Class</td>
-                        <td>The class for a Selector that describes a textual segment by means of quoting it, plus passages before or after it. <br/>The TextQuoteSelector MUST have this class associated with it.</td>
                     </tr>
                     <tr>
                         <td>exact</td>
@@ -599,12 +575,6 @@
 						<td>The class of the Selector.<br/>Text Position Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>TextPositionSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>TextPositionSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which describes a range of text based on its start and end positions.
-						<br/>The TextPositionSelector MUST have this class associated with it.</td>
-					</tr>
-					<tr>
 						<td>start</td>
 						<td>Property</td>
 						<td>The starting position of the segment of text. The first character in the full text is character position 0, and the character is included within the segment.
@@ -661,11 +631,6 @@
 						<td>The class of the Selector.<br/>Data Position Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>DataPositionSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>DataPositionSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which describes a range of data based on its start and end positions within the byte stream. <br/>The DataPositionSelector MUST have this class associated with it.</td>
-					</tr>
-					<tr>
 						<td>start</td>
 						<td>Property</td>
 						<td>The starting position of the segment of data. The first byte is character position 0. <br/>Each DataPositionSelector MUST have exactly 1 <code>start</code> property.</td>
@@ -717,11 +682,6 @@
 						<td>type</td>
 						<td>Relationship</td>
 						<td>The class of the Selector.<br/>SVG Selectors MUST have exactly 1 <code>type</code> and the value MUST include <code>SvgSelector</code>.
-					</tr>
-					<tr>
-						<td>SvgSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which defines a shape for the selected area using the SVG standard. <br/>The Selector MUST have this class associated with it.</td>
 					</tr>
 					<tr>
 						<td>value</td>
@@ -786,11 +746,6 @@
 						<td>type</td>
 						<td>Relationship</td>
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>RangeSelector</code>.</td>
-					</tr>
-					<tr>
-						<td>RangeSelector</td>
-						<td>Class</td>
-						<td>The type of the Range Selector resource. <br/>Range Selectors MUST have this class associated with them.</td>
 					</tr>
 					<tr>
 						<td>startSelector</td>
@@ -862,11 +817,6 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>MultiResourceSelector</td>
-						<td>Class</td>
-						<td>The type of the Multi Resource Selector resource. <br/>Multi Resource Selectors MUST have this class associated with them.</td>
-					</tr>
-					<tr>
 						<td>selectors</td>
 						<td>Relationship</td>
 						<td>A list of Specific Resources. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
@@ -930,10 +880,6 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>EmbeddedResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>EmbeddedResourceSelector</td>
-						<td>Class</td>
-						<td>The type of the Embedded Resource Selector resource. <br/>Embedded Resource Selectors MUST have this class associated with them.</td>
-					</tr>
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
@@ -1107,11 +1053,6 @@
 						<td>The class of the State.<br/>Time States MUST have exactly 1 <code>type</code> and the value MUST be <code>TimeState</code>.</td>
 					</tr>
 					<tr>
-						<td>TimeState</td>
-						<td>Class</td>
-						<td>A description of how to retrieve a representation of the Source resource that is temporally appropriate for the Annotation. <br/>The State MUST have this class associated with it.</td>
-					</tr>
-					<tr>
 						<td>sourceDate</td>
 						<td>Property</td>
 						<td>The timestamp at which the <a>Source</a> resource should be interpreted. <br/>There MAY be 0 or more <code>sourceDate</code> properties per TimeState. If there is more than 1, each gives an alternative timestamp at which the Source may be interpreted. The timestamp MUST be expressed in the <code>xsd:dateTime</code> format, and MUST use the UTC timezone expressed as "Z". If <code>sourceDate</code> is provided, then <code>sourceDateStart</code> and <code>sourceDateEnd</code> MUST NOT be provided.</td>
@@ -1171,10 +1112,6 @@
 						<td>Relationship</td>
 						<td>The class of the State.<br/>Request Header States MUST have exactly 1 <code>type</code> and the value MUST be <code>HttpRequestState</code>.</td>
 					</tr>
-					<tr>
-						<td>HttpRequestState</td>
-						<td>Class</td>
-						<td>A description of how to retrieve an appropriate representation of the Source resource, based on the HTTP Request headers to send on the request. <br/>The State MUST have this class associated with it.</td></tr>
 					<tr>
 						<td>value</td>
 						<td>Property</td>
