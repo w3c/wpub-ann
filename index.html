@@ -100,11 +100,6 @@
 			<p>
 				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. That model has been extended by adding two more selector types (see the <a href="#introduction">Introduction</a> for further details.)
 			</p>
-
-			<p class="note">
-				This document has been derived from the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note, published by the Web Annotation Working Group. 
-				Some Web Annotation features have been added (e.g., <code>scope</code>), whereas some sections and references have been removed (e.g., reference to RDF or JSON-LD contexts).
-			</p>
 								
 			<p class="issue" data-number=6></p>
 			<p class=issue data-number=7></p>
@@ -161,7 +156,7 @@
 				
 				<p>
 					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
-					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.
+					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://w3c.github.io/wpub/index.html#dfn-url" class="externalDFN">URL</a>.
 				</p>
 			
                 <dl>
@@ -890,7 +885,6 @@
 				<h4>Example</h4>
 				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
 {
-	"type": "Locator",
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "EmbeddedResourceSelector",
@@ -955,7 +949,6 @@
 
 				<pre class="example highlight" title="Embedded Resource Selector used with Refinement" id="EmbeddedResourceSelectorRefinement_ex">
 {
-	"type": "Locator",
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "RangeSelector",
@@ -1718,6 +1711,59 @@
 						</tr>
 					</tfoot>
 				</table>
+			</section>
+		</section>
+
+		<section class=appendix id=changes>
+			<h3>Changes from Previous Versions</h3>
+
+			<section id="changes_from_wa">
+				<h4>Changes from the “Selectors and States” Note</h4>
+
+				<p>
+					This document has been derived from the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note, published by the Web Annotation Working Group. 
+					That Note is based on the formal specification and the semantics of a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
+					This documents introduces some changes as follows. 
+				</p>
+
+				<p><strong>Editorial Changes</strong></p>
+				<ul>
+					<li>
+						All references to RDF and JSON-LD have been removed.
+					</li>
+					<li>
+						The reference to EPUBCFI in the definition for <a href="#FragmentSelector_def">Fragment Selectors</a> have been removed.
+					</li>
+					<li>
+						References to <a href="https://www.w3.org/TR/selectors-states/#dfn-class" class="externalDFN">Classes</a> (which, semantically, refer to RDF Classes) have been removed.
+					</li>
+					<li>
+						The term <a href="https://www.w3.org/TR/selectors-states/#specific-resources" class="externalDFN">“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific Resource”, hence does not change the original semantics.)
+					</li>
+					<li>
+						Some of the examples have been changed.
+					</li>
+				</ul>
+
+				<p><strong>Non-editorial Changes</strong></p>
+				<ul>
+					<li>
+						The <a href="#locators"><code>scope</code> relationship</a> has re-introduced. (This relationship is part of the “Web Annotation Data Model”&nbsp;[[annotation-model]] but was not retained in the “Selectors and States”&nbsp;[[selectors-states]] Note.)
+					</li>
+
+					<li>
+						Two new Selectors have been added, namely
+						<ul>
+							<li>
+								<a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;
+							</li>
+							<li>
+								<a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> can be used to define a range spanning over a series of resources that are part of the same collection of resources.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 			</section>
 		</section>
 		
