@@ -100,11 +100,6 @@
 			<p>
 				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. That model has been extended by adding two more selector types (see the <a href="#introduction">Introduction</a> for further details.)
 			</p>
-
-			<p class="note">
-				This document has been derived from the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note, published by the Web Annotation Working Group. 
-				Some Web Annotation features have been added (e.g., <code>scope</code>), whereas some sections and references have been removed (e.g., reference to RDF or JSON-LD contexts).
-			</p>
 								
 			<p class="issue" data-number=6></p>
 			<p class=issue data-number=7></p>
@@ -161,18 +156,18 @@
 				
 				<p>
 					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
-					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.
+					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://w3c.github.io/wpub/index.html#dfn-url" class="externalDFN">URL</a>.
 				</p>
 			
                 <dl>
 					<dt><dfn data-lt="Resource|Resources">Resource</dfn></dt>
-					<dd>An item of interest that MAY be identified by a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.</dd>
+					<dd>An item of interest that MAY be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Web Resource|Web Resources">Web Resource</dfn></dt>
-					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
+					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
-					<dt><dfn data-lt="Specific Resource|SpecificResource">Specific Resource</dfn></dt>
-					<dd>A <a>Resource</a> that serves as a wrapper around the selection of part of another <a>Web Resource</a>. A Specific Resource identifies the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY contain other terms to refine the selection.</dd>
+					<dt><dfn>Locator</dfn></dt>
+					<dd>A <a>Resource</a> that serves as a wrapper around the selection of part of another <a>Web Resource</a>. A Locator identifies the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY contain other terms to refine the selection.</dd>
 
 					<dt><dfn>Source</dfn></dt>
 					<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selectors</a> or <a data-lt="State">States</a>.</dd>
@@ -181,36 +176,33 @@
 					<dd>The part of the <a>Resource</a> that is selected using a Selector.</dd>
 
 					<dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>
-					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>.</dd>
+					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
 					<dd>A feature of a <a>Resource</a>, that often has a particular data type.  In the model sections, the term “Property” is used to refer to only those features which are <em>not</em> <a>Relationships</a> and instead have a literal value such as a string, integer, or date.  The valid values for a Property are thus any data type other than object, or an array containing members of that data type if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="Relationship|Relationships">Relationship</dfn></dt>
-					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
-
-					<dt><dfn data-lt="Class|Classes">Class</dfn></dt>
-					<dd><a>Resources</a> may be divided, conceptually, into groups called “classes”; members of a class are known as <a>Instances</a> of that class. Resources are associated with a particular class through <a>typing</a>. Classes are identified by <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a>, i.e., they are also <a>Web Resources</a> themselves.</dd>
+					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
-					<dd>A special <a>Relationship</a> that associates an <a>Instance</a> of a class to the <a>Class</a> it belongs to.</dd>
-
-					<dt><dfn data-lt="Instance|Instances">Instance</dfn></dt>
-					<dd>An element of a group of <a>Resources</a> represented by a particular <a>Class</a>.</dd>
+					<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular types of <a data-lt="Selector">Selectors</a> or <a data-lt="State">States</a>.</dd>
                 </dl>
-            </section>
+
+				<p class=ednote>The reference to the TR version of the WPUB document must be used (for the url definition), when available.</p>
+
+			</section>
         </section>
 
-        <section id="specific_resources" class="informative">
-            <h3>Specific Resources</h3>
+        <section id="locators" class="informative">
+            <h3>Locators</h3>
             <p>
-				A <a>Specific Resource</a> serves as a wrapper around the selection of another <a>Web Resource</a>. 
+				A <a>Locator</a> serves as a wrapper around the selection of another <a>Web Resource</a>. 
 				This extra selection is done via <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be:
 			</p>
 
             <ul>
-              <li><a>Selector</a>: Describe the desired segment of the source</li>
-              <li><a>State</a>: Describe the desired representation of the source</li>
+              	<li><a>Selector</a>: Describe the desired segment of the source</li>
+              	<li><a>State</a>: Describe the desired representation of the source</li>
             </ul>
 
             <p>
@@ -226,19 +218,19 @@
                 <tr>
                     <td>id</td>
                     <td>Property</td>
-                    <td>The identity of the Specific Resource<br/> A Specific Resource SHOULD have exactly 1 URL that identifies it.</td>
+                    <td>The identity of the Locator<br/> A Locator SHOULD have exactly 1 URL that identifies it.</td>
                 </tr>
                 <tr>
                     <td>source</td>
                     <td>Relationship</td>
-                    <td>The relationship between a Specific Resource and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
-                    <br/>There MUST be exactly 1 <code>source</code> relationship associated with a Specific Resource.  The source resource MAY be described in detail as in the core data model or be just the resource’s URL.</td>
+                    <td>The relationship between a Locator and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
+                    <br/>There MUST be exactly 1 <code>source</code> relationship associated with a Locator.  The source resource MAY be described in detail as in the core data model or be just the resource’s URL.</td>
 				</tr>
                 <tr>
                     <td>scope</td>
                     <td>Relationship</td>
-                    <td>The relationship between a Specific Resource and the resource that provides the scope or context in this selection.<br/>
-						There MAY be 0 or more scope relationships for each Specific Resource. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
+                    <td>The relationship between a Locator and the resource that provides the scope or context in this selection.<br/>
+						There MAY be 0 or more scope relationships for each Locator. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
 				</tr>
 			</table>
 			<p class=issue data-number=10></p>
@@ -260,12 +252,12 @@
 
             <p>
 				A <dfn>Selector</dfn> object is used to describe how to determine the <a>Segment</a> from within the <a>Source</a> resource.
-				The nature of the Selector is dependent on the type of resource, as the methods to describe Segments from various media-types differ. These two entities are encapsulated in a <a>Specific Resource</a>.
+				The nature of the Selector is dependent on the type of resource, as the methods to describe Segments from various media-types differ. These two entities are encapsulated in a <a>Locator</a>.
 			</p>
 
             <p>
 				<b>Example Use Case:</b> Qitara wants to associate a selection of text in a web page with a slice of a dataset.
-				She selects both using her client, and creates Specific Resources with Selectors for both entities before associating them with one another.
+				She selects both using her client, and creates Locators with Selectors for both entities before associating them with one another.
 			</p>
 
             <h4>Model</h4>
@@ -275,8 +267,8 @@
                 <tr>
                     <td>selector</td>
                     <td>Relationship</td>
-                    <td>The relationship between a Specific Resource and a Selector.
-						<br/>There MAY be 0 or more <code>selector</code> relationships associated with a Specific Resource. 
+                    <td>The relationship between a Locator and a Selector.
+						<br/>There MAY be 0 or more <code>selector</code> relationships associated with a Locator. 
 						Multiple Selectors SHOULD select the same content, however some Selectors will not have the same precision as others.
 						User Agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.
                     </td>
@@ -296,14 +288,14 @@
 
                 <p>
 					As the most well understood mechanism for selecting a <a>Segment</a> is to use the fragment part of a URL defined by the representation’s media type, it is useful to allow this as a description mechanism via a Selector.
-					This allows existing and future fragment specifications to be used with Specific Resources in a consistent way.
+					This allows existing and future fragment specifications to be used with Locators in a consistent way.
 					To be clear about which fragment type is being used, the <a>Selector</a> may refer to the specification that defines it.
 				</p>
 
                 <p>
 					<b>Example Use Case:</b> Ramona wants to associate part of a video as the description of an image.
 					She selects the time range within the video and clicks that it is describing the target.
-					Her client then creates the Annotation using a SpecificResource with a FragmentSelector.
+					Her client then creates the Annotation using a Locator with a FragmentSelector.
 				</p>
 
                 <h4>Model</h4>
@@ -315,11 +307,6 @@
                         <td>Relationship</td>
 						<td>The class of the Selector.<br/>
 							FragmentSelectors MUST have exactly 1 <code>type</code> and the value MUST be <code>FragmentSelector</code>.</td>
-                    </tr>
-                    <tr>
-                        <td>FragmentSelector</td>
-                        <td>Class</td>
-                        <td>A resource which describes the Segment through the use of the fragment component of a URL.</td>
                     </tr>
                     <tr>
                         <td>value</td>
@@ -336,7 +323,7 @@
                 </table>
 
                 <p>
-					It is RECOMMENDED to use <code>FragmentSelector</code> as a consistent method compatible with other means of describing SpecificResources, rather than using the URL with a fragment directly. 
+					It is RECOMMENDED to use <code>FragmentSelector</code> as a consistent method compatible with other means of describing Locators, rather than using the URL with a fragment directly. 
 					User Agents SHOULD be aware of both.
 				</p>
 
@@ -400,12 +387,6 @@
                         <td>The class of the Selector.<br/>CssSelectors MUST have exactly 1 <code>type</code> and the value MUST be <code>CssSelector</code>.</td>
                     </tr>
                     <tr>
-                        <td>CssSelector</td>
-                        <td>Class</td>
-                        <td>The type of the CSS Selector resource.
-                        <br/>CSS Selectors MUST have this class associated with them.</td>
-                    </tr>
-                    <tr>
                         <td>value</td>
                         <td>Property</td>
                         <td>The CSS selection path to the Segment.
@@ -459,11 +440,6 @@
                         <td>Relationship</td>
                         <td>The class of the Selector.<br/>XPath Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>XPathSelector</code>.</td>
                     </tr>
-                    <tr>
-                        <td>XPathSelector</td>
-                        <td>Class</td>
-                        <td>The type of the XPath Selector resource.
-                      <br/>XPath Selectors MUST have this class associated with them.</td>
                   </tr>
                   <tr>
                       <td>value</td>
@@ -512,11 +488,6 @@
                         <td>type</td>
                         <td>Relationship</td>
                         <td>The class of the Selector.<br/>Text Quote Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>TextQuoteSelector</code>.</td>
-                    </tr>
-                    <tr>
-                        <td>TextQuoteSelector</td>
-                        <td>Class</td>
-                        <td>The class for a Selector that describes a textual segment by means of quoting it, plus passages before or after it. <br/>The TextQuoteSelector MUST have this class associated with it.</td>
                     </tr>
                     <tr>
                         <td>exact</td>
@@ -599,12 +570,6 @@
 						<td>The class of the Selector.<br/>Text Position Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>TextPositionSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>TextPositionSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which describes a range of text based on its start and end positions.
-						<br/>The TextPositionSelector MUST have this class associated with it.</td>
-					</tr>
-					<tr>
 						<td>start</td>
 						<td>Property</td>
 						<td>The starting position of the segment of text. The first character in the full text is character position 0, and the character is included within the segment.
@@ -661,11 +626,6 @@
 						<td>The class of the Selector.<br/>Data Position Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>DataPositionSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>DataPositionSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which describes a range of data based on its start and end positions within the byte stream. <br/>The DataPositionSelector MUST have this class associated with it.</td>
-					</tr>
-					<tr>
 						<td>start</td>
 						<td>Property</td>
 						<td>The starting position of the segment of data. The first byte is character position 0. <br/>Each DataPositionSelector MUST have exactly 1 <code>start</code> property.</td>
@@ -717,11 +677,6 @@
 						<td>type</td>
 						<td>Relationship</td>
 						<td>The class of the Selector.<br/>SVG Selectors MUST have exactly 1 <code>type</code> and the value MUST include <code>SvgSelector</code>.
-					</tr>
-					<tr>
-						<td>SvgSelector</td>
-						<td>Class</td>
-						<td>The class for a Selector which defines a shape for the selected area using the SVG standard. <br/>The Selector MUST have this class associated with it.</td>
 					</tr>
 					<tr>
 						<td>value</td>
@@ -788,11 +743,6 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>RangeSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>RangeSelector</td>
-						<td>Class</td>
-						<td>The type of the Range Selector resource. <br/>Range Selectors MUST have this class associated with them.</td>
-					</tr>
-					<tr>
 						<td>startSelector</td>
 						<td>Relationship</td>
 						<td>The Selector which describes the inclusive starting point of the range. <br/>There MUST be exactly 1 <code>startSelector</code> associated with a Range Selector.</td>
@@ -834,9 +784,9 @@
 
 				<p>
 					For some use cases it is required to identify a fragment that spans multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
-					A Multi Resource Selection can be used to identify this span by creating an ordered list of Specific Resources.
-					Except for the first and the last Specific Resources in the list, intermediate Specific Resources are only used to identify <em>full</em> resources (i.e., they only contain the identification of a <a>Source</a>).
-					The selection consists of everything from the beginning of the starting selector in the first Specific Resource, all resources identified by the intermediate Specific Resources in the list (if any), through to the beginning of the ending selector, but not including it.
+					A Multi Resource Selection can be used to identify this span by creating an ordered list of Locators.
+					Except for the first and the last Locators in the list, intermediate Locators are only used to identify <em>full</em> resources (i.e., they only contain the identification of a <a>Source</a>).
+					The selection consists of everything from the beginning of the starting selector in the first Locator, all resources identified by the intermediate Locators in the list (if any), through to the beginning of the ending selector, but not including it.
 				</p>
 
 				<p class=note>
@@ -862,14 +812,9 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>MultiResourceSelector</td>
-						<td>Class</td>
-						<td>The type of the Multi Resource Selector resource. <br/>Multi Resource Selectors MUST have this class associated with them.</td>
-					</tr>
-					<tr>
 						<td>selectors</td>
 						<td>Relationship</td>
-						<td>A list of Specific Resources. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
+						<td>A list of Locators. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
 							<br/>The list MUST have at least 2 elements, identifying the start and end selectors for the selection span. 
 						</td>
 					</tr>
@@ -930,10 +875,6 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>EmbeddedResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>EmbeddedResourceSelector</td>
-						<td>Class</td>
-						<td>The type of the Embedded Resource Selector resource. <br/>Embedded Resource Selectors MUST have this class associated with them.</td>
-					</tr>
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
@@ -944,7 +885,6 @@
 				<h4>Example</h4>
 				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
 {
-	"type": "SpecificResource",
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "EmbeddedResourceSelector",
@@ -1009,7 +949,6 @@
 
 				<pre class="example highlight" title="Embedded Resource Selector used with Refinement" id="EmbeddedResourceSelectorRefinement_ex">
 {
-	"type": "SpecificResource",
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "RangeSelector",
@@ -1053,7 +992,7 @@
 			</ol>
 
 			<p>
-				A <dfn>State</dfn> object is used to describe how to determine the state of interest from within the <a>Source</a> resource. These two entities are encapsulated in a <a>Specific Resource</a>.</p>
+				A <dfn>State</dfn> object is used to describe how to determine the state of interest from within the <a>Source</a> resource. These two entities are encapsulated in a <a>Locator</a>.</p>
 			</p>
 
 			<p>
@@ -1067,7 +1006,7 @@
 				<tr>
 					<td>state</td>
 					<td>Relationship</td>
-					<td>The relationship between the Specific Resource and the <a>State</a>.<br/>There MAY be 0 or more <code>state</code> relationships for each Specific Resource.  Multiple States SHOULD select the same content, however some States will not have the same precision as others. Consuming user agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.</td>
+					<td>The relationship between the Locator and the <a>State</a>.<br/>There MAY be 0 or more <code>state</code> relationships for each Locator.  Multiple States SHOULD select the same content, however some States will not have the same precision as others. Consuming user agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.</td>
 				</tr>
 			</table>
 
@@ -1105,11 +1044,6 @@
 						<td>type</td>
 						<td>Relationship</td>
 						<td>The class of the State.<br/>Time States MUST have exactly 1 <code>type</code> and the value MUST be <code>TimeState</code>.</td>
-					</tr>
-					<tr>
-						<td>TimeState</td>
-						<td>Class</td>
-						<td>A description of how to retrieve a representation of the Source resource that is temporally appropriate for the Annotation. <br/>The State MUST have this class associated with it.</td>
 					</tr>
 					<tr>
 						<td>sourceDate</td>
@@ -1171,10 +1105,6 @@
 						<td>Relationship</td>
 						<td>The class of the State.<br/>Request Header States MUST have exactly 1 <code>type</code> and the value MUST be <code>HttpRequestState</code>.</td>
 					</tr>
-					<tr>
-						<td>HttpRequestState</td>
-						<td>Class</td>
-						<td>A description of how to retrieve an appropriate representation of the Source resource, based on the HTTP Request headers to send on the request. <br/>The State MUST have this class associated with it.</td></tr>
 					<tr>
 						<td>value</td>
 						<td>Property</td>
@@ -1255,7 +1185,7 @@
 			<h3>Selectors and States as Fragment Identifiers</h3>
 
 			<p>
-				Although <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, the fact that this is defined through an indirection using a <a>Specific Resource</a> may be an obstacle for some applications. 
+				Although <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, the fact that this is defined through an indirection using a <a>Locator</a> may be an obstacle for some applications. 
 			</p>
 
 			<p class="ednote">
@@ -1783,6 +1713,59 @@
 				</table>
 			</section>
 		</section>
+
+		<section class=appendix id=changes>
+			<h3>Changes from Previous Versions</h3>
+
+			<section id="changes_from_wa">
+				<h4>Changes from the “Selectors and States” Note</h4>
+
+				<p>
+					This document has been derived from the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note, published by the Web Annotation Working Group. 
+					That Note is based on the formal specification and the semantics of a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
+					This documents introduces some changes as follows. 
+				</p>
+
+				<p><strong>Editorial Changes</strong></p>
+				<ul>
+					<li>
+						All references to RDF and JSON-LD have been removed.
+					</li>
+					<li>
+						The reference to EPUBCFI in the definition for <a href="#FragmentSelector_def">Fragment Selectors</a> have been removed.
+					</li>
+					<li>
+						References to <a href="https://www.w3.org/TR/selectors-states/#dfn-class" class="externalDFN">Classes</a> (which, semantically, refer to RDF Classes) have been removed.
+					</li>
+					<li>
+						The term <a href="https://www.w3.org/TR/selectors-states/#specific-resources" class="externalDFN">“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific Resource”, hence does not change the original semantics.)
+					</li>
+					<li>
+						Some of the examples have been changed.
+					</li>
+				</ul>
+
+				<p><strong>Non-editorial Changes</strong></p>
+				<ul>
+					<li>
+						The <a href="#locators"><code>scope</code> relationship</a> has re-introduced. (This relationship is part of the “Web Annotation Data Model”&nbsp;[[annotation-model]] but was not retained in the “Selectors and States”&nbsp;[[selectors-states]] Note.)
+					</li>
+
+					<li>
+						Two new Selectors have been added, namely
+						<ul>
+							<li>
+								<a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;
+							</li>
+							<li>
+								<a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> can be used to define a range spanning over a series of resources that are part of the same collection of resources.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+			</section>
+		</section>
 		
 		<section class="appendix">
 			<h3>Index of JSON Terms</h3>
@@ -1796,18 +1779,18 @@
 				<tr><td>exact</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
-				<tr><td>selector</td><td><a>Specific Resource</a></td></tr>
+				<tr><td>selector</td><td><a>Locator</a></td></tr>
 				<tr><td>selectors</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
-				<tr><td>scope</td><td><a>Specific Resource</a></td></tr>
-				<tr><td>source</td><td><a>Specific Resource</a></td></tr>				
+				<tr><td>scope</td><td><a>Locator</a></td></tr>
+				<tr><td>source</td><td><a>Locator</a></td></tr>				
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateEnd</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>sourceDateStart</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>start</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
 				<tr><td>startSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
-				<tr><td>state</td><td><a href="#states">Specific Resource</a></td></tr>
+				<tr><td>state</td><td><a href="#states">Locator</a></td></tr>
 				<tr><td>suffix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td class="top_cell">type</td><td><a>Specific Resource</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
+				<tr><td class="top_cell">type</td><td><a>Locator</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
 				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
 			</table>
 		</section>
