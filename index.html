@@ -13,6 +13,7 @@
             	wg: "Publishing Working Group",
             	specStatus: "ED",
             	shortName: "publ-loc",
+				noRecTrack: false,
             	//   edDraftURI: "https://w3c.github.io/wpub/",
               	editors: [
 					{
@@ -107,6 +108,19 @@
 		</section>
 
         <section id="sotd">
+		</section>
+
+		<section id="conformance">
+
+			<section id="json_extensions">
+				<h3>Handling Undefined JSON Properties</h3>
+
+				<p>
+					This specification relies on objects defined in JSON originally defined as part of the Web Annotation Data Model&nbsp;[[annotation-model]]. In order to ensure backward compatibility, implementations of this specification MUST ignore any additional JSON terms not defined by this specification.
+				</p>
+
+			</section>
+
 		</section>
 
         <section id="introduction" class=informative>
