@@ -783,10 +783,9 @@
 				<p><em>This section is normative</em></p>
 
 				<p>
-					For some use cases it is required to identify a fragment that spans multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
+					For some use cases it is required to identify a fragment that spans, possibly, over multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
 					A Multi Resource Selection can be used to identify this span by creating an ordered list of Locators.
-					Except for the first and the last Locators in the list, intermediate Locators are only used to identify <em>full</em> resources (i.e., they only contain the identification of a <a>Source</a>).
-					The selection consists of everything from the beginning of the starting selector in the first Locator, all resources identified by the intermediate Locators in the list (if any), through to the beginning of the ending selector, but not including it.
+					The selection consists of everything from the beginning of the starting selector in the first Locator, all selections identified by the intermediate Locators in the list (if any), through to the beginning of the ending selector, but not including it.
 				</p>
 
 				<p class=note>
@@ -812,10 +811,10 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>selectors</td>
+						<td>locators</td>
 						<td>Relationship</td>
-						<td>A list of Locators. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
-							<br/>The list MUST have at least 2 elements, identifying the start and end selectors for the selection span. 
+						<td>A list of Locators. <br/>There MUST be exactly 1 <code>locators</code> associated with a Multi Resource Selector.
+							<br/>The list MUST have at least 1 element. 
 						</td>
 					</tr>
 				</table>
@@ -827,7 +826,7 @@
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "MultiResourceSelector",
-		"selectors": [{
+		"locators": [{
 			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 			"selector": {
 				"type": "TextQuoteSelector",
@@ -1208,7 +1207,7 @@
 				<li>The (comma separated) “parameters” of the functional notation are:
 					<ul>
 						<li>For the keys <code>refinedBy</code>, <code>startSelector</code>, and <code>endSelector</code> the syntax is <code>key=selector(…)</code>, respectively <code>key=state(…)</code> when appropriate, with the value following, recursively, the same syntax as the full fragment;</li>
-						<li>For the key <code>selectors</code> the content is a comma separated list of selectors;</li>
+						<li>For the key <code>locators</code> the content is a comma separated list of locators;</li>
 						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
 					</ul>
 				</li>
@@ -1777,10 +1776,10 @@
 				<tr><td>end</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
 				<tr><td>endSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>exact</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
+				<tr><td>locators</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Locator</a></td></tr>
-				<tr><td>selectors</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
 				<tr><td>scope</td><td><a>Locator</a></td></tr>
 				<tr><td>source</td><td><a>Locator</a></td></tr>				
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
