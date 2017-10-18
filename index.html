@@ -111,13 +111,21 @@
 
 		<section id="conformance">
 
-			<section id="json_extensions">
+			<section id="wa_extensions">
 				<h3>Handling Undefined JSON Properties</h3>
-
 				<p>
-					This specification relies on objects defined in JSON originally defined as part of the Web Annotation Data Model&nbsp;[[annotation-model]]. In order to ensure backward compatibility, implementations of this specification MUST ignore any additional JSON terms not defined by this specification.
+					This specification relies on a subset of JSON terms originally defined as part of the Web Annotation Data Model&nbsp;[[!annotation-model]] and Vocabulary&nbsp;[[!annotation-vocab]]. 
+					This specification extends the definitions of some of those terms in order to satisfy additional use cases, but all uses conforming to original definitions remain valid.
+					This specification also defines additional JSON terms to meet needs of additional use cases.
+					In order to ensure backward compatibility, implementations of this specification MAY ignore any JSON terms not defined in this specification (directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT treat as invalid any JSON term encountered that is not defined in this specification.
 				</p>
-
+			</section>
+			<section>
+				<h3>Conformance requirements related to specific selectors</h3>
+				<p>
+					Not all Selectors defined in this specification are relevant for all Web Publication Resource media types.
+					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types are not handled by that particular implementation.
+				</p>
 			</section>
 
 		</section>
