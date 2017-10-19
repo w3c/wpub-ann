@@ -556,10 +556,42 @@
             		For example, if the document was “abcdefghijklmnopqrstuvwxyz”, the start was 4, and the end was 7, then the selection would be “efg”.
             	</p>
 
+        <p>When the values provided for the start and end positions are the same, an inter-character location,
+        	i.e., a precise position in the stream, rather than a range of characters is 
+        	being described by the TextPositionSelector. For example, if the document was “abcdefghijklmnopqrstuvwxyz”, 
+        	the start was 7, and the end was 7, then the location being referenced would be the position between "g" and "h".</p>
+            	
+        <p>In some situations, it is important to preserve which side of a position a location reference points to. For example, 
+        	when resolving a text stream location in a dynamically paginated environment, it could make a difference if a location is 
+        	attached to the content before or after the position being referenced (e.g., to determine whether to display the verso or 
+        	recto side at a page break). When the values provided for the start and end positions are the same, the 
+        	<code>bias</code> property MAY be used to attach the location reference to the character preceding the position identified 
+        	by the location (<code>"bias": "before"</code>)	or to the character following the position (<code>"bias": "after"</code>). 
+        	The bias property MUST NOT be used when <code>start</code> is not equal to <code>end</code>. 
+        </p>  
+            	
+            	<p>
+            		For example, if the document was “abcdefghijklmnopqrstuvwxyz”, the start was 7, the end was 7, and the bias was before,  
+            		then the location being referenced would be the position between "g" and "h" and the location would be attached
+            		to "g".
+            	</p>  
+            	
+            	<p class="note">Side bias is only meaningful when some type of break falls at the position 
+            		specified by the TextPositionSelector (e.g., a page break or line break).</p>
+
             	<p>
 					<b>Example Use Case:</b> Valeria writes a review of an ebook that does not allow its content to be extracted and copied.  Her client describes the selection using its start and end position in the content.
 				</p>
 
+            	<p>
+            		<b>Example Use Case:</b> ???.
+            	</p>
+            	
+            	<p class="ednote">If we retain bias, we need a real example of its usage, in narrative here
+            		and as a json object below. The text above about bias is pretty much straight from the EPUB CFI, 
+            		but the use case alluded to in the text remains unclear in the context of defining a locator. Help!
+            	</p>            	
+            	
             	<h4>Model</h4>
 
 				<table class="model">
@@ -581,11 +613,26 @@
 						<td>The end position of the segment of text. The character is not included within the segment.
 						<br/>Each TextPositionSelector MUST have exactly 1 <code>end</code> property, and the value MUST be a non-negative integer.</td>
 					</tr>
+					<tr>
+						<td>bias</td>
+						<td>Property</td>
+						<td>Determines which character (of two adjacent) a location is attached to when values of start and end
+							  are the same.
+							<br/>Each TextPositionSelector MAY have 0 or 1 <code>bias</code> property, and the value 
+							MUST be either <code>before</code> or <code>after</code>.</td>
+					</tr>					
 				</table>
 
             	<p>
 					The text MUST be selected and normalized in the same way as for the <a href="#TextQuoteSelector_def">Text Quote Selector</a> before counting the number of characters to determine the start and end positions.
 				</p>
+                        	
+        <p class="ednote">
+          Do we need to add explicit text such as, "start and end values MUST NOT or SHOULD NOT exceed the 
+          total count of characters in the normalized text stream?" And/or do we need to explicitly say that 
+          the value of end MUST NOT or SHOULD NOT be less than the value of start? And/or if using SHOULD NOT 
+          do we need to say anything about user agent behavior if value is not conformant with these two expectations?
+        </p>
 
             	<div class="note">
 					   The use of this <a>Selector</a> does not require text to be copied from the <a>Source</a> when storing, e.g., a bookmarks, unlike the Text Quote Selector, but is very brittle with regards to changes to the resource.
@@ -609,12 +656,20 @@
        		<section id="DataPositionSelector_def">
             	<h3>Data Position Selector</h3>
 
-            	<p>Similar to the <a href="#TextPositionSelector_def">Text Position Selector</a>, the Data Position Selector uses the same properties but works at the byte in bitstream level rather than the character in text level.</p>
+            	<p>Similar to the <a href="#TextPositionSelector_def">Text Position Selector</a>, the Data Position Selector uses 
+            		the same properties (excluding <code>bias</code>, which is specific to the TextPositionSelector),
+            		but works at the byte in bitstream level rather than the character in text level.</p>
+       			
+       			<p>
+       				As with the <a href="#TextPositionSelector_def">Text Position Selector</a>, the Data Position Selector can be used
+       				either to identify a range of bytes from the bitstream (value of <code>end</code> greater than 
+       				value of <code>start</code>) or to reference a position between two consecutive bytes in the bitstream
+       				(value of <code>end</code> equals value of <code>start</code>). 
+       			</p>
 
 				<p><b>Example Use Case:</b> Wendy produces visualizations of regions of online disk images for as part of her publication.
 					She calculates the start and end positions from the binary stream and stores that as a reference using the DataPositionSelector.
 				</p>
-
 
             	<h4>Model</h4>
 
@@ -1772,6 +1827,7 @@
 	
 			<table class="model">
 				<tr><th>Term</th><th>Usage</th></tr>
+				<tr><td>bias</td><td><a href="#TextPositionSelector_def">Text Position Selector</a></td></tr>
 				<tr><td>cached</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>conformsTo</td><td><a href="#FragmentSelector_def">Fragment Selector</a></td></tr>
 				<tr><td>end</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
