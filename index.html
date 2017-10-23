@@ -13,6 +13,7 @@
             	wg: "Publishing Working Group",
             	specStatus: "ED",
             	shortName: "publ-loc",
+				noRecTrack: false,
             	//   edDraftURI: "https://w3c.github.io/wpub/",
               	editors: [
 					{
@@ -102,11 +103,31 @@
 			</p>
 								
 			<p class="issue" data-number=6></p>
-			<p class=issue data-number=7></p>
 
 		</section>
 
         <section id="sotd">
+		</section>
+
+		<section id="conformance">
+
+			<section id="wa_extensions">
+				<h3>Handling Undefined JSON Properties</h3>
+				<p>
+					This specification relies on a subset of JSON terms originally defined as part of the Web Annotation Data Model&nbsp;[[!annotation-model]] and Vocabulary&nbsp;[[!annotation-vocab]]. 
+					This specification extends the definitions of some of those terms in order to satisfy additional use cases, but all uses conforming to original definitions remain valid.
+					This specification also defines additional JSON terms to meet needs of additional use cases.
+					In order to ensure backward compatibility, implementations of this specification MAY ignore any JSON terms not defined in this specification (directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT treat as invalid any JSON term encountered that is not defined in this specification.
+				</p>
+			</section>
+			<section>
+				<h3>Conformance requirements related to specific selectors</h3>
+				<p>
+					Not all Selectors defined in this specification are relevant for all Web Publication Resource media types.
+					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types are not handled by that particular implementation.
+				</p>
+			</section>
+
 		</section>
 
         <section id="introduction" class=informative>
@@ -214,8 +235,6 @@
             <p>
 				Specifiers MAY be External Web Resources with their own URLs, such as in the example for the <a href="#selectors">Selector</a> construction, however it is RECOMMENDED that they be included in the representation to avoid requiring unnecessary network interactions to retrieve all of the information.
 			</p>
-
-			<p class="issue" data-number=3></p>
 			
             <h4>Model</h4>
 
@@ -789,10 +808,9 @@
 				<p><em>This section is normative</em></p>
 
 				<p>
-					For some use cases it is required to identify a fragment that spans multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
+					For some use cases it is required to identify a fragment that spans, possibly, over multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
 					A Multi Resource Selection can be used to identify this span by creating an ordered list of Locators.
-					Except for the first and the last Locators in the list, intermediate Locators are only used to identify <em>full</em> resources (i.e., they only contain the identification of a <a>Source</a>).
-					The selection consists of everything from the beginning of the starting selector in the first Locator, all resources identified by the intermediate Locators in the list (if any), through to the beginning of the ending selector, but not including it.
+					The selection consists of everything from the beginning of the starting selector in the first Locator, all selections identified by the intermediate Locators in the list (if any), through to the beginning of the ending selector, but not including it.
 				</p>
 
 				<p class=note>
@@ -818,10 +836,10 @@
 						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
 					</tr>
 					<tr>
-						<td>selectors</td>
+						<td>locators</td>
 						<td>Relationship</td>
-						<td>A list of Locators. <br/>There MUST be exactly 1 <code>selectors</code> associated with a Multi Resource Selector.
-							<br/>The list MUST have at least 2 elements, identifying the start and end selectors for the selection span. 
+						<td>A list of Locators. <br/>There MUST be exactly 1 <code>locators</code> associated with a Multi Resource Selector.
+							<br/>The list MUST have at least 1 element. 
 						</td>
 					</tr>
 				</table>
@@ -833,7 +851,7 @@
 	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
 	"selector": {
 		"type": "MultiResourceSelector",
-		"selectors": [{
+		"locators": [{
 			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
 			"selector": {
 				"type": "TextQuoteSelector",
@@ -1458,7 +1476,7 @@
 				<li>The (comma separated) “parameters” of the functional notation are:
 					<ul>
 						<li>For the keys <code>refinedBy</code>, <code>startSelector</code>, and <code>endSelector</code> the syntax is <code>key=selector(…)</code>, respectively <code>key=state(…)</code> when appropriate, with the value following, recursively, the same syntax as the full fragment;</li>
-						<li>For the key <code>selectors</code> the content is a comma separated list of selectors;</li>
+						<li>For the key <code>locators</code> the content is a comma separated list of locators;</li>
 						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
 					</ul>
 				</li>
@@ -2052,10 +2070,10 @@
 				<tr><td>end</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
 				<tr><td>endSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>exact</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
+				<tr><td>locators</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Locator</a></td></tr>
-				<tr><td>selectors</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
 				<tr><td>scope</td><td><a>Locator</a></td></tr>
 				<tr><td>source</td><td><a>Locator</a></td></tr>				
 				<tr><td>sourceDate</td><td><a href="#TimeState_def">Time State</a></td></tr>
@@ -2069,6 +2087,8 @@
 				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
 			</table>
 		</section>
+
+		<section class=appendix id="issue-summary"></section>
 		
 		<section id="ack" data-include="https://w3c.github.io/wpub/common/html/acknowledgements.html" data-include-replace="true"></section>
 	</body>
