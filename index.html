@@ -2098,8 +2098,14 @@
 							</li>
 						</ul>
 					</li>
+					
+					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types have been added: 
+						<ul>
+							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
+							<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+						</ul>					
+					</li>
 				</ul>
-
 			</section>
 		</section>
 		
@@ -2108,14 +2114,16 @@
 	
 			<table class="model">
 				<tr><th>Term</th><th>Usage</th></tr>
+				<tr><td>bias</td><td><a href="#TextStreamPosition_def">Text Stream Position</a></td></tr>
 				<tr><td>cached</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>conformsTo</td><td><a href="#FragmentSelector_def">Fragment Selector</a></td></tr>
 				<tr><td>end</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
 				<tr><td>endSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>exact</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>locators</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
+				<tr><td>position</td><td><a>Locator</a></td></tr>
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
+				<tr><td>refinedBy</td><td><a href="#PositionRefinement_def">Position</a>, <a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Locator</a></td></tr>
 				<tr><td>scope</td><td><a>Locator</a></td></tr>
 				<tr><td>source</td><td><a>Locator</a></td></tr>				
@@ -2126,8 +2134,8 @@
 				<tr><td>startSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>state</td><td><a href="#states">Locator</a></td></tr>
 				<tr><td>suffix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td class="top_cell">type</td><td><a>Locator</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
-				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
+				<tr><td class="top_cell">type</td><td><a>Locator</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a>, <a href="#TextStreamPosition_def">Text Stream Position</a>, <a href="#DataStreamPosition_def">Data Stream Position</a></tr>
+				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a>, <a href="#TextStreamPosition_def">Text Stream Position</a>, <a href="#DataStreamPosition_def">Data Stream Position</a> </td></tr>
 			</table>
 		</section>
 
