@@ -88,18 +88,27 @@
 	<body>
 		<section id="abstract">
 			<p>
-				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have been developed, usually in conjunction with the media type of the resource. 
-				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
+				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have 
+				been developed, usually in conjunction with the media type of the resource. 
+				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[url]], 
+				but that is not always the case.
 			</p>
 			
 			<p>
 				This document does not define any new approach to selection.
-				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express and possibly combine selections. 
+				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express 
+				and as needed combine or refine selections. 
+				Additionally, this document extends the selection model described with methods for 
+				expressing the information needed to retrieve a desired representation of a resource and/or identify 
+				a precise location in the text stream or byte stream of a resource representation. 
 				Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of Web Resources
 			</p>
 
 			<p>
-				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. That model has been extended by adding two more selector types (see the <a href="#introduction">Introduction</a> for further details.)
+				The formal specification and the semantics originate from a separate W3C Recommendation, 
+				namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
+				This model has been extended by adding more selector types and a new model component for describing positions in text and byte streams 
+				(see the <a href="#introduction">Introduction</a> for further details).
 			</p>
 								
 			<p class="issue" data-number=6></p>
@@ -124,7 +133,8 @@
 				<h3>Conformance requirements related to specific selectors</h3>
 				<p>
 					Not all Selectors defined in this specification are relevant for all Web Publication Resource media types.
-					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types are not handled by that particular implementation.
+					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types 
+					are not handled by that particular implementation.
 				</p>
 			</section>
 
@@ -134,44 +144,72 @@
             <h2>Introduction</h2>
 
             <p>
-				Referencing a <em>position in</em> or a <em>part of</em> a resource on the Web is an ubiquitous action.
-				Interactive editing of a resources, highlighting an area on the screen, adding an annotation to a specific point in a resource, or defining a bookmarks to a section of a long document are all examples that involve selection or positioning within a resource.
-				Over the years several techniques have been developed, usually in conjunction with the media type of the resource.
-				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, identifying an element within the DOM tree for an XML source, or using CSS style elements to locate content.
-				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[!url]], but that is not always the case.
+            	Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, 
+            	referencing a <em>position in</em> 
+            	a resource respresentation is often necessary to support curation of and  discourse about Web resources. 
+				Interactive editing of a resource, highlighting an area on the screen, adding an annotation to a specific point 
+				in a resource, or defining a bookmark to a location or a section of a long document are all examples that 
+				involve selection or positioning within a resource.</p>
+        	<p>
+				Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
+				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
+				identifying an element within the DOM tree for an XML source, or using CSS style elements to locate content.
+				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[!url]], 
+        but that is not always the case.
 			</p>
 
             <p>
-				This document does not define any new approach to locating or selecting.
-				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express positions and selections.
-				Furthermore, the model also includes a way to <em>combine</em> selections via refinements, a feature that may greatly improve the efficiency of applications relying on complex selections.
-				Such a common model makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
+            	This document does not define any new approach to selection.
+				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express selections 
+            	(i.e., using <em>selector</em> objects).
+				Furthermore, the model also includes a way to <em>combine</em> and/or <em>refine</em> selections, 
+            	a feature that may greatly improve the efficiency of applications relying on complex selections. This document
+            	also models objects (<em>position</em> and <em>state</em>) supporting two additional curation and use tasks, 
+            	thereby extending the selection model with ways to   
+            	express the information needed to retrieve a desired representation of a resource and/or to identify 
+            	a precise location in the text stream or byte stream of a resource representation.
+				Such a common model makes it easier to provide generic and interoperable tools and APIs to handle selections in various 
+				applications.
 			</p>
 
             <p>
-				A selection, position, or state specifier, as described in this document, may have its own unique identity in the form of an URL.
+				A selection, position, or state <em>specifier</em>, as described in this document, may have its own unique identity 
+				in the form of an URL.
 				This URL SHOULD be dereferencable and return the selection/position/state specifier definition itself.
 			</p>
 
             <p class="note">
-				Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen as akin to a server side redirection, returning part of a resource.
+				Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen 
+				as akin to a server side redirection, returning part of a resource.
             </p>
 
             <p>
 				The data model is defined in [[json]], in the form of JSON objects and keys.
-				The formal specification and the semantics of these originate from a larger model, namely the Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
-				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. Compared to the Web Annotation Data Model, however, this document <em>adds</em> four new selectors, namely:
+				The formal specification and the semantics of these originate from a larger model, namely the 
+				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
+				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; 
+        by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. 
+        Compared to the Web Annotation Data Model, however, this document <em>adds</em> two new selectors, namely:
 			</p>
 
 			<ul>
 				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
 				<li><a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> can be used to define a range spanning over a series of resources that are part of the same collection of resources.</li>
+			</ul>
+        	
+        	<p>These new selector types aim at addressing the particular requirements of resource collections on the Web, 
+        		like Web Applications or Web Publications&nbsp;[[wpub]].</p>
+        	
+        	<p>
+        		Additionally the current document augments the Web Annotation Data Model of selectors and states with
+        		a new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined:
+        	</p>
+        	
+     <ul>
 				<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
 				<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
 			</ul>
-
-			<p>The first two of these new specifiers aim at addressing the particular requirements of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].</p>
-
+        	
             <section class=normative id="terminology">
 				<h3>Terminology</h3>
 
@@ -268,7 +306,7 @@
 
             <ol>
                 <li>
-					the <a href="#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a>.
+                	the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a>.
 				</li>
                 <li>
 					the identification for the part of that resource; we will refer to this as the <a data-lt="segment">Segment (of Interest)</a>.
@@ -1010,7 +1048,7 @@
 			
 			<ol>
 				<li>
-					the <a href="#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
 				</li>
 				<li>the identification for the state of the resource.</li>
 			</ol>
@@ -1216,7 +1254,7 @@
 			<p>A Position specifier requires knowledge of two distinct entities:</p>			
 			<ol>
 				<li>
-					the <a href="#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
 				</li>
 				<li>an integer representing the count of bytes or characters in the stream preceding the locus of interest.</li>
 			</ol>
@@ -1277,7 +1315,7 @@
 					<code>bias</code> property MAY be used to attach a position reference to the character preceding the position identified 		
 					by the <code>value</code> property (<code>"bias": "before"</code>)
 					or to the character following the position (<code>"bias": "after"</code>). For example, if the text stream 
-					was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was before,
+					was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was <code>before</code>,
 					then the position referenced would be the position between "g" and "h" and would be attached to "g".	
 				</p>
 				
@@ -1286,17 +1324,18 @@
 					specified by the TextStreamPosition specifier .</p>				
 				
 				<p>
-					<b>Example Use Case:</b> George notices that a word is missing between characters 322 and 323 in
-					the text of an HTML file he is reading and decides he wants to mark the position of the missing word
-					by generating a TextStreamPosition specifier so that the word can be inserted later. 
-					He also wants to ensure that if a line or page break should be dynamically inserted in this position
-					the missing word follows the break, and so he uses the bias property to associate the position reference
-					with the character that follows it.
+					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in
+					the text of an HTML file he is reading and decides he wants to mark the position of the missing letter
+					by generating a TextStreamPosition specifier so that the letter can be inserted later during editing. 
+					He also wants to ensure that if a hyphen and line break should be dynamically inserted in this position
+					the missing character would follow the break, and so he uses the bias property to associate the position reference
+					with the character that follows the position being referenced (i.e., character 323).
 				</p>				
 				<p class="ednote">
-					This really is not a valid example as regards bias, since by selecting the position after the space and before 
-					the first character of the next word, George could ensure that the break would come before the insertion
-					in the text stream. So we still desperately need a concrete, real-world use case for side-bias!
+					Is this a valid example as regards bias? Or is this kind of situation better handled
+					by an application rather than conflating a side-bias property with the position reference.
+					If not compelling enough, we need a better more concrete, real-world use case for side-bias!
+					Otherwise we should drop side-bias.
 				</p>
 					<h4>Model</h4>
 					
@@ -1457,9 +1496,9 @@
 			<p>
 				To mitigate this issue, a mapping of <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>,
 				and <a data-lt="State">States</a> on URL fragments&nbsp;[[url]] is defined below. 
-				As a result of this mapping the targeted <a>Segment</a>, <a>Locus</a>, or relevant State, is expressed in a 
+				As a result of this mapping the selected <a>Segment</a>, targeted <a>Locus</a>, or relevant <a>State</a> is expressed in a 
 				single (albeit complex) URL.
-				In that URL the <a>Selector</a>, <a>Position</a>, or <a>State</a>, is expressed as a 
+				In that URL the <a>Selector</a>, <a>Position</a>, or <a>State</a> is expressed as a 
 				single string and serves 
 				as a fragment which can be combined with the URL of the <a>Source</a>. 
 				Note that this representation is valid only if the URL for the <a>Source</a> does not contain a fragment 
@@ -1472,12 +1511,16 @@
 			</p>
 
 			<ul>
-				<li>The fragment uses the <code>selector(…)</code>, <code>position(...)</code>, or <code>state(…)</code>, functional syntax</li>
+				<li>The fragment uses the <code>selector(…)</code>, <code>position(...)</code>, or <code>state(…)</code> functional syntax.</li>
 				<li>The (comma separated) “parameters” of the functional notation are:
 					<ul>
-						<li>For the keys <code>refinedBy</code>, <code>startSelector</code>, and <code>endSelector</code> the syntax is <code>key=selector(…)</code>, respectively <code>key=state(…)</code> when appropriate, with the value following, recursively, the same syntax as the full fragment;</li>
+						<li>For the keys <code>startSelector</code> and <code>endSelector</code> the syntax is <code>key=selector(…)</code>,
+							  with the value following, recursively, the same syntax as a full <code>selector(...)</code> fragment;</li>
+						<li>For the key <code>refinedBy</code> the syntax is <code>refinedBy=selector(…)</code>, 
+							<code>refinedBy=position(...)</code>, or <code>refinedBy=state(...)</code>,
+							  with the value following, recursively, the same syntax as a full fragment;</li>
 						<li>For the key <code>locators</code> the content is a comma separated list of locators;</li>
-						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
+						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=CssSelector</code>.</li>
 					</ul>
 				</li>
 			</ul>
