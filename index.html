@@ -88,18 +88,27 @@
 	<body>
 		<section id="abstract">
 			<p>
-				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have been developed, usually in conjunction with the media type of the resource. 
-				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
+				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have 
+				been developed, usually in conjunction with the media type of the resource. 
+				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[url]], 
+				but that is not always the case.
 			</p>
 			
 			<p>
 				This document does not define any new approach to selection.
-				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express and possibly combine selections. 
+				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express 
+				and as needed combine or refine selections. 
+				Additionally, this document extends the selection model described with methods for 
+				expressing the information needed to retrieve a desired representation of a resource and/or identify 
+				a precise location in the text stream or byte stream of a resource representation. 
 				Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of Web Resources
 			</p>
 
 			<p>
-				The formal specification and the semantics originate from a separate W3C Recommendation, namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. That model has been extended by adding two more selector types (see the <a href="#introduction">Introduction</a> for further details.)
+				The formal specification and the semantics originate from a separate W3C Recommendation, 
+				namely the Web Annotation Data Model&nbsp;[[annotation-model]], where it is used to select targets of annotations. 
+				This model has been extended by adding more selector types and a new model component for describing positions in text and byte streams 
+				(see the <a href="#introduction">Introduction</a> for further details).
 			</p>
 								
 			<p class="issue" data-number=6></p>
@@ -124,7 +133,8 @@
 				<h3>Conformance requirements related to specific selectors</h3>
 				<p>
 					Not all Selectors defined in this specification are relevant for all Web Publication Resource media types.
-					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types are not handled by that particular implementation.
+					An implementation MAY therefore ignore certain types of Selectors in case the corresponding media types 
+					are not handled by that particular implementation.
 				</p>
 			</section>
 
@@ -134,42 +144,72 @@
             <h2>Introduction</h2>
 
             <p>
-				Selecting <em>part of</em> a resource on the Web is an ubiquitous action.
-				Interactive editing of a resources, highlighting an area on the screen, adding an annotation to a specific point in a resource, or defining a bookmarks to a section of a long document are all examples that involve selection within a resource.
-				Over the years several selection techniques have been developed, usually in conjunction with the media type of the resource.
-				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, identifying an element within the DOM tree for an XML source, or using CSS style elements to locate content.
-				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[!url]], but that is not always the case.
+            	Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, 
+            	referencing a <em>position in</em> 
+            	a resource respresentation is often necessary to support curation of and  discourse about Web resources. 
+				Interactive editing of a resource, highlighting an area on the screen, adding an annotation to a specific point 
+				in a resource, or defining a bookmark to a location or a section of a long document are all examples that 
+				involve selection or positioning within a resource.</p>
+        	<p>
+				Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
+				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
+				identifying an element within the DOM tree for an XML source, or using CSS style elements to locate content.
+				Many of these approaches are also expressed in terms of a <em>fragment identifiers</em>&nbsp;[[!url]], 
+        but that is not always the case.
 			</p>
 
             <p>
-				This document does not define any new approach to selection.
-				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express selections.
-				Furthermore, the model also includes a way to <em>combine</em> selections via refinements, a feature that may greatly improve the efficiency of applications relying on complex selections.
-				Such a common model makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
+            	This document does not define any new approach to selection.
+				Instead, it relies on existing techniques, providing a <em>common model and syntax</em> to express selections 
+            	(i.e., using <em>selector</em> objects).
+				Furthermore, the model also includes a way to <em>combine</em> and/or <em>refine</em> selections, 
+            	a feature that may greatly improve the efficiency of applications relying on complex selections. This document
+            	also models objects (<em>position</em> and <em>state</em>) supporting two additional curation and use tasks, 
+            	thereby extending the selection model with ways to   
+            	express the information needed to retrieve a desired representation of a resource and/or to identify 
+            	a precise location in the text stream or byte stream of a resource representation.
+				Such a common model makes it easier to provide generic and interoperable tools and APIs to handle selections in various 
+				applications.
 			</p>
 
             <p>
-				A selection or state, as described in this document, may have its own unique identity in the form of an URL.
-				This URL SHOULD be dereferencable and return the selection/state definition itself.
+				A selection, position, or state <em>specifier</em>, as described in this document, may have its own unique identity 
+				in the form of an URL.
+				This URL SHOULD be dereferencable and return the selection/position/state specifier definition itself.
 			</p>
 
             <p class="note">
-				Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen as akin to a server side redirection, returning part of a resource.
+				Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen 
+				as akin to a server side redirection, returning part of a resource.
             </p>
 
             <p>
 				The data model is defined in [[json]], in the form of JSON objects and keys.
-				The formal specification and the semantics of these originate from a larger model, namely the Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
-				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. Compared to the Web Annotation Data Model, however, this document <em>adds</em> two new selectors, namely:
+				The formal specification and the semantics of these originate from a larger model, namely the 
+				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
+				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; 
+        by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. 
+        Compared to the Web Annotation Data Model, however, this document <em>adds</em> two new selectors, namely:
 			</p>
 
 			<ul>
 				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
 				<li><a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> can be used to define a range spanning over a series of resources that are part of the same collection of resources.</li>
 			</ul>
-
-			<p>Both of these new selectors aim the particular requirement of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].</p>
-
+        	
+        	<p>These new selector types aim at addressing the particular requirements of resource collections on the Web, 
+        		like Web Applications or Web Publications&nbsp;[[wpub]].</p>
+        	
+        	<p>
+        		Additionally the current document augments the Web Annotation Data Model of selectors and states with
+        		a new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined:
+        	</p>
+        	
+     <ul>
+				<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
+				<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+			</ul>
+        	
             <section class=normative id="terminology">
 				<h3>Terminology</h3>
 
@@ -188,15 +228,18 @@
 					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn>Locator</dfn></dt>
-					<dd>A <a>Resource</a> that serves as a wrapper around the selection of part of another <a>Web Resource</a>. A Locator identifies the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY contain other terms to refine the selection.</dd>
+                	<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term.</dd>
 
 					<dt><dfn>Source</dfn></dt>
-					<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selectors</a> or <a data-lt="State">States</a>.</dd>
+                	<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a data-lt="State">State</a> specifier(s).</dd>
 
 					<dt><dfn data-lt="segment">Segment (of Interest)</dfn></dt>
-					<dd>The part of the <a>Resource</a> that is selected using a Selector.</dd>
+					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a> specifier.</dd>
 
-					<dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>
+          <dt><dfn data-lt="locus">Locus (of Interest)</dfn></dt>
+          <dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a> specifier.</dd>
+                	
+           <dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>                	
 					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
@@ -206,7 +249,7 @@
 					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
-					<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular types of <a data-lt="Selector">Selectors</a> or <a data-lt="State">States</a>.</dd>
+                	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a data-lt="State">State</a> specifier.</dd>
                 </dl>
 
 				<p class=ednote>The reference to the TR version of the WPUB document must be used (for the url definition), when available.</p>
@@ -217,13 +260,14 @@
         <section id="locators" class="informative">
             <h3>Locators</h3>
             <p>
-				A <a>Locator</a> serves as a wrapper around the selection of another <a>Web Resource</a>. 
-				This extra selection is done via <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be:
+            	A <a>Resource</a> that specifies a location in or a portion of another <a>Web Resource</a>. 
+				It does this using <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be any of:
 			</p>
 
             <ul>
-              	<li><a>Selector</a>: Describe the desired segment of the source</li>
-              	<li><a>State</a>: Describe the desired representation of the source</li>
+              	<li><a>Selector</a>: Describes the desired segment of interest in the source</li>
+              	<li><a>State</a>: Describes the desired representation of the source</li>
+            	  <li><a>Position</a>: Describes the desired locus of interest in the source</li>
             </ul>
 
             <p>
@@ -262,7 +306,7 @@
 
             <ol>
                 <li>
-					the <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a>.
+                	the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a>.
 				</li>
                 <li>
 					the identification for the part of that resource; we will refer to this as the <a data-lt="segment">Segment (of Interest)</a>.
@@ -993,32 +1037,32 @@
 
 		<section id="states">
 			<h3>States</h3>
-
+			
 			<p>
 				A State describes the intended state of a resource when selected, and thus provides the information needed to retrieve the correct representation of that resource.
 				Web resources change over time, and a State might be used to describe how to recover the intended previous version. 
 				Web resources also have multiple formats, and a State might equally be used to describe how to retrieve that particular format.
 			</p>
-
+			
 			<p>The state aspect of a <a>Web Resource</a> requires two distinct entities:</p>
-
+			
 			<ol>
 				<li>
-					the <a href="https://s3.amazonaws.com/pr-preview/tcole3/wpub/master.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
 				</li>
 				<li>the identification for the state of the resource.</li>
 			</ol>
-
+			
 			<p>
 				A <dfn>State</dfn> object is used to describe how to determine the state of interest from within the <a>Source</a> resource. These two entities are encapsulated in a <a>Locator</a>.</p>
-			</p>
-
+				</p>
+			
 			<p>
 				<b>Example Use Case:</b> Alexandra visualizes data on a web page that changes frequently. Her client records information to allow other clients to hopefully reconstruct the original visualization.
 			</p>
-
+			
 			<h4>Model</h4>
-
+			
 			<table class="model">
 				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
 				<tr>
@@ -1027,11 +1071,11 @@
 					<td>The relationship between the Locator and the <a>State</a>.<br/>There MAY be 0 or more <code>state</code> relationships for each Locator.  Multiple States SHOULD select the same content, however some States will not have the same precision as others. Consuming user agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.</td>
 				</tr>
 			</table>
-
+			
 			<p>States MUST be processed before processing <a>Selector</a> information.</p>
-
+			
 			<h4>Example</h4>
-
+			
 			<pre class="example highlight" title="State">
 {
 	"source": "http://example.org/page1",
@@ -1040,22 +1084,22 @@
 	}
 }
 			</pre>
-
+			
 			<section id="TimeState_def">
 				<h3>Time State</h3>
-
+				
 				<p>
 					A Time State resource records the time at which the resource is when the intended selection occurs, typically the time that the resource was created and/or a link to a persistent copy of the current version. 
 					The timestamp for the resource could be resolved via the Memento protocol, described in RFC 7089 [[rfc7089]].
 				</p>
-
+				
 				<p>
 					<b>Example Use Case:</b> Britney makes a note about the current state of the front page of a news website, and flags that the page is likely to change often.  Her client adds in a State with the current time to describe the version of the page.
 				</p>
-
-
+				
+				
 				<h4>Model</h4>
-
+				
 				<table class="model">
 					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
 					<tr>
@@ -1084,10 +1128,10 @@
 						<td>A link to a copy of the <a>Source</a> resource's representation, appropriate for the application. <br/>There MAY be 0 or more <code>cached</code> relationships per TimeState. If there is more than 1, each gives an alternative copy of the representation.</td>
 					</tr>
 				</table>
-
-
+				
+				
 				<h4>Example</h4>
-
+				
 				<pre class="example highlight" title="Time State" id="TimeState_ex">
 {
 	"source": "http://example.org/page1",
@@ -1099,23 +1143,23 @@
 }
 				</pre>
 			</section>
-
+			
 			<section id="HttpRequestState_def">
 				<h3>Request Header State</h3>
-
+				
 				<p>
 					As there are potentially many representations that can be delivered from a resource with a single URL, and a selection may only apply to one of them, it is important to be able to record the HTTP Request headers that need to be sent to retrieve the correct representation.  
 					The HttpRequestState resource maintains a copy of the headers to be replayed when obtaining the representation.
 				</p>
-
+				
 				<p>
 					<b>Example Use Case:</b> Carla retrieves a PDF representation of a Web resource that can deliver HTML, PDF or plain text and then writes a description about it. 
 					She signals that her description is only about the PDF representation.
 					Her client then includes a State to describe how to retrieve the target representation.
 				</p>
-
+				
 				<h4>Model</h4>
-
+				
 				<table class="model">
 					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
 					<tr>
@@ -1129,15 +1173,15 @@
 						<td>The HTTP request headers to send as a single, complete string.<br/>An HttpRequestState MUST have exactly 1 <code>value</code> property.</td>
 					</tr>
 				</table>
-
+				
 				<div class="note">
 					The representation retrieved from the server by the original annotator's client might not be completely determined by request headers alone.
 					For example, the IP address of the client might also determine the language of the representation, based on the language of the country the user was present in at the time.
 					If the server returns a <code>Content-Location</code> header, then the client might instead use it as the <code>target</code> of the Annotation, rather than the URL that was requested.
 				</div>
-
+				
 				<h4>Example</h4>
-
+				
 				<pre class="example highlight" title="HTTP Request State" id="HttpRequestState_ex">
 {
 	"source": "http://example.org/resource1",
@@ -1148,41 +1192,41 @@
 }
 				</pre>
 			</section>
-
+			
 			<section id="StateRefinement_def">
 				<h3>Refinement of State</h3>
-
+				
 				<p>
 					Similar to the <a href="#SelectorRefinement_def">refinement of selection</a>, it may be easier, more reliable or more accurate to specify the appropriate state of the resource as a hierarchy of atomic <a>State</a> resources.
 					This is particularly appropriate for representing the combination of a <a>State</a> that reflects an internal transformation along with the results of a State that describes an external request.
 					This decomposition is accomplished by having the states chained together in the same way as Selectors.
 				</p>
-
+				
 				<p>
 					Further, given that the State(s) will likely result in a specific representation, there may be specific <a data-lt="Selector">Selectors</a> that are appropriate for describing the <a>segment</a> of the representation.
 					In order to accommodate this, States may also be refined by <a data-lt="Selector">Selectors</a>.
 				</p>
-
+				
 				<p>
 					<b>Example Use Case:</b> Devina writes a comment about a travel e-book which has many versions available over time, and is available in different formats.
 					She is particularly commenting on a specific version and format, so her client adds both a TimeState to capture the time and an HttpRequestState to capture the format.
 				</p>
-
+				
 				<h4>Model</h4>
-
+				
 				<table class="model">
-				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
-				<tr>
-					<td>refinedBy</td>
-					<td>Relationship</td>
-					<td>The relationship between a broader <a>State</a> and either a more specific <a>State</a> or a <a>Selector</a> that SHOULD be applied to the results of the first.
-					<br/>Each State MAY be <code>refinedBy</code> 1 or more other States or Selectors.  If more than 1 is given, then they are considered to be alternatives that will result in the same result.
-					</td>
-				</tr>
+					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<td>refinedBy</td>
+						<td>Relationship</td>
+						<td>The relationship between a broader <a>State</a> and either a more specific <a>State</a> or a <a>Selector</a> that SHOULD be applied to the results of the first.
+							<br/>Each State MAY be <code>refinedBy</code> 1 or more other States or Selectors.  If more than 1 is given, then they are considered to be alternatives that will result in the same result.
+						</td>
+					</tr>
 				</table>
-
+				
 				<h4>Example</h4>
-
+				
 				<pre class="example highlight" title="Refinement of States"  id="StateRefinement_ex">
 				{
 					"source": "http://example.org/ebook1",
@@ -1199,11 +1243,250 @@
 			</section>
 		</section> <!-- /States -->
 
+		<section id="position">
+			<h3>Positions</h3>
+			
+			<p>
+				A <dfn>Position</dfn> object describes a <a>Locus (of Interest)</a> within a stream 
+				representation of a <a>Web Resource</a>. 				
+				</p>
+			
+			<p>A Position specifier requires knowledge of two distinct entities:</p>			
+			<ol>
+				<li>
+					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+				</li>
+				<li>an integer representing the count of bytes or characters in the stream preceding the locus of interest.</li>
+			</ol>
+			
+			<p>
+				<b>Example Use Case:</b> Allen, while reading chapter 1 of a digital edition of <em>Moby Dick</em>,
+				generates (as a separate resource with its own URL) a Position specifier to note the position in the digital 
+				text stream representation where the first page break in chapter 1 of a <em>Moby Dick</em> print edition occurred. 
+			</p>
+			
+			<h4>Model</h4>
+			
+			<table class="model">
+				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+				<tr>
+					<td>position</td>
+					<td>Relationship</td>
+					<td>The relationship between the Locator and a <a>Position</a> specifier.<br/>
+						A Locator MAY have 0 or 1 <code>position</code> relationships. </td>
+				</tr>
+			</table>
+			
+			<p>
+				When processing a <a>Locator</a> that includes
+				<a>Selector</a> and/or <a>State</a> specifier(s)
+				the Position specifier (if present) MUST be processed last.</p>
+			
+			<h4>Example</h4>
+			
+			<pre class="example highlight" title="Position">
+{
+	"scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+	"position": {
+		"id": "http://example.org/printPageBreak-c1.1"
+	}
+}
+			</pre>
+			
+			<section id="TextStreamPosition_def">
+				<h3>Text Stream Position</h3>
+				
+				<p>
+					The <dfn>TextStreamPosition</dfn> specifier describes an inter-character position in a text stream by recording the 
+					number of characters that precede the position. The property <code>value</code> is used to record 
+				  this character count. A <code>value</code> of 0 would describe the position immediately before the first 
+					character, a <code>value</code> of 1 would describe the position immediately after the first character 
+					and before the second character (i.e., the position between the first two characters of the stream), 
+					and so on. For example, if the text stream was “abcdefghijklmnopqrstuvwxyz” and the <code>value</code> was 7,
+					then the position referenced would be the position between "g" and "h". If n is the length of the text stream, 
+					then a <code>value</code> equal to n denotes the position immediately	following the last character in the text stream. 
+				</p>
+				
+				<p>In some situations, it is important to preserve which side of a position a location reference points to. For example, 		
+					when resolving a text stream position in a dynamically paginated environment, it could make a difference if a position is 		
+					attached to the content before or after the location being referenced (e.g., to determine whether to display the verso or 		
+					recto side at a page break). In a <code>TextStreamPosition</code> object, the 		
+					<code>bias</code> property MAY be used to attach a position reference to the character preceding the position identified 		
+					by the <code>value</code> property (<code>"bias": "before"</code>)
+					or to the character following the position (<code>"bias": "after"</code>). For example, if the text stream 
+					was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was <code>before</code>,
+					then the position referenced would be the position between "g" and "h" and would be attached to "g".	
+				</p>
+				
+				<p class="note">The property <code>bias</code> is only meaningful when some type of break
+					(e.g., a page break or line break) falls or might fall at the position 		
+					specified by the TextStreamPosition specifier .</p>				
+				
+				<p>
+					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in
+					the text of an HTML file he is reading and decides he wants to mark the position of the missing letter
+					by generating a TextStreamPosition specifier so that the letter can be inserted later during editing. 
+					He also wants to ensure that if a hyphen and line break should be dynamically inserted in this position
+					the missing character would follow the break, and so he uses the bias property to associate the position reference
+					with the character that follows the position being referenced (i.e., character 323).
+				</p>				
+				<p class="ednote">
+					Is this a valid example as regards bias? Or is this kind of situation better handled
+					by an application rather than conflating a side-bias property with the position reference.
+					If not compelling enough, we need a better more concrete, real-world use case for side-bias!
+					Otherwise we should drop side-bias.
+				</p>
+					<h4>Model</h4>
+					
+					<table class="model">
+						<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+						<tr>
+							<td>type</td>
+							<td>Relationship</td>
+							<td>The class of the Position specifier.<br/>
+								A Text Stream Position specifier MUST have exactly 1 <code>type</code> and the value MUST be 
+								<code>TextStreamPosition</code>.</td>
+						</tr>
+						<tr>
+							<td>value</td>
+							<td>Property</td>
+							<td>The count of characters in the text stream preceding the <a>Locus (of interest)</a>.
+								<br/>Each TextStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative integer
+								less than or equal to the number of characters in the text stream.</td>
+						</tr>
+						<tr>
+							<td>bias</td>
+							<td>Property</td>
+							<td>This property is used to associate a position reference with either the character that 
+								preceeds it or follows it. <br/>
+								Each TextPositionSelector MAY include 0 or 1 <code>bias</code> properties, and the value 		
+								of <code>bias</code> MUST be either <code>before</code> or <code>after</code>.	</td>
+						</tr>
+					</table>
+					
+					<p>
+						The text MUST be selected and normalized in the same way as for the 
+						<a href="#TextQuoteSelector_def">Text Quote Selector</a> before counting the number of characters to determine 
+						the <code>value</code> to be used.
+					</p>
+				
+				<h4>Example</h4>
+				
+				<pre class="example highlight" title="TextStreamPosition" id="TextStreamPosition_ex">
+{
+	"scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+	"position": {
+		"type": "TextStreamPosition",
+		"value": 322,
+		"bias": "after"
+	}
+}
+				</pre>
+			</section>
+			
+			<section id="DataStreamPosition_def">
+				<h3>Data Stream Position</h3>
+				
+				<p>
+					Similar to the <a>TextStreamPosition</a> specifier, the <dfn>DataStreamPosition</dfn> specifier describes a position 
+					between two bytes in a byte stream representation of a resource by recording the 
+					number of bytes that precede the position. The property <code>value</code> is used to record 
+					this byte count. A <code>value</code> of 0 would describe the position immediately before the first 
+					byte, a <code>value</code> 1 would describe the position immediately after the first byte 
+					and before the second byte (i.e., the position between the first two bytes of the stream), 
+					and so on. If n is the length of the byte stream, then a <code>value</code> equal to n denotes the position immediately 
+					following the last byte in the stream. 
+				</p>
+								
+				<p>
+					<b>Example Use Case:</b> Paul's data processing application fails after processing the first 401 bytes
+					of a resource's byte stream representation. Before exiting, the application generates a <code>DataStreamPosition</code>
+					object to record the position where processing was interrupted. This will facilitate resumption of processing
+					after the processing bug is resolved.
+				</p>				
+				
+				<h4>Model</h4>
+				
+				<table class="model">
+					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<td>type</td>
+						<td>Relationship</td>
+						<td>The class of the Position specifier.<br/>
+							A Data Stream Position specifier MUST have exactly 1 <code>type</code> and the value MUST be 
+							<code>DataStreamPosition</code>.</td>
+					</tr>
+					<tr>
+						<td>value</td>
+						<td>Property</td>
+						<td>The count of bytes in the byte stream preceding the <a>Locus (of interest)</a>. 							
+							<br/>Each DataStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative integer
+							less than or equal to the number of bytes in the stream.</td>
+					</tr>
+				</table>
+				
+				<h4>Example</h4>
+				
+				<pre class="example highlight" title="DataStreamPosition" id="DataStreamPosition_ex">
+{
+	"source": "https://example.org/MyData.json",
+	"position": {
+		"type": "DataStreamPosition",
+		"value": 401
+	}
+}
+				</pre>
+			</section>
+
+			<section id="PositionRefinement_def">
+				<h3>Using Position to Refine</h3>
+				
+				<p>
+					Unlike <a>Selector</a> and <a>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies
+					a point in a stream rather than a part of a resource or a representation of a resource). However, it may be easier, 
+					more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource
+					defined by a <a>Selector</a> and/or a representation of a resource described by a <a>State</a>. Thus a Position specifier
+					may be used to refine a Selector or State (including refined Selectors or States), as long as the Position 
+					specifier is the final refinement step processed.
+				</p>
+				<p>
+					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. He needs to 
+					generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to be inserted in one of 
+					the paragraphs he alone has been assigned to edit. He doesn't want to specify a text character count within the
+					text stream representation of the entire HTML file, since he knows other edits are in progress that could
+					affect that character count. So instead he uses a <a href="#CssSelector_def">CssSelector</a> to select the paragraph of interest and
+					then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the 
+					paragraph where the insertion is needed.
+				</p>
+				
+				<h4>Example</h4>
+				
+				<pre class="example highlight" title="Refinement by Position Specifier"  id="PositionRefinement_ex">
+{
+	"scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+	"selector": {
+		"type": "CssSelector",
+		"value": "p:nth-child(2)",
+		"refinedBy": {
+			"type": "TextStreamPosition",
+			"value": 8
+		}		
+	}
+}
+				</pre>
+			</section>
+		</section> <!-- /Position -->
+
 		<section id="frags">
-			<h3>Selectors and States as Fragment Identifiers</h3>
+			<h3>Selectors, Positions, and States as Fragment Identifiers</h3>
 
 			<p>
-				Although <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, the fact that this is defined through an indirection using a <a>Locator</a> may be an obstacle for some applications. 
+				Although <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>, and <a data-lt="State">States</a> 
+				provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, 
+				the fact that this is defined through an indirection using a <a>Locator</a> may be an obstacle for some applications. 
 			</p>
 
 			<p class="ednote">
@@ -1211,23 +1494,33 @@
 			</p>
 
 			<p>
-				To mitigate this issue, a mapping of <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> on URL fragments&nbsp;[[url]] is defined below. 
-				As a result of this mapping the targeted <a>Segment</a>, or the relevant state, is expressed in a single (albeit complex) URL.
-				In that URL the <a>Selector</a>, respectively the <a>State</a>, is expressed as a single string and serves as a fragment combined with the URL of the <a>Source</a>. 
-				Note that this representation is valid only if the URL for the <a>Source</a> does not contain a fragment identifier of its own (a URL may contain at most one fragment identification).
+				To mitigate this issue, a mapping of <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>,
+				and <a data-lt="State">States</a> on URL fragments&nbsp;[[url]] is defined below. 
+				As a result of this mapping the selected <a>Segment</a>, targeted <a>Locus</a>, or relevant <a>State</a> is expressed in a 
+				single (albeit complex) URL.
+				In that URL the <a>Selector</a>, <a>Position</a>, or <a>State</a> is expressed as a 
+				single string and serves 
+				as a fragment which can be combined with the URL of the <a>Source</a>. 
+				Note that this representation is valid only if the URL for the <a>Source</a> does not contain a fragment 
+				identifier of its own (a URL may contain at most one fragment identification).
 			</p>
 
 			<p>
-				The syntax for mapping a <a>Selector</a>, respectively a <a>State</a>, follows the same, “functional” syntax as used, for example, by the XPointer Framework&nbsp;[[xptr-framework]]:
+				The syntax for mapping a <a>Selector</a>, <a>Position</a>, or <a>State</a> follows the same, “functional” syntax as used, 
+				for example, by the XPointer Framework&nbsp;[[xptr-framework]]:
 			</p>
 
 			<ul>
-				<li>The fragment uses the <code>selector(…)</code>, respectively the <code>state(…)</code>, functional syntax</li>
+				<li>The fragment uses the <code>selector(…)</code>, <code>position(...)</code>, or <code>state(…)</code> functional syntax.</li>
 				<li>The (comma separated) “parameters” of the functional notation are:
 					<ul>
-						<li>For the keys <code>refinedBy</code>, <code>startSelector</code>, and <code>endSelector</code> the syntax is <code>key=selector(…)</code>, respectively <code>key=state(…)</code> when appropriate, with the value following, recursively, the same syntax as the full fragment;</li>
+						<li>For the keys <code>startSelector</code> and <code>endSelector</code> the syntax is <code>key=selector(…)</code>,
+							  with the value following, recursively, the same syntax as a full <code>selector(...)</code> fragment;</li>
+						<li>For the key <code>refinedBy</code> the syntax is <code>refinedBy=selector(…)</code>, 
+							<code>refinedBy=position(...)</code>, or <code>refinedBy=state(...)</code>,
+							  with the value following, recursively, the same syntax as a full fragment;</li>
 						<li>For the key <code>locators</code> the content is a comma separated list of locators;</li>
-						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=FragmentSelector</code>.</li>
+						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=CssSelector</code>.</li>
 					</ul>
 				</li>
 			</ul>
@@ -1472,7 +1765,32 @@
 					)
 				)
 				</pre>
+				
+				<p class="ex_title">Example for a <a href="#TextStreamPosition_def"></a></p>
+				<pre class="example nohighlight" title="Text Stream Position as Fragment" id="TextStreamPosition_frag">
+				https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html#position(
+					type=TextStreamPosition,value=322,bias=after
+				)
+				</pre>				
+
+				<p class="ex_title">Example for a <a href="#DataStreamPosition_def"></a></p>
+				<pre class="example nohighlight" title="Data Stream Position as Fragment" id="DataStreamPosition_frag">
+				https://example.org/MyData.json#position(
+					type=DataStreamPosition,value=401
+				)
+				</pre>	
+				
+				<p class="ex_title">Example for a <a href="#PositionRefinement_def"></a></p>
+				<pre class="example nohighlight" title="Text Stream Position Refinement of CssSelector as Fragment" id="PositionRefinement_frag">
+				https://example.org/MyData.json#selector(
+					type=CssSelector,value=p:nth-child(2),
+					refinedBy=position(type=TextStreamPosition,value=8)
+				)
+				</pre>	
+				
 			</section>
+
+
 
 			<!-- <section>
 				<h4>Serializing IRI to URL</h4>
@@ -1780,8 +2098,14 @@
 							</li>
 						</ul>
 					</li>
+					
+					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types have been added: 
+						<ul>
+							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
+							<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+						</ul>					
+					</li>
 				</ul>
-
 			</section>
 		</section>
 		
@@ -1790,14 +2114,16 @@
 	
 			<table class="model">
 				<tr><th>Term</th><th>Usage</th></tr>
+				<tr><td>bias</td><td><a href="#TextStreamPosition_def">Text Stream Position</a></td></tr>
 				<tr><td>cached</td><td><a href="#TimeState_def">Time State</a></td></tr>
 				<tr><td>conformsTo</td><td><a href="#FragmentSelector_def">Fragment Selector</a></td></tr>
 				<tr><td>end</td><td><a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a></td></tr>
 				<tr><td>endSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>exact</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
 				<tr><td>locators</td><td><a href="#MultiResourceSelector_def">Multi Resource Selector</a></td></tr>				
+				<tr><td>position</td><td><a>Locator</a></td></tr>
 				<tr><td>prefix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td>refinedBy</td><td><a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
+				<tr><td>refinedBy</td><td><a href="#PositionRefinement_def">Position</a>, <a href="#SelectorRefinement_def">Selector</a>, <a href="#StateRefinement_def">State</a></td></tr>
 				<tr><td>selector</td><td><a>Locator</a></td></tr>
 				<tr><td>scope</td><td><a>Locator</a></td></tr>
 				<tr><td>source</td><td><a>Locator</a></td></tr>				
@@ -1808,8 +2134,8 @@
 				<tr><td>startSelector</td><td><a href="#RangeSelector_def">Range Selector</a></td></tr>
 				<tr><td>state</td><td><a href="#states">Locator</a></td></tr>
 				<tr><td>suffix</td><td><a href="#TextQuoteSelector_def">Text Quote Selector</a></td></tr>
-				<tr><td class="top_cell">type</td><td><a>Locator</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a></tr>
-				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a></td></tr>
+				<tr><td class="top_cell">type</td><td><a>Locator</a>, <a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#TextQuoteSelector_def">Text Quote Selector</a>, <a href="#TextPositionSelector_def">Text Position Selector</a>, <a href="#DataPositionSelector_def">Data Position Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Reosource Selector</a>, <a href="#MultipleResourceSelector_def">Multiple Resource Selector</a>, <a href="#TimeState_def">Time State</a>, <a href="#HttpRequestState_def">Request Header State</a>, <a href="#TextStreamPosition_def">Text Stream Position</a>, <a href="#DataStreamPosition_def">Data Stream Position</a></tr>
+				<tr><td>value</td><td><a href="#FragmentSelector_def">Fragment Selector</a>, <a href="#CssSelector_def">CSS Selector</a>, <a href="#SvgSelector_def">SVG Selector</a>, <a href="#XPathSelector_def">XPath Selector</a>, <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a>, <a href="#HttpRequestState_def">Request Header State</a>, <a href="#TextStreamPosition_def">Text Stream Position</a>, <a href="#DataStreamPosition_def">Data Stream Position</a> </td></tr>
 			</table>
 		</section>
 
