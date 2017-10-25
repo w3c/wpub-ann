@@ -856,8 +856,9 @@
 				</p>
 					
 				<p>
-					<b>Example Use Case:</b> Előd wants to comment on a text in a Web Publication that spreads over several resources within the Web Publication.
-					He selects the start and the end of the selection in two different constituent resoruces; his User Agent calculates the Multi Resource Selector using the first selection as a start, the second selector as the end, and the resources listed in the <a href="https://w3c.github.io/wpub/#dfn-default-reading-order" class="externalDFN">default reading order</a> of the Web Publication as intermediate selections.
+					<b>Example Use Case:</b> Rachel is writing a summative assessment question with hints pointing back to the textbook. 
+					The questions pulls on material presented in Chapter 2, a-head 3, Chapter 4, a-head 6, and in Chapter 7, a-head 8. 
+					She uses the Multi Resource Selector defining a single link to add to the hints section of her assessment questions that references Sections 2.3, Section 4.6, and Section 7.8, but nothing in between them.
 				</p>
 
 				<p class=ednote>The reference to the TR version of the WPUB document must be used, when available.</p>
@@ -886,24 +887,26 @@
 
 				<pre class="example highlight" title="Multi Resource Selector" id="MultiResourceSelector_ex">
 {
-	"source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+	"source": "https://textbook.example.org/",
 	"selector": {
 		"type": "MultiResourceSelector",
 		"locators": [{
-			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+			"source": "https://textbook.example.org/section2.html",
 			"selector": {
-				"type": "TextQuoteSelector",
-				"exact": "Call me Ishmael.",
-				"suffix": "Some years ago"                           
+				"type": "CssSelector",
+				"value": "body> section:nth-of-type(3)",
 			}
 		},{
-			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html"
-		},{
-			"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c003.html",
+			"source": "https://textbook.example.org/section4.html"
 			"selector": {
-				"type": "TextQuoteSelector",
-				"exact": "The opposite wall of this entry",
-				"suffix": " was hung"                          
+				"type": "CssSelector",
+				"value": "body>section:nth-of-type(6)",
+			}
+		},{
+			"source": "https://textbook.example.org/section7.html",
+			"selector": {
+				"type": "CssSelector",
+				"value": "body>section:nth-of-type(8)",
 			}
 		}]
 	}    
@@ -953,11 +956,7 @@
 		"value": "https://dauwhe.github.io/html-first/MobyDickNav/images/moby-dick-book-cover.jpg"
 	}
 }				</pre>
-					
-
-
-
-				
+								
 			</section>
 
 			<section id="SelectorRefinement_def">
@@ -1672,24 +1671,24 @@
 				)
 				</pre>
 
-				<p class="ex_title"><a href="#MultiResourcSelector_ex">Example</a> for a <a href="#MultiResourcSelector_def"></a></p>
-				<pre class="example nohighlight" title="Multi Resource Selector as Fragment" id="MultiResourcSelector_frag">
-				https://dauwhe.github.io/html-first/MobyDick.wpub#selector(
+				<p class="ex_title"><a href="#MultiResourceSelector_ex">Example</a> for a <a href="#MultiResourceSelector_def"></a></p>
+				<pre class="example nohighlight" title="Multi Resource Selector as Fragment" id="MultiResourceSelector_frag">
+				https://https://textbook.example.org/#selector(
 					type=MultiResourceSelector,
 					selector(
-						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html
-						type=TextQuoteSelector,
-						exact=Call%20me%20Ishmael.,
-						suffix=Some%20years%20ago
+						source=https://textbook.example.org/section2.html
+						type=CssSelector,
+						value=body&gt;section:nth-of-type(3)
 					),
 					selector(
-						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c002.html
+						source=https://textbook.example.org/section4.html
+						type=CssSelector,
+						value=body&gt;section:nth-of-type(6)
 					),
 					selector(
-						source=https://dauwhe.github.io/html-first/MobyDickNav/html/c003.html
-						type=TextQuoteSelector,
-						exact=The%20opposite%20wall%20of%20thi%20entry, 
-						suffix=%20was%20hung
+						source=https://textbook.example.org/section7.html
+						type=CssSelector,
+						value=body&gt;section:nth-of-type(8)
 					)
 				)
 				</pre>
