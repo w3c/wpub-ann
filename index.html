@@ -293,7 +293,10 @@
 						There MAY be 0 or more scope relationships for each Locator. Conceptually, if no scope is provided, the value of the <code>source</code> relationship can be considered as the scope.
 				</tr>
 			</table>
-			<p class=issue data-number=10></p>
+
+			<p class=issue data-number=12></p>
+			<p class=issue data-number=22>Example on switching scope and source: is it it o.k.?</p>
+
         </section>
 
         <section id="selectors" class="informative">
@@ -812,6 +815,8 @@
 					</tr>
 				</table>
 
+				<p class=issue data-number=24></p>
+
 				<h4>Example</h4>
 				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
 {
@@ -948,6 +953,8 @@
 					</tr>
 				</table>
 
+				<p class=issue data-number=25></p>
+
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
@@ -1022,8 +1029,6 @@
 					<b>Example Use Case:</b> Example Use Case: Rachel is writing a summative assessment question with hints pointing back to the textbook. The questions pulls on material presented in Chapter 2, a-head 3, Chapter 4, a-head 6, and in Chapter 7, a-head 8. She uses the Multi Resource Selector defining a single link to add to the hints section of her assessment questions that references Sections 2.3, Section 4.6, and Section 7.8, but nothing in between them. 					
 				</p>
 	
-				<p class=issue data-number=11></p>
-
 				<h4>Model</h4>
 
 				<table class="model">
@@ -1041,6 +1046,8 @@
 						</td>
 					</tr>
 				</table>
+
+				<p class=issue data-number=26></p>
 
 				<h4>Example</h4>
 
@@ -1320,9 +1327,8 @@
 			</table>
 			
 			<p>
-				When processing a <a>Locator</a> that includes
-				<a>Selector</a> and/or <a>State</a> specifier(s)
-				the Position specifier (if present) MUST be processed last.</p>
+				When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a>State</a> specifier(s) the Position specifier (if present) MUST be processed last.
+			</p>
 			
 			<h4>Example</h4>
 			
@@ -1335,52 +1341,44 @@
   }
 }
 			</pre>
-			
+
 			<section id="TextStreamPosition_def">
 				<h3>Text Stream Position</h3>
 				
 				<p>
 					The <dfn>TextStreamPosition</dfn> specifier describes an inter-character position in a text stream by recording the 
-					number of characters that precede the position. The property <code>value</code> is used to record 
-				  this character count. A <code>value</code> of 0 would describe the position immediately before the first 
-					character, a <code>value</code> of 1 would describe the position immediately after the first character 
-					and before the second character (i.e., the position between the first two characters of the stream), 
-					and so on. For example, if the text stream was “abcdefghijklmnopqrstuvwxyz” and the <code>value</code> was 7,
-					then the position referenced would be the position between "g" and "h". If n is the length of the text stream, 
-					then a <code>value</code> equal to n denotes the position immediately	following the last character in the text stream. 
+					number of characters that precede the position. 
+					The property <code>value</code> is used to record this character count. 
+				  	A <code>value</code> of 0 would describe the position immediately before the first character, a <code>value</code> of 1 would describe the position immediately after the first character and before the second character (i.e., the position between the first two characters of the stream), and so on. 
+					For example, if the text stream was “abcdefghijklmnopqrstuvwxyz” and the <code>value</code> was 7, then the position referenced would be the position between "g" and "h". If n is the length of the text stream, then a <code>value</code> equal to n denotes the position immediately	following the last character in the text stream. 
 				</p>
-				
-				<p>In some situations, it is important to preserve which side of a position a location reference points to. For example, 		
-					when resolving a text stream position in a dynamically paginated environment, it could make a difference if a position is 		
-					attached to the content before or after the location being referenced (e.g., to determine whether to display the verso or 		
-					recto side at a page break). In a <code>TextStreamPosition</code> object, the 		
-					<code>bias</code> property MAY be used to attach a position reference to the character preceding the position identified 		
-					by the <code>value</code> property (<code>"bias": "before"</code>)
-					or to the character following the position (<code>"bias": "after"</code>). For example, if the text stream 
-					was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was <code>before</code>,
-					then the position referenced would be the position between "g" and "h" and would be attached to "g".	
-				</p>
-				
-				<p class="note">The property <code>bias</code> is only meaningful when some type of break
-					(e.g., a page break or line break) falls or might fall at the position 		
-					specified by the TextStreamPosition specifier .</p>				
 				
 				<p>
-					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in
-					the text of an HTML file he is reading and decides he wants to mark the position of the missing letter
-					by generating a TextStreamPosition specifier so that the letter can be inserted later during editing. 
-					He also wants to ensure that if a hyphen and line break should be dynamically inserted in this position
-					the missing character would follow the break, and so he uses the bias property to associate the position reference
-					with the character that follows the position being referenced (i.e., character 323).
+					In some situations, it is important to preserve which side of a position a location reference points to. 
+					For example, when resolving a text stream position in a dynamically paginated environment, it could make a difference if a position is attached to the content before or after the location being referenced (e.g., to determine whether to display the verso or recto side at a page break). 
+					In a <code>TextStreamPosition</code> object, the <code>bias</code> property MAY be used to attach a position reference to the character preceding the position identified by the <code>value</code> property (<code>"bias": "before"</code>) or to the character following the position (<code>"bias": "after"</code>). 
+					For example, if the text stream was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was <code>before</code>, then the position referenced would be the position between "g" and "h" and would be attached to "g".	
+				</p>
+				
+				<p class="note">
+					The property <code>bias</code> is only meaningful when some type of break (e.g., a page break or line break) falls or might fall at the position specified by the TextStreamPosition specifier.
 				</p>				
+				
+				<p>
+					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in the text of an HTML file he is reading and decides he wants to mark the position of the missing letter by generating a TextStreamPosition specifier so that the letter can be inserted later during editing. 
+					He also wants to ensure that if a hyphen and line break should be dynamically inserted in this position the missing character would follow the break, and so he uses the bias property to associate the position reference with the character that follows the position being referenced (i.e., character 323).
+				</p>
+								
 				<p class="ednote">
-					Is this a valid example as regards bias? Or is this kind of situation better handled
-					by an application rather than conflating a side-bias property with the position reference.
+					Is this a valid example as regards bias? 
+					Or is this kind of situation better handled by an application rather than conflating a side-bias property with the position reference.
 					If not compelling enough, we need a better more concrete, real-world use case for side-bias!
 					Otherwise we should drop side-bias.
 				</p>
-					<h4>Model</h4>
-					
+			
+				<p class=issue data-number=9></p>
+				
+				<h4>Model</h4>
 					<table class="model">
 						<tr><th>Term</th><th>Type</th><th>Description</th></tr>
 						<tr>
@@ -1408,9 +1406,7 @@
 					</table>
 					
 					<p>
-						The text MUST be selected and normalized in the same way as for the 
-						<a href="#TextQuoteSelector_def">Text Quote Selector</a> before counting the number of characters to determine 
-						the <code>value</code> to be used.
+						The text MUST be selected and normalized in the same way as for the <a href="#TextQuoteSelector_def">Text Quote Selector</a> before counting the number of characters to determine the <code>value</code> to be used.
 					</p>
 				
 				<h4>Example</h4>
@@ -1432,21 +1428,16 @@
 				<h3>Data Stream Position</h3>
 				
 				<p>
-					Similar to the <a>TextStreamPosition</a> specifier, the <dfn>DataStreamPosition</dfn> specifier describes a position 
-					between two bytes in a byte stream representation of a resource by recording the 
-					number of bytes that precede the position. The property <code>value</code> is used to record 
-					this byte count. A <code>value</code> of 0 would describe the position immediately before the first 
-					byte, a <code>value</code> 1 would describe the position immediately after the first byte 
-					and before the second byte (i.e., the position between the first two bytes of the stream), 
-					and so on. If n is the length of the byte stream, then a <code>value</code> equal to n denotes the position immediately 
-					following the last byte in the stream. 
+					Similar to the <a>TextStreamPosition</a> specifier, the <dfn>DataStreamPosition</dfn> specifier describes a position between two bytes in a byte stream representation of a resource by recording the number of bytes that precede the position. 
+					The property <code>value</code> is used to record this byte count. 
+					A <code>value</code> of 0 would describe the position immediately before the first byte, a <code>value</code> 1 would describe the position immediately after the first byte and before the second byte (i.e., the position between the first two bytes of the stream), and so on. 
+					If n is the length of the byte stream, then a <code>value</code> equal to n denotes the position immediately following the last byte in the stream. 
 				</p>
 								
 				<p>
-					<b>Example Use Case:</b> Paul's data processing application fails after processing the first 401 bytes
-					of a resource's byte stream representation. Before exiting, the application generates a <code>DataStreamPosition</code>
-					object to record the position where processing was interrupted. This will facilitate resumption of processing
-					after the processing bug is resolved.
+					<b>Example Use Case:</b> Paul's data processing application fails after processing the first 401 bytes of a resource's byte stream representation. 
+					Before exiting, the application generates a <code>DataStreamPosition</code> object to record the position where processing was interrupted. 
+					This will facilitate resumption of processing after the processing bug is resolved.
 				</p>				
 				
 				<h4>Model</h4>
@@ -1486,21 +1477,15 @@
 				<h3>Using Position to Refine</h3>
 				
 				<p>
-					Unlike <a>Selector</a> and <a>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies
-					a point in a stream rather than a part of a resource or a representation of a resource). However, it may be easier, 
-					more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource
-					defined by a <a>Selector</a> and/or a representation of a resource described by a <a>State</a>. Thus a Position specifier
-					may be used to refine a Selector or State (including refined Selectors or States), as long as the Position 
-					specifier is the final refinement step processed.
+					Unlike <a>Selector</a> and <a>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in a stream rather than a part of a resource or a representation of a resource). 
+					However, it may be easier, more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a>State</a>. 
+					Thus a Position specifier may be used to refine a Selector or State (including refined Selectors or States), as long as the Position specifier is the final refinement step processed.
 				</p>
 				<p>
-					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. He needs to 
-					generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to be inserted in one of 
-					the paragraphs he alone has been assigned to edit. He doesn't want to specify a text character count within the
-					text stream representation of the entire HTML file, since he knows other edits are in progress that could
-					affect that character count. So instead he uses a <a href="#CssSelector_def">CssSelector</a> to select the paragraph of interest and
-					then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the 
-					paragraph where the insertion is needed.
+					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. 
+					He needs to generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to be inserted in one of the paragraphs he alone has been assigned to edit. 
+					He doesn't want to specify a text character count within the text stream representation of the entire HTML file, since he knows other edits are in progress that could affect that character count. 
+					So instead he uses a <a href="#CssSelector_def">CssSelector</a> to select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the paragraph where the insertion is needed.
 				</p>
 				
 				<h4>Example</h4>
@@ -1526,9 +1511,7 @@
 			<h3>Selectors, Positions, and States as Fragment Identifiers</h3>
 
 			<p>
-				Although <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>, and <a data-lt="State">States</a> 
-				provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, 
-				the fact that this is defined through an indirection using a <a>Locator</a> may be an obstacle for some applications. 
+				Although <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>, and <a data-lt="State">States</a> provide a flexible way of identifying, e.g., a suitable <a>Segment</a> of a Resource, the fact that this is defined through an indirection using a <a>Locator</a> may be an obstacle for some applications. 
 			</p>
 
 			<p class="ednote">
@@ -1562,7 +1545,7 @@
 							<code>refinedBy=position(...)</code>, or <code>refinedBy=state(...)</code>,
 							  with the value following, recursively, the same syntax as a full fragment;</li>
 						<li>For the key <code>selectors</code> the syntax is <code>selectors(…)</code> containing a comma separated list of selectors;</li>
-						<li>For the key <code>scope</code>, <code>scope=url</code> is added to the tope level <code>selector(…)</code>, <code>position(…)</code>, or <code>state(…)</code>, although, strictly speaking, the scope value is set on the overall Locator rather than one of the <a>Specifiers</a>.</li>
+						<li>For the key <code>scope</code>, <code>scope=url</code> is added to the top level <code>selector(…)</code>, <code>position(…)</code>, or <code>state(…)</code>, although, strictly speaking, the scope value is set on the overall Locator rather than one of the <a>Specifiers</a>.</li>
 						<li>otherwise the key, and the corresponding value, follows the simple <code>key=value</code> syntax, e.g., <code>type=CssSelector</code>.</li>
 					</ul>
 				</li>
@@ -1570,7 +1553,7 @@
 
 			<p>(see the examples below.)</p>
 
-			<p class="ednote">The reference to the Web Publication Resources should be changed to use the short name of the WP specification, as opposed to the editor's draft like now.</p>
+			<p class=issue data-number21>Alternative: <code>scope</code> should appear as part of the fragment, alongside the top level <code>selector(…)</code>, and not part of it.</p>
 
 			<p>The values SHOULD be percent encoded&nbsp;[[rfc3986]]; the encoding is a MUST for characters that may make the fragment ambiguous, namely:</p>
 
