@@ -178,23 +178,15 @@
 				The formal specification and the semantics of these originate from a larger model, namely the 
 				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets of annotations.
 				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; by doing so, it makes their usage easier for applications developers whose concerns are not related to annotations. 
-				Compared to the Web Annotation Data Model, however, this document <em>adds</em> two new selectors, namely:
+				Compared to the Web Annotation Data Model, however, this document <em>adds</em> three new selectors, namely:
 			</p>
 
 			<ul>
-				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
-				<li><a href="#MultipleSelector_def">Multiple Selectors</a> identify a collection of discrete selections, whether within the same or spread over several Sources.</li>
+				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource from a group or collection of resources, also identified with a URL;</li>
+				<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive resources in an ordered group of resources, e.g, a “Web Publication”&nbsp;[[wpub]].</li>
+				<li><a href="#MultipleSelector_def">Multiple Selectors</a> identify a collection of discrete selections, whether within the same resource or spread over several resources.</li>
 			</ul>
 
-			<p>
-				The document also <em>extends</em> the <a href="#RangeSelector_def">Range Selector</a> by:
-			</p>
-
-			<ul>
-				<li>making explicit that the start and end selectors may refer to different resources;</li>
-				<li>adding a property to define a list of “intermediate” resources for ranges that spread over several of those.</li>
-			</ul>
-        	
         	<p>
 				These changes aim at addressing the particular requirements of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].
 			</p>
@@ -782,16 +774,124 @@
 				</pre>
 			</section>
 
+        	<section id="RangeSelector_def">
+        		<h3>Range Selector</h3>
+        		
+        		<p>
+        			Selections made by users may be extensive and/or cross over internal boundaries in the representation, making it difficult to construct a single selector that robustly describes the correct content. 
+        			A Range Selector can be used to identify the beginning and the end of the selection by using other Selectors.
+        			In this way, two points can be accurately identified using the most appropriate selection mechanisms, and then linked together to form the selection.
+        			The selection consists of everything from the beginning of the starting selector through to the beginning of the ending selector, but not including it.
+        		</p>
+        		
+        		<p>
+        			<b>Example Use Case:</b> Yadira wants to comment on text in a Web Publication that spreads over several paragraphs.
+        			She selects the start and the end of the selection; her User Agent calculates the Range Selector using the first selection as a start and the second selector as the end.
+        		</p>
+        		
+        		<h4>Model</h4>
+        		
+        		<table class="model">
+        			<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+        			<tr>
+        				<td>type</td>
+        				<td>Relationship</td>
+        				<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>RangeSelector</code>.</td>
+        			</tr>
+        			<tr>
+        				<td>startSelector</td>
+        				<td>Relationship</td>
+        				<td>The Selector which describes the inclusive starting point of the range. <br/>There MUST be exactly 1 <code>startSelector</code> associated with a Range Selector.</td>
+        			</tr>
+        			<tr>
+        				<td>endSelector</td>
+        				<td>Relationship</td>
+        				<td>The Selector which describes the exclusive ending point of the range. <br/>There MUST be exactly 1 <code>endSelector</code> associated with a Range Selector.  Both <code>startSelector</code> and <code>endSelector</code> SHOULD be of the same class.</td>
+        			</tr>
+        		</table>
+        		
+        		<h4>Example</h4>
+        		
+        		<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
+{
+	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+	"selector": {
+		"type": "RangeSelector",
+		"startSelector": {
+			"type": "TextQuoteSelector",
+			"exact": "Call me Ishmael.",
+			"suffix": "Some years ago"
+		},
+		"endSelector": {
+			"type": "TextQuoteSelector",
+			"exact": "He desires to paint you the dreamiest, ",
+			"prefix": "But here is an artist. ",
+			"suffix": "shadiest, quietest"
+		}
+	}
+}
+				</pre>
+        	</section>
+        	
+        	<section id="SelectorRefinement_def">
+        		<h3>Refinement of Selection</h3>
+        		
+        		<p>
+        			It may be easier, more reliable, or more accurate to specify the segment of interest of a resource as a selection of a selection, rather than as a selection of the complete resource.
+        			Particularly for resources that contain other resources, such as various packaging formats, this also allows decomposition of the selection mechanisms when the components do not have unique identifiers. 
+        			This is accomplished by having selectors chained together, where each refines the results of the previous one.
+        		</p>
+        		
+        		<p>
+        			<b>Example Use Case:</b> Zara selects a paragraph of text and then a short phrase within it.
+        			Her client records the phrase as a TextQuoteSelector that further modifies (i.e., refines) a FragmentSelector used to identify the paragraph that the phrase is part of.
+        		</p>
+        		
+        		<h4>Model</h4>
+        		
+        		<table class="model">
+        			<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+        			<tr>
+        				<td>refinedBy</td>
+        				<td>Relationship</td>
+        				<td>The relationship between a broader selector and the more specific selector that should be applied to the results of the first. <br/>A Selector MAY be <code>refinedBy</code> 1 or more other Selectors.  If more than 1 is given, then they are considered to be alternatives that will result in the same selection.</td>
+        			</tr>
+        		</table>
+        		
+        		<h4>Example</h4>
+        		
+        		<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
+{
+	"source": "http://example.org/page1",
+	"selector": {
+		"type": "FragmentSelector",
+		"value": "para5",
+		"refinedBy": {
+			"type": "TextQuoteSelector",
+			"exact": "Selected Text",
+			"prefix": "text before the ",
+			"suffix": " and text after it"
+		}
+	}
+}
+				</pre>
+        		
+        	</section>
+
 			<section id="EmbeddedResourceSelector_def" class="normative">
 				<h3>Embedded Resource Selector</h3>
 
 				<p><em>This section is normative</em></p>
 
 				<p>
-					For some use cases it is required to identify a resource that part of a group of resources, where that group has its own identity on the Web (and can be identified via its own URL). 
-					An example may be resource representing a chapter as part of a Web Publication&nbsp;[[!wpub]]).
-					An Embedded Resource Selector can be used to identify that resource through the <code>value</code> relationship.
-					This Selector is usually used in conjunction with other Selectors, e.g., through a <a href="#SelectorRefinement_def">refinement</a>.
+					For some use cases it is required to identify a resource that is part of a group of resources, 
+					where that group has its own identity on the Web (and can be identified via its own URL). 
+					An example is selecting a resource that is a chapter of a Web Publication&nbsp;[[!wpub]]).
+					Given the URL of the Web Publication as the value of <code>source</code>, an Embedded Resource 
+					Selector can be used to select and identify the chapter through 
+					its <code>value</code> relationship.
+					This Selector is usually used in conjunction with additional Selectors, e.g., through 
+					<a href="#SelectorRefinement_def">refinement</a>.
 				</p>
 				
 				<p>
@@ -812,11 +912,9 @@
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
-						<td>The URL of the resource within the collection or resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.</td>
+						<td>The URL of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.</td>
 					</tr>
 				</table>
-
-				<p class=issue data-number=24></p>
 
 				<h4>Example</h4>
 				<pre class="example highlight" title="Embedded Resource Selector" id="EmbeddedResourceSelector_ex">
@@ -827,21 +925,6 @@
     "value": "https://dauwhe.github.io/html-first/MobyDickNav/images/moby-dick-book-cover.jpg"
   }
 }				</pre>
-			</section>
-
-			<section id="SelectorRefinement_def">
-					<h3>Refinement of Selection</h3>
-	
-					<p>
-						It may be easier, more reliable, or more accurate to specify the segment of interest of a resource as a selection of a selection, rather than as a selection of the complete resource.
-						Particularly for resources that contain other resources, such as various packaging formats, this also allows decomposition of the selection mechanisms when the components do not have unique identifiers. 
-						This is accomplished by having selectors chained together, where each refines the results of the previous one.
-					</p>
-	
-					<p>
-						<b>Example Use Case:</b> Zara selects a paragraph of text and then a short phrase within it.
-						Her client records the phrase as a TextQuoteSelector that further modifies a FragmentSelector used to identify the paragraph that the phrase is part of.
-					</p>
 
 					<div class=note>
 						<p>
@@ -849,7 +932,7 @@
 							For example:
 						</p> 
 
-						<pre class="example highlight">
+						<pre class="example highlight" title="Refined Embedded Resource Selector" id="RefinedEmbeddedResourceSelector_ex">
 {
   "source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
   "selector": {
@@ -864,67 +947,40 @@
 						</pre>
 
 						<p>
-							For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#RangeSelector_def">Range Selector</a>, the usage of this pattern becomes essential.
+							For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#SpanSelector_def">Span Selector</a>, the usage of this pattern becomes essential.
 						</p>
 					</div>
 					
-					<h4>Model</h4>
-	
-					<table class="model">
-					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
-						<tr>
-							<td>refinedBy</td>
-							<td>Relationship</td>
-							<td>The relationship between a broader selector and the more specific selector or position that should be applied to the results of the first. <br/>A Selector MAY be <code>refinedBy</code> 1 or more other <a>Selectors</a> or <a>Positions</a>.  If more than 1 is given, then they are considered to be alternatives that will result in the same selection.</td>
-						</tr>
-					</table>
-	
-					<h4>Examples</h4>
-	
-					<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
-{
-  "source": "http://example.org/page1",
-  "selector": {
-    "type": "FragmentSelector",
-    "value": "para5",
-    "refinedBy": {
-      "type": "TextQuoteSelector",
-      "exact": "Selected Text",
-      "prefix": "text before the ",
-      "suffix": " and text after it"
-    }
-  }
-}
-				</pre>
 			</section>
 
-			<section id="RangeSelector_def" class="normative">
-				<h3>Range Selector</h3>
+			<section id="SpanSelector_def" class="normative">
+				<h3>Span Selector</h3>
 
 				<p><em>This section is normative</em></p>
 				
 				<p>
-					Selections made by users may be extensive and/or cross over internal boundaries in the representation, making it difficult to construct a single selector that robustly describes the correct content. 
-					A Range Selector can be used to identify the beginning and the end of the selection by using other Selectors.
-					In this way, two points can be accurately identified using the most appropriate selection mechanisms, and then linked together to form the selection.
-					For some use cases it is also required to identify a range that spans, possibly, over multiple contiguous members of a group of resources (e.g., a subset in order of the resources which comprise a Web Publication&nbsp;[[!wpub]]).
-					A Range Selection MAY therefore spread over several <a>Sources</a>, e.g., through the usage of <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>. 
-					The selection consists of:
+					Selections from a group of resources, e.g., the group of resources which comprise a Web Publication&nbsp;[[!wpub]]), may be extensive 
+					and span member resource boundaries. For resource-spanning selections that are continuous in some ordering of the group of resources, a
+					Span Selector can be used to identify the beginning and the end of the selection using <a href="#EmbeddedResourceSelector_def">Embedded Resource
+					Selectors</a>, refined as appropriate. This Selector is also used to enumerate any intervening resources between the beginning and end of the
+					selection that are included in the selection in their entirety. 
+					A Span Selection MUST span at least two resources. (For continuous selections wholly contained within a single
+					resources, use a <a href="#RangeSelector_def">Range Selector</a>.) 
+					In the absence of refinement, the selection consists of the member resource identified by the starting Embedded Resource Selector
+					(the first resource in the selection), the member resource identified by the ending Embedded Resource Selector (the last resource
+					in the selection), and the intervening (in some ordering of the	group) member resources between the starting and ending member resources
+					as enumerated by the Selector. 
+					If the starting Embedded Resource Selector is refined with a selector, then only the part of the first member resource from the 
+					start of the refinement selection to resource end (i.e., including what is identified by the refinement selector)
+					is included in the selection. If the ending Embedded Resource Selector is refined with a selector, then only the part of the 
+					last member resource prior to the start of the refinement selection (i.e., excluding what is identified by the refinement selector) 
+					is included in the selection.
 				</p>
 				
-				<ul>
-					<li>if both the start and the end selectors refer to the same <a>Source</a>, then everything from the beginning of the starting selector through to the beginning of the ending selector, but not including it;</li>
-					<li>otherwise, everything from the beginning of the starting selector until the end of its <a>Source</a>, all the <a>Sources</a> defined as values of the <code>selectors</code> property (if any), and finally everything from the beginning of the <a>Source</a> of the ending selector to the beginning of the ending selector, but not including it.</li>
-				</ul>
-				
-				<p>
-					<b>Example Use Case:</b> Yadira wants to comment on text in a Web Publication that spreads over several paragraphs.
-					She selects the start and the end of the selection; her User Agent calculates the Range Selector using the first selection as a start and the second selector as the end.
-				</p>
-
 				<p>
 					<b>Example Use Case:</b> Misha wants to comment on text in a Web Publication that spreads over <em>several constituent resources</em>.
-					He selects the start and the end of the selection in different of those resources; his User Agent calculates the Range Selector using a series of Embedded Resource Selections from the first selection as a start and the second selector as the end to provide a continuous range.
+					He selects the start and the end of the selection in different of those resources; his User Agent calculates the Span Selector using a 
+					series of Embedded Resource Selections from the first selection as a start and the last selector as the end to provide a continuous span.
 				</p>
 
 				<h4>Model</h4>
@@ -934,57 +990,42 @@
 					<tr>
 						<td>type</td>
 						<td>Relationship</td>
-						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>RangeSelector</code>.</td>
+						<td>The class of the Selector.<br/>Span Selectors MUST have exactly 1 <code>type</code> and the value MUST 
+							be <code>SpanSelector</code>.</td>
 					</tr>
 					<tr>
 						<td>startSelector</td>
 						<td>Relationship</td>
-						<td>The Selector which describes the inclusive starting point of the range. <br/>There MUST be exactly 1 <code>startSelector</code> associated with a Range Selector.</td>
+						<td>The Selector which describes the inclusive starting point of the span. <br/>There MUST be exactly 1 <code>startSelector</code> 
+							associated with a Span Selector and it MUST be an Embedded Resource Selector, which MAY be refined with other selectors.</td>
 					</tr>
 					<tr>
 						<td>selectors</td>
 						<td>Relationship</td>
-						<td>Provides a, possibly empty, list of <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, which define intermediate <a>Sources</a> for the full selection.	
-						<br/>There MAY at most 1 <code>selectors</code> associated with a Range Selector.</td>
+						<td>Provides an ordered, possibly empty, list of <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, 
+							which identify intermediate resources subsumed in the full selection. These Embedded Resource Selectors
+							MUST NOT be refined with other selectors.
+						<br/>There MAY at most 1 <code>selectors</code> relationship associated with a Span Selector. In the absence of a <code>selectors</code>
+						relationship, a user agent SHOULD assume that the start and end resources are contiguous.</td>
 					</tr>					
 					<tr>
 						<td>endSelector</td>
 						<td>Relationship</td>
-						<td>The Selector which describes the exclusive ending point of the range. <br/>There MUST be exactly 1 <code>endSelector</code> associated with a Range Selector.  Both <code>startSelector</code> and <code>endSelector</code> SHOULD be of the same class.</td>
+						<td>The Selector which describes the exclusive ending point of the span. <br/>There MUST be exactly 1 
+							<code>endSelector</code> associated with a Span Selector and it MUST be an Embedded Resource Selector, which
+							MAY be freined with other selectors.</td>
 					</tr>
 				</table>
 
-				<p class=issue data-number=25></p>
 				<p class=issue data-number=28></p>
 				
 				<h4>Example</h4>
 
-				<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
-{
-  "source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
-  "scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
-  "selector": {
-    "type": "RangeSelector",
-    "startSelector": {
-      "type": "TextQuoteSelector",
-      "exact": "Call me Ishmael.",
-      "suffix": "Some years ago"
-    },
-    "endSelector": {
-      "type": "TextQuoteSelector",
-      "exact": "He desires to paint you the dreamiest, ",
-      "prefix": "But here is an artist. ",
-      "suffix": "shadiest, quietest"
-    }
-  }
-}
-				</pre>
-
-				<pre class="example highlight" title="Range Selector Over Several Resources" id="RangeSelector_ex_1">
+				<pre class="example highlight" title="Span Selector Over Several Resources" id="SpanSelector_ex_1">
 {
   "source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
   "selector": {
-    "type": "RangeSelector",
+    "type": "SpanSelector",
     "startSelector": {
       "type": "EmbeddedResourceSelector",
       "value": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
@@ -1275,6 +1316,12 @@
 						</td>
 					</tr>
 				</table>
+				
+				<p class="note">
+					Any <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> appearing as a value of 
+					a <a href="#SpanSelector_def">Span Selector</a> <code>startSelector</code>, <code>endSelector</code>,
+					or <code>selectors</code> relationship MAY be refined using State Refinement(s).  
+				</p>
 				
 				<h4>Example</h4>
 				
