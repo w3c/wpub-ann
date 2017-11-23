@@ -79,7 +79,7 @@
 			<p>
 				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have 
 				been developed, usually in conjunction with the media type of the resource. 
-				Often these selections may be expressed as <em>fragment identifiers</em>&nbsp;[[url]], 
+				Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], 
 				but that is not always the case.
 			</p>
 			
@@ -88,8 +88,8 @@
 				and as needed combine or refine selections. 
 				This common model augments selection techniques with additional techniques to 
 				express the information needed to retrieve a desired representation of a resource and/or identify 
-				precise locations in the text stream or byte stream of a resource representation. Finally, the model
-				provides semantics for expressing the selection of a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
+				precise locations in the text stream or byte stream of a resource representation. The model
+				also includes techniques for expressing the selection of a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
 				that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
 				even when the segment of interest spans parts of more than one included resource. 
 				Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
@@ -102,9 +102,8 @@
 				This foundational model has been extended by adding selector types applicable to collective resources
 				and a new model component for describing positions in text and byte streams (see the <a href="#introduction">Introduction</a> 
 				for further details).
-			</p>
-								
-			<p class="issue" data-number="6"></p>
+			</p>								
+			
 			<p class="issue" data-number="27"></p>
 
 		</section>
@@ -150,7 +149,7 @@
 				Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
 				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
 				identifying an element within the DOM tree for an XML source, or using CSS style elements to locate and select content.
-				Often these selections may be expressed as <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
+				Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
 			</p>
 
             <p>
@@ -182,7 +181,7 @@
 
             <p>
 				The data model is defined in [[json]], in the form of JSON objects and keys.
-				The formal specification and the semantics of these originate from a larger model, namely the 
+				The formal specification and the semantics of these objects and keys originate from a larger model, namely the 
 				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets and bodies of annotations.
 				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; 
         by doing so, it makes their usage easier for application developers whose concerns are not related to annotations. 
@@ -288,7 +287,7 @@
                     <td>source</td>
                     <td>Relationship</td>
                     <td>The relationship between a Locator and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
-                    	<br/>There MUST be exactly 1 <code>source</code> relationship associated with a Locator.  The source resource MAY be described in detail as discussed in the Web Annotation Data Model&nbsp;[[!annotation-model]] or it MAY be simply identified by the resource’s URL.</td>
+                    	<br/>There MUST be exactly 1 <code>source</code> relationship associated with a Locator.  The source resource MAY be described in detail as discussed in the Web Annotation Data Model&nbsp;[[!annotation-model]] or it MAY simply be identified by the resource’s URL.</td>
 				</tr>
                 <tr>
                     <td>scope</td>
@@ -296,7 +295,7 @@
                     <td>The relationship between a Locator and an additional resource other than the <code>source</code> that 
                     	provides scope or context for the Locator.<br/>
 												There MAY be 0 or more scope relationships for each Locator. When the <code>source</code>
-                    	is part of a group of resources or a collection that has its own URL, <code>scope</code> MAY be used to 
+                    	is part of a group or collection of resources that has its own URL, <code>scope</code> MAY be used to 
                     	record this URL.</td>
 				</tr>
 			</table>
@@ -319,7 +318,7 @@
 
             <p>
 				A <dfn data-lt="Selectors">Selector</dfn> specifies how to determine the <a>Segment</a> from within the <a>Source</a> resource.
-				The nature of the Selector is dependent on the selection technique chosen (which determines the class of the Selector) and media-type of the Source, as the methods to describe Segments from various media-types differ. 
+				The nature of the Selector is dependent on the selection technique chosen (which determines the class of the Selector) and the media-type of the Source, as the methods to describe Segments from various media-types differ. 
 				The Source and the Selector(s) are encapsulated in a <a>Locator</a>.
 			</p>
 
@@ -355,9 +354,9 @@
                 <h3>Fragment Selector</h3>
 
                 <p>
-					As the most well understood mechanism for selecting a <a>Segment</a> is to use the fragment part of a URL defined by the representation’s media type, it is useful to allow this as a description mechanism via a Selector.
-					This allows existing and future fragment specifications to be used with Locators in a consistent way.
-					To be clear about which fragment type is being used, the <a>Selector</a> SHOULD refer to the specification that defines the fragment type.
+					As the most well understood mechanism for selecting a <a>Segment</a> is to resolve the fragment identifier part of a URL as defined by the representation’s media type, it is useful to allow fragments as a description mechanism via a Selector.
+					This allows existing and future fragment identifier specifications to be used with Locators in a consistent way.
+					To be clear about which fragment identifier type is being used, the <a>Selector</a> SHOULD refer to the specification that defines the fragment identifier type.
 				</p>
 
                 <p>
@@ -379,29 +378,29 @@
                     <tr>
                         <td>value</td>
                         <td>Property</td>
-                        <td>The contents of the fragment component of a URL that describes the Segment.<br/>
+                        <td>The contents of the fragment identifier component of a URL that describes the Segment.<br/>
                             The FragmentSelector MUST have exactly 1 <code>value</code> property.</td>
                     </tr>
                     <tr>
                         <td>conformsTo</td>
                         <td>Relationship</td>
                         <td>The relationship between the FragmentSelector and the specification that defines the syntax of the URL fragment in the <code>value</code> property.
-                        <br/>The Fragment Selector SHOULD have exactly 1 <code>conformsTo</code> link to the specification that defines the syntax of the fragment and MUST NOT have more than 1.</td>
+                        <br/>The Fragment Selector SHOULD have exactly 1 <code>conformsTo</code> link to the specification that defines the syntax of the fragment identifier and MUST NOT have more than 1.</td>
                     </tr>
                 </table>
 
                 <p>
-					It is RECOMMENDED to use <code>FragmentSelector</code> as a consistent method compatible with other means of describing Locators, rather than using the URL with a fragment directly. 
-					User Agents SHOULD be aware of both.
+					It is RECOMMENDED to use <code>FragmentSelector</code> as a consistent method compatible with other means of describing Locators, rather than using the <code>source</code> URL with a fragment identifier directly. 
+					User Agents SHOULD be aware of both options.
 				</p>
 
                 <p>
-					The following URLs are some of the specifications that define the semantics of fragments, and hence may be used with the <code>conformsTo</code> relationship.  
+					The following URLs are some of the specifications that define the semantics of fragment identifiers, and hence may be used with the <code>conformsTo</code> relationship.  
 					Other URLs MAY also be used.
 				</p>
 
                 <table class="model">
-                    <tr><th>Name</th><th>Fragment Specification</th><th>Description</th></tr>
+                    <tr><th>Name</th><th>Fragment Identifier Specification</th><th>Description</th></tr>
                     <tr><td>HTML</td><td>http://tools.ietf.org/rfc/rfc3236</td><td>[[rfc3236]] Example: <code>namedSection</code> </td></tr>
                     <tr><td>PDF</td><td>http://tools.ietf.org/rfc/rfc3778</td><td>[[rfc3778]] Example: <code>page=10&amp;viewrect=50,50,640,480</code></td></tr>
                     <tr><td>Plain Text</td><td>http://tools.ietf.org/rfc/rfc5147</td><td>[[rfc5147]] Example: <code>char=0,10</code></td></tr>
@@ -412,7 +411,7 @@
                 </table>
 
                 <div class="note">
-					The URL that uses the fragment may be reconstructed by concatenating the <code>source</code>, a <code>#</code>, and the <code>value</code>. 
+					The URL that uses the fragment identifier may be reconstructed by concatenating the <code>source</code>, a <code>#</code>, and the <code>value</code>. 
 					For example, the URL from the example below would be <code>http://example.org/video1#t=30,60</code>.
                 </div>
 
@@ -478,6 +477,11 @@
   }
 }
                 </pre>
+            	
+                <p class="ednote">We should review and may need to update definitions of both CSS Selector and XPath Selector in light of Shadow DOM
+                	developments, see W3C Rec&nbsp;[[shadow-dom]] and <a href='https://dom.spec.whatwg.org/'>WHATWG-DOM</a> as well as 
+                	Web Components issue #79, <a href='https://github.com/w3c/webcomponents/issues/79'>Selection APIs for Shadow DOM</a>. </p>
+            	
             </section>
 
             <section id="XPathSelector_def">
@@ -849,7 +853,7 @@
         		<h3>Refinement of Selection</h3>
         		
         		<p>
-        			It may be easier, more reliable, or more accurate to specify the segment of interest of a resource as a selection of a selection, rather than as a selection of the complete resource.
+        			It may be easier, more reliable, or more accurate to specify the <a data-lt="segment">segment of interest</a> of a resource as a selection of a selection, rather than as a selection of the complete resource.
         			Particularly for resources that contain other resources, such as various packaging formats, this also allows decomposition of the selection mechanisms when the components do not have unique identifiers. 
         			This is accomplished by having selectors chained together, where each refines the results of the previous one.
         		</p>
@@ -962,6 +966,9 @@
 							For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#SpanSelector_def">Span Selector</a>, the usage of this pattern becomes essential.
 						</p>
 					</div>
+				
+				<p class="ednote">For PWP we may need to modify definition of value property to accommodate resources within a PWP that do 
+				not have URLs (or to make clear that relative addressing is allowed?).</p>
 
 				<p class=issue data-number=12></p>
 					
@@ -974,20 +981,20 @@
 				
 				<p>
 					Selections from a group of resources, e.g., the group of resources which comprise a Web Publication&nbsp;[[!wpub]]), may be extensive 
-					and span member resource boundaries. For resource-spanning selections that are continuous in some ordering of the group of resources, a
+					and may span member resource boundaries. For resource-spanning selections that are continuous in some ordering of the group of resources, a
 					Span Selector can be used to identify the beginning and the end of the selection using <a href="#EmbeddedResourceSelector_def">Embedded Resource
 					Selectors</a>, refined as appropriate. This Selector is also used to enumerate any intervening resources between the beginning and end of the
 					selection that are included in the selection in their entirety. 
 					A Span Selection MUST span at least two resources. (For continuous selections wholly contained within a single
-					resources, use a <a href="#RangeSelector_def">Range Selector</a>.) 
-					In the absence of refinement, the selection consists of the member resource identified by the starting Embedded Resource Selector
-					(the first resource in the selection), the member resource identified by the ending Embedded Resource Selector (the last resource
-					in the selection), and the intervening (in some ordering of the	group) member resources between the starting and ending member resources
-					as enumerated by the Selector. 
-					If the starting Embedded Resource Selector is refined with a selector, then only the part of the first member resource from the 
-					start of the refinement selection to resource end (i.e., including what is identified by the refinement selector)
-					is included in the selection. If the ending Embedded Resource Selector is refined with a selector, then only the part of the 
-					last member resource prior to the start of the refinement selection (i.e., excluding what is identified by the refinement selector) 
+					resource, use a <a href="#RangeSelector_def">Range Selector</a>.) 
+					In the absence of refinement, the selection consists of the member resource identified by the <code>startSelector</code> property
+					(the first resource in the selection), the member resource identified by the <code>endSelector</code> (the last resource
+					in the selection), and the intervening member resource(s) (in some ordering of the	group) between the starting and ending member resources
+					as enumerated by the <code>selectors</code> property. 
+					If the <code>startSelector</code> is refined with another selector, then only the part of the first resource from the 
+					start of the refined selection to that resource's end (i.e., including what is identified by refinement)
+					is included in the span selection. If the <code>endSelector</code> is refined with another selector, then only the part of the 
+					last resource prior to the start of the refined selection (i.e., excluding what is identified by refinement) 
 					is included in the selection.
 				</p>
 				
@@ -1032,7 +1039,9 @@
 				</table>
 
 				<p class=issue data-number=28></p>
-				
+					<p class=issue data-number=32></p>
+						<p class=issue data-number=34></p>
+							
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Span Selector Over Several Resources" id="SpanSelector_ex_1">
@@ -1079,7 +1088,7 @@
 					For some use cases it is required to identify a <a>segment (of interest)</a> that spans multiple selections, possibly over multiple members of a group of resources (e.g., spanning a subset of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
 					A Multi Resource Selection can be used to identify such a segment of interest by creating an ordered list of selectors.
 					A Multi Resource Selection identifies a collection of discrete selections, whether within the same <a>Source</a> or spread over several Sources.
-					If the segment of interest spans more than one Source, these selectors MUST all be <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, each of which MAY be refined.
+					If the segment of interest spans more than one resource, these selectors MUST all be <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, each of which MAY be refined.
 				</p>
 					
 				<p>
@@ -1438,7 +1447,8 @@
 				</p>
 			
 				<p class=issue data-number=9></p>
-				
+					<p class=issue data-number=29></p>
+						
 				<h4>Model</h4>
 					<table class="model">
 						<tr><th>Term</th><th>Type</th><th>Description</th></tr>
@@ -1578,6 +1588,8 @@
 			<p class="ednote">
 				We must add a good example. The original one referred to RDF, which is not relevant in this context.
 			</p>
+			
+			<p class="issue" data-number="6"></p>
 
 			<p>
 				To mitigate this issue, a mapping of <a data-lt="Selector">Selectors</a>, <a data-lt="Position">Positions</a>,
@@ -1613,8 +1625,6 @@
 			</ul>
 
 			<p>(see the examples below.)</p>
-
-			<p class=issue data-number21>Alternative: <code>scope</code> should appear as part of the fragment, alongside the top level <code>selector(…)</code>, and not part of it.</p>
 
 			<p>The values SHOULD be percent encoded&nbsp;[[rfc3986]]; the encoding is a MUST for characters that may make the fragment ambiguous, namely:</p>
 
