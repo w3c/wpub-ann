@@ -983,13 +983,13 @@
 					Selections from a group of resources, e.g., the group of resources which comprise a Web Publication&nbsp;[[!wpub]]), may be extensive 
 					and may span member resource boundaries. For resource-spanning selections that are continuous in some ordering of the group of resources, a
 					Span Selector can be used to identify the beginning and the end of the selection using <a href="#EmbeddedResourceSelector_def">Embedded Resource
-					Selectors</a>, refined as appropriate. This Selector is also used to enumerate any intervening resources between the beginning and end of the
-					selection that are included in the selection in their entirety. 
+					Selectors</a>, refined as appropriate. Embedded Resource Selectors (without refinement) are also used in enumerating any intervening resources between the beginning and end of the
+					selection that are included in the selection. 
 					A Span Selection MUST span at least two resources. (For continuous selections wholly contained within a single
 					resource, use a <a href="#RangeSelector_def">Range Selector</a>.) 
 					In the absence of refinement, the selection consists of the member resource identified by the <code>startSelector</code> property
 					(the first resource in the selection), the member resource identified by the <code>endSelector</code> (the last resource
-					in the selection), and the intervening member resource(s) (in some ordering of the	group) between the starting and ending member resources
+					in the selection), and the intervening member resource(s) (in some ordering of the group) between the starting and ending member resources
 					as enumerated by the <code>selectors</code> property. 
 					If the <code>startSelector</code> is refined with another selector, then only the part of the first resource from the 
 					start of the refined selection to that resource's end (i.e., including what is identified by refinement)
@@ -1034,7 +1034,7 @@
 						<td>Relationship</td>
 						<td>The Selector which describes the exclusive ending point of the span. <br/>There MUST be exactly 1 
 							<code>endSelector</code> associated with a Span Selector and it MUST be an Embedded Resource Selector, which
-							MAY be freined with other selectors.</td>
+							MAY be refined with other selectors.</td>
 					</tr>
 				</table>
 
@@ -1087,7 +1087,7 @@
 				<p>
 					For some use cases it is required to identify a <a>segment (of interest)</a> that spans multiple selections, possibly over multiple members of a group of resources (e.g., spanning a subset of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
 					A Multi Resource Selection can be used to identify such a segment of interest by creating an ordered list of selectors.
-					A Multi Resource Selection identifies a collection of discrete selections, whether within the same <a>Source</a> or spread over several Sources.
+					A Multi Resource Selection identifies a collection of discrete selections, whether within a single resource or spread over several resources included in a single <a>Source</a>.
 					If the segment of interest spans more than one resource, these selectors MUST all be <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, each of which MAY be refined.
 				</p>
 					
@@ -1108,7 +1108,7 @@
 						<td>selectors</td>
 						<td>Relationship</td>
 						<td>A list of Selectors. <br/>There MUST be exactly 1 <code>selectors</code> list associated with a Multi Resource Selector.
-							<br/>The list MUST have at least 1 element. 
+							<br/>The list MUST have at least 2 elements. 
 						</td>
 					</tr>
 				</table>
