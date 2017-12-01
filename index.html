@@ -184,8 +184,7 @@
             	Lastly, the model also provides methods for selecting a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
             	that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
             	even when the segment of interest spans parts of more than one included resource. 
-							The common model for selection as descirbed in this specification 
-							makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
+				The common model for selection as described in this specification makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
 			</p>
 
             <p>
@@ -210,6 +209,7 @@
 
 			<ul>
 				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource from a collection or group of resources collectively identified with a URL;</li>
+				<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment Identifiers</a></li>
 				<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive resources in an ordered group or collection of resources, e.g, a “Web Publication”&nbsp;[[wpub]].</li>
 				<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete selections, whether within the same resource or spread over several resources.</li>
 			</ul>
@@ -850,21 +850,21 @@
         		
         		<pre class="example highlight" title="Range Selector" id="RangeSelector_ex">
 {
-	"source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
-	"selector": {
-		"type": "RangeSelector",
-		"startSelector": {
-			"type": "TextQuoteSelector",
-			"exact": "Call me Ishmael.",
-			"suffix": "Some years ago"
-		},
-		"endSelector": {
-			"type": "TextQuoteSelector",
-			"exact": "He desires to paint you the dreamiest, ",
-			"prefix": "But here is an artist. ",
-			"suffix": "shadiest, quietest"
-		}
-	}
+  "source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+  "selector": {
+    "type": "RangeSelector",
+    "startSelector": {
+      "type": "TextQuoteSelector",
+      "exact": "Call me Ishmael.",
+      "suffix": "Some years ago"
+    },
+    "endSelector": {
+      "type": "TextQuoteSelector",
+      "exact": "He desires to paint you the dreamiest, ",
+      "prefix": "But here is an artist. ",
+      "suffix": "shadiest, quietest"
+    }
+  }
 }
 				</pre>
         	</section>
@@ -898,17 +898,17 @@
         		
         		<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
 {
-	"source": "http://example.org/page1",
-	"selector": {
-		"type": "FragmentSelector",
-		"value": "para5",
-		"refinedBy": {
-			"type": "TextQuoteSelector",
-			"exact": "Selected Text",
-			"prefix": "text before the ",
-			"suffix": " and text after it"
-		}
-	}
+  "source": "http://example.org/page1",
+  "selector": {
+    "type": "FragmentSelector",
+    "value": "para5",
+    "refinedBy": {
+      "type": "TextQuoteSelector",
+      "exact": "Selected Text",
+      "prefix": "text before the ",
+      "suffix": " and text after it"
+    }
+  }
 }
 				</pre>
         		
@@ -948,7 +948,8 @@
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
-						<td>The URL of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.</td>
+						<td>The URL of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.<br/>
+						The URL MAY be a relative URL, with the value of <a>Source</a> serving as a base URL.</td>
 					</tr>
 				</table>
 
@@ -962,18 +963,17 @@
   }
 }				</pre>
 
-					<div class=note>
-						<p>
-							A frequent usage of refinement is in combination with an <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a> to denote the fact that a particular selection is related to, e.g., a Web Publication.
-							For example:
-						</p> 
+				<p>
+					A frequent usage of refinement is in combination with an <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a> to denote the fact that a particular selection is related to, e.g., a Web Publication.
+					For example:
+				</p> 
 
-						<pre class="example highlight" title="Refined Embedded Resource Selector" id="RefinedEmbeddedResourceSelector_ex">
+				<pre class="example highlight" title="Refined Embedded Resource Selector" id="RefinedEmbeddedResourceSelector_ex">
 {
   "source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
   "selector": {
     "type": "EmbeddedResourceSelector",
-    "value": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
+    "value": "MobyDickNav/html/c001.html",
     "refinedBy": {
       "type": "CssSelector",
       "value": "#elemid > .elemclass + p"
@@ -981,122 +981,135 @@
   }
 }	</pre>
 
-						<p>
-							For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#SpanSelector_def">Span Selector</a>, the usage of this pattern becomes essential.
-						</p>
-					</div>
+				<p>
+					Note the usage of a relative URL in the example; it is considered to be good practice to use relative URL, when applicable.
+				</p>
+				<p class="note">
+					For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#SpanSelector_def">Span Selector</a>, the usage of this pattern becomes essential.
+				</p>
 				
-				<p class="ednote">For PWP we may need to modify definition of value property to accommodate resources within a PWP that do 
-				not have URLs (or to make clear that relative addressing is allowed?).</p>
-
 				<p class=issue data-number=12></p>
 										
-			</section>
-
-        	<section id="ErsFragmentId_def" class="normative">
-        		<h3>Embedded Resource Selector serialized as a fragment identifier</h3>
+        		<section id="ErsFragmentId_def" class="normative">
+        			<h3>Embedded Resource Selector serialized as a fragment identifier</h3>
+        			<p><em>This section is normative</em></p>
         		
-        		<p class="ednote">
-        			This assumes PWPs (at least) will have their own media type. If we decide to define a media type for PWPub (and/or WPub) resources, 
-        			we will keep this section and update examples and illustrations
-        			using file extension associated with new media type(s), i.e., the .pwpub file extension below is a placeholder. 							
-        			<em>But if no new media type for PWP or WP, then this section likely will be deleted.</em> 							
-        		</p>						
-        		<p class="issue" data-number="6"></p>
+					<p class="ednote">
+						This assumes WPs and/or PWPs will have their own media type. 
+						If the group decides to define a media type for PWPub (and/or WPub) resources, 
+						this section will remain in the document and the examples and illustrations may be updated using file extension associated with new media type(s), i.e., the .wpub file extension below is a placeholder. 							
+						<em>However, if no new media type for PWP or WP is defined, this section will be removed.</em> 							
+					</p>						
+					<p class="issue" data-number="6"></p>
+					
+					<p>
+						For some simple use cases involving collective resources (of a registered collective resource media type), e.g., Packaged Web Publications, it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] that can be appended to the url of the collective resource, i.e., the <code>source</code> associated with the Embedded Resource selection. 
+						(An informative precedent for this approach is the International Digital Publishing Forum  Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifer serialized model for selecting and positioning	within resources of the	<code>application/epub+zip</code> media type.) 
+					</p>
         		
-        		<p><em>This section is normative</em></p>
-        		<p>
-        			For some simple use cases involving collective resources (of a registered collective resource media type), e.g., Packaged Web Publications, 
-        			it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] 
-        			that can be appended to the url of the collective resource, i.e., the <code>source</code> associated with the Embedded 
-        			Resource selection. (An informative precedent for this approach is the International Digital Publishing Forum 
-        			Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifer serialized model for 
-        			selecting and positioning	within resources of the	<code>application/epub+zip</code> media type.) 
-        		</p>
-        		
-        		<p>
-        			A mapping for serializing simple Embedded Resource selections
-        			as fragment identifiers is defined below.	This mapping allows the <a>Segment (of interest)</a> to be expressed in a single URL.
-        			Note that this representation is valid only if the URL for the <a>Source</a> (the collective resource) does not itself already include a fragment 
-        			identifier of its own.
-        	  </p>
-        		<p>
-        			An Embedded Resource Selector is seralized as a fragment identifier using a function-like syntax, i.e.: 
-        		</p>
-        		
-        		<ul>
-        			<li>The <code>source</code> for the selection is the base URL to which a <code>#</code> character is appended.</li>
-        			<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single 'parameter' enclosed in parentheses.</li>
-        			<li>The single 'parameter' of the function-like notation is a URL, i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector.</li>
-        		</ul>
-
-        		<p class="ex_title"><a href="#EmbeddedResourceSelector_ex">Example</a> from <a href="#EmbeddedResourceSelector_def"></a> serialized as a fragment identifier</p>
-        		<pre class="example highlight" title="Unrefiened Embedded Resource selection as fragment identifier" id="#EmbeddedResourceSelector_fragId_ex"
->https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
-    https://dauwhe.github.io/html-first/MobyDickNav/images/book-cover.jpg)	</pre>		
-
-        		<p>
-        			(A new line character has been introduced into the Example above to facilitate readability; in real usage such new line characters are not allowed in a URL.)
-        			The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent encoded&nbsp;[[rfc3986]]; the encoding is a MUST for characters that may make the URL ambiguous, namely:
-        		</p>
-        		
-        		<!-- should be <table class="data"> but the stylesheet has issues.... -->
-        		<table >
-        			<thead>
-        				<tr>
-        					<td><strong>character</strong></td>
-        					<td><strong>code</strong></td>
-        				</tr>
-        			</thead>
-        			<tbody>
-        				<tr>
-        					<td>space</td>
-        					<td>%20</td>
-        				</tr>
-        				<tr>
-        					<td><code>=</code></td>
-        					<td>%3D</td>
-        				</tr>
-        				<tr>
-        					<td><code>,</code></td>
-        					<td>%2C</td>
-        				</tr>
-        				<tr>
-        					<td><code>#</code></td>
-        					<td>%23</td>
-        				</tr>
-        			</tbody>
-        		</table>
-        		
-        		<div class="note">
         			<p>
-        				A fragment identifier is defined for a specific media type. This means that, formally, the fragment identifier syntax and semantics defined in this section 
-        				should be registered for each relevant media type separately by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
-        				Until such a registration is done, these fragment identifiers have the potential to conflict with other fragment identifier schemes specified by media type registrations.
-        				Consequently, this pattern should only be used when appending to the URL of a resource of a media-type for which this class of fragment identifer has been registered. 
+						A mapping for serializing simple Embedded Resource selections as fragment identifiers is defined below.	
+						This mapping allows the <a>Segment (of interest)</a> to be expressed in a single URL. 
+						Note that this representation is valid only if the URL for the <a>Source</a> (the collective resource) does not itself already include a fragment identifier of its own.
+					 </p>
+					 
+					<p>
+						An Embedded Resource Selector is serialized as a fragment identifier using a function-like syntax, i.e.: 
+					</p>
+        		
+					<ul>
+						<li>The <code>source</code> for the selection is the base URL to which a <code>#</code> character is appended.</li>
+						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single 'parameter' enclosed in parentheses.</li>
+						<li>
+							The single 'parameter' of the function-like notation is a URL, i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector. 
+							The parameter MAY be and absolute URL or relative to the base URL.
+						</li>
+					</ul>
+
+        			<p>
+						The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent encoded&nbsp;[[rfc3986]]. 
+						The encoding is a MUST for characters that may make the URL ambiguous, namely:
         			</p>
-        		</div>        		
-           <section id="ErsFragIdRefinement" class="normative">
-           	<h4>Refinement of ERS fragment identifiers</h4>
-        		<p>The fragment identifier serialization mapping of Embedded Resource Selectors
-        			generally does not support refinement, except that the URL 'parameter' may include its own fragment identifer, appropriate to 
-        			the media type of the resource identified by the URL.  The following example illustrates such a pattern. </p>
         		
-           	<p class="ex_title">Example</p>
-        		<pre class="example highlight" title="Refined Embedded Resource Selector as Fragment Identifier" id="#RefinedEmbeddedResourceSelector_fragId_ex"
->https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
-  https://dauwhe.github.io/html-first/MobyDickNav/images/book-cover.jpg%23xywh%3D50%2C50%2C640%2C480)	</pre>	        		
-        		<p>
-        			The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note that the link
-        			to the Media Fragments URI 1.0 Recommendation [[!media-frags]] cannot be mapped to the fragment identifier serialization, so the mapping is not entirely lossless.
-        		</p>
+					<!-- should be <table class="data"> but the stylesheet has issues.... -->
+					<table >
+						<thead>
+							<tr>
+								<td><strong>character</strong></td>
+								<td><strong>code</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>space</td>
+								<td>%20</td>
+							</tr>
+							<tr>
+								<td><code>=</code></td>
+								<td>%3D</td>
+							</tr>
+							<tr>
+								<td><code>,</code></td>
+								<td>%2C</td>
+							</tr>
+							<tr>
+								<td><code>#</code></td>
+								<td>%23</td>
+							</tr>
+						</tbody>
+					</table>
         		
-           	<p class="ex_title">Example</p>
-        		<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
-  "source": "https://dauwhe.github.io/html-first/MobyDick.pwpub",
+        			<p class="note">
+						A fragment identifier is defined for a specific media type. 
+						This means that, formally, the fragment identifier syntax and semantics defined in this section must be registered for each relevant media type separately by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
+        				Until such a registration is done, these fragment identifiers have the potential to conflict with other fragment identifier schemes specified by media type registrations.
+					</p>
+
+					<h4>Example</h4>
+
+					<p>The example below is semantically equivalent to the <a href="#EmbeddedResourceSelector_ex">example</a> on the usage of an Embedded Resource Selector:</p>
+
+        			<pre class="example highlight" title="Embedded Resource used with refinement reformulated as a fragment identifier" id="#EmbeddedResourceSelector_fragId_ex"
+>https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
+	https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg)
+</pre>		
+
+					<p>
+						(A new line character has been introduced into the Example above to facilitate readability; in real usage such new line characters are not allowed in a URL.)
+					</p>
+
+					<p>The usage of a fragment identifier may also make the usage of explicit refinement unnecessary. The example below is semantically equivalent to the <a href="#RefinedEmbeddedResourceSelector_ex">example</a> combining an embedded resource selector with refinement:</p>
+
+					<pre class="example highlight" title="Refinement of an embedded resource expressed with a fragment identifier" id="#Refinement_with_fragId_ex">
+{
+  "source": "https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(MobyDickNav/html/c001.html)",
+  "selector": {
+    "type": "CssSelector",
+    "value": "#elemid > .elemclass + p"
+  }
+}	
+					</pre>
+					
+            		<section id="ErsFragIdRefinement" class="informative">
+           				<h4>Refinement of ERS fragment identifiers</h4>
+						<p>
+							The fragment identifier serialization mapping of Embedded Resource Selectors generally does not support refinement, except that the URL 'fragment' may include its own fragment identifier, appropriate to the media type of the resource identified by the URL.  
+							The following example illustrates such a pattern. (To increase readability, the percent encoding has been omitted from the example.)
+						</p>
+        		
+						<pre class="example highlight" title="Refined Embedded Resource Selector as Fragment Identifier" id="#RefinedEmbeddedResourceSelector_fragId_ex"></pre>
+https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
+  https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>	        		
+						<p>
+							The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note that the link
+							to the Media Fragments URI 1.0 Recommendation [[!media-frags]] cannot be mapped to the fragment identifier serialization, so the mapping is not entirely lossless.
+						</p>
+        		
+	        			<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
+  "source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
   "selector": {
     "type": "EmbeddedResourceSelector",
-    "value": "https://dauwhe.github.io/html-first/MobyDickNav/images/book-cover.jpg",
+    "value": "https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg",
     "refinedBy": {
       "type": "FragmentSelector",
       "conformsTo": "http://www.w3.org/TR/media-frags/",
@@ -1104,9 +1117,9 @@
     }		
   }
 }   </pre>
-           </section>
-</section>
-        	
+           			</section>
+				</section>
+			</section>
 
 			<section id="SpanSelector_def" class="normative">
 				<h3>Span Selector</h3>
@@ -1712,7 +1725,7 @@
 			</section>
 		</section> <!-- /Position -->
 
-		<section id="media_selector">
+		<section id="media_selector" class="appendix">
 			<h2>Correspondence Among Media Types and Selectors</h2>
 	
 			<p>
