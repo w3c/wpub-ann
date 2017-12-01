@@ -5,7 +5,7 @@
 		<title>Locators for Web Publications</title>
 		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove" defer="defer"></script>
 		<script src="https://w3c.github.io/wpub/common/js/biblio.js" class="remove"></script>
-		<link href="https://w3c.github.io/wpub/common/css/common.css" rel="stylesheet" type="text/css" />
+		<link href="common/css/common.css" rel="stylesheet" type="text/css" />
 		<link href="extras.css" rel="stylesheet" type="text/css" />
 		<script class="remove">
 			// <![CDATA[
@@ -41,26 +41,6 @@
                     	"companyURL": "http://www.w3.org",
                   	}
               	],
-        localBiblio: [{
-        "cfi":
-	        {
-	          "authors": [
-	            "Peter Sorotokin",
-	            "Garth Conboy",
-	            "Brady Duga",
-	            "John Rivlin",
-	            "Don Beaver",
-	            "Kevin Ballard",
-	            "Alastair Fettes",
-	            "Daniel Weck"
-	          ],
-	          "title": "EPUB Canonical Fragment Identifiers",
-	          "href": "http://www.idpf.org/epub/linking/cfi/epub-cfi-20140628.html",
-	          "publisher": "IDPF",
-	          "rawDate": "2014-06-26",
-	          "status": "Recommended Specification"
-	        }        
-        }],      	
 				otherLinks: [{
 					key: "Editors/Authors of the original version",
 					data: [{
@@ -948,7 +928,7 @@
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
-						<td>The URL of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.<br/>
+						<td>The URL&nbsp;[[!url]] of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.<br/>
 						The URL MAY be a relative URL, with the value of <a>Source</a> serving as a base URL.</td>
 					</tr>
 				</table>
@@ -1021,13 +1001,13 @@
 						<li>The <code>source</code> for the selection is the base URL to which a <code>#</code> character is appended.</li>
 						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single 'parameter' enclosed in parentheses.</li>
 						<li>
-							The single 'parameter' of the function-like notation is a URL, i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector. 
+							The single 'parameter' of the function-like notation is a URL&nbsp;[[!url]], i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector. 
 							The parameter MAY be and absolute URL or relative to the base URL.
 						</li>
 					</ul>
 
         			<p>
-						The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent encoded&nbsp;[[rfc3986]]. 
+						The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent encoded&nbsp;[[!rfc3986]]. 
 						The encoding is a MUST for characters that may make the URL ambiguous, namely:
         			</p>
         		
