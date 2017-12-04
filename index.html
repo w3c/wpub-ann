@@ -204,7 +204,7 @@
         	
      		<ul>
 				<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
-				<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+				<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
 			</ul>
         	<p>Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
         		Web Resource.
@@ -217,15 +217,15 @@
 				
 				<p>
 					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
-					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://w3c.github.io/wpub/index.html#dfn-url" class="externalDFN">URL</a>.
+					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url" class="externalDFN">URL</a>.
 				</p>
 			
                 <dl>
 					<dt><dfn data-lt="Resource|Resources">Resource</dfn></dt>
-					<dd>An item of interest that MAY be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
+					<dd>An item of interest that MAY be identified by a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Web Resource|Web Resources">Web Resource</dfn></dt>
-					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
+					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn>Locator</dfn></dt>
                 	<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term.</dd>
@@ -240,13 +240,13 @@
           <dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a> specifier.</dd>
                 	
            <dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>                	
-					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a>.</dd>
+					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
 					<dd>A feature of a <a>Resource</a>, that often has a particular data type.  In the model sections, the term “Property” is used to refer to only those features which are <em>not</em> <a>Relationships</a> and instead have a literal value such as a string, integer, or date.  The valid values for a Property are thus any data type other than object, or an array containing members of that data type if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="Relationship|Relationships">Relationship</dfn></dt>
-					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://w3c.github.io/wpub/index.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
+					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
                 	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a data-lt="State">State</a> specifier.</dd>
@@ -309,7 +309,7 @@
 
             <ol>
                 <li>
-                	the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a> (see <a>Locator</a>).
+                	the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a> (see <a>Locator</a>).
 				</li>
                 <li>
 					the identification for the part of that resource; we will refer to this as the <a data-lt="segment">Segment (of Interest)</a>.
@@ -1287,7 +1287,7 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 			
 			<ol>
 				<li>
-					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+					the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
 				</li>
 				<li>the identification for the state of the resource.</li>
 			</ol>
@@ -1499,7 +1499,7 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 			<p>A Position specifier requires knowledge of two distinct entities:</p>			
 			<ol>
 				<li>
-					the <a href=" https://w3c.github.io/wpub/index.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
+					the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
 				</li>
 				<li>an integer representing the count of bytes or characters in the stream preceding the locus of interest.</li>
 			</ol>
@@ -1987,7 +1987,7 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types have been added: 
 						<ul>
 							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
-							<li><a href="#ByteStreamPosition_def">Byte Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+							<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
 						</ul>					
 					</li>
 							
