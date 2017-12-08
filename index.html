@@ -187,7 +187,7 @@
 				The data model is defined in [[json]], in the form of JSON objects and keys.
 				The formal specification and the semantics of these objects and keys originate from a larger model, namely the 
 				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets and bodies of annotations.
-				The current document “extracts” <a data-lt="Selector">Selectors</a> and <a data-lt="State">States</a> from that data model; 
+				The current document “extracts” <a data-lt="Selector">Selectors</a> from that data model; 
         by doing so, it makes their usage easier for application developers whose concerns are not related to annotations. 
 				Compared to the Web Annotation Data Model, however, this document does <em>add</em> three new selectors, namely:
 			</p>
@@ -236,7 +236,7 @@
                 	<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term.</dd>
 
 					<dt><dfn data-lt="Sources">Source</dfn></dt>
-                	<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a data-lt="State">State</a> specifier(s).</dd>
+                	<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s).</dd>
 
 					<dt><dfn data-lt="segment">Segment (of Interest)</dfn></dt>
 					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a> specifier.</dd>
@@ -254,7 +254,7 @@
 					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
-                	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a data-lt="State">State</a> specifier.</dd>
+                	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <aclass="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier.</dd>
                 </dl>
 
 				<p class=ednote>The reference to the TR version of the WPUB document must be used (for the url definition), when available.</p>
@@ -271,8 +271,7 @@
 
             <ul>
               	<li><a>Selector</a>: Describes the desired segment of interest in the source</li>
-              	<li><a>State</a>: Describes the desired representation of the source</li>
-            	  <li><a>Position</a>: Describes the desired locus of interest in the source</li>
+            	<li><a>Position</a>: Describes the desired locus of interest in the source</li>
             </ul>
 
             <p>
@@ -772,7 +771,7 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 			</table>
 			
 			<p>
-				When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a>State</a> specifier(s) the Position specifier (if present) MUST be processed last.
+				When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s) the Position specifier (if present) MUST be processed last.
 			</p>
 			
 			<h4>Example</h4>
@@ -923,8 +922,8 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 				<h3>Using Position to Refine</h3>
 				
 				<p>
-					Unlike <a>Selector</a> and <a>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in a stream rather than a part of a resource or a representation of a resource). 
-					However, it may be easier, more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a>State</a>. 
+					Unlike <a>Selector</a> and <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in a stream rather than a part of a resource or a representation of a resource). 
+					However, it may be easier, more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a>. 
 					Thus a Position specifier may be used to refine a Selector or State (including refined Selectors or States), as long as the Position specifier is the final refinement step processed.
 				</p>
 				<p>
