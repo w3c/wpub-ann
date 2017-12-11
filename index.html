@@ -82,33 +82,14 @@
 				Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], 
 				but that is not always the case.
 			</p>
-			
-			<p>
-				This document relies primarily on existing selection techniques, providing a <em>common model and syntax</em> to express 
-				and as needed combine or refine selections. 
-				This common model augments selection techniques with additional techniques to 
-				express the information needed to retrieve a desired representation of a resource and/or identify 
-				precise locations in the text stream or byte stream of a resource representation. The model
-				also includes techniques for expressing the selection of a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
-				that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
-				even when the segment of interest spans parts of more than one included resource. 
-				Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
-				Web Resource.
-			</p>
 
 			<p>
-				The formal specification and the semantics used here originate from a separate W3C Recommendation, 
-				namely the Web Annotation Data Model&nbsp;[[!annotation-model]], where they are used to select targets or bodies of annotations. 
+				This document relies on existing selection techniques, providing a <em>common model and syntax</em> defined by the Web Annotation Data Model&nbsp;[[!annotation-model]]. That specification developed a JSON-based approach to select targets or bodies of various types of Web Resources. 
 				This foundational model has been extended by adding selector types applicable to collective resources
 				and a new model component for describing positions in text and byte streams (see the <a href="#introduction">Introduction</a> 
-				for further details).
-			</p>						
-			
-			<p class="note">
-				Note that the Web Annotation Working Group has also published a separate note, namely the “Selectors and States”&nbsp;[[selectors-states]] Working Group Note. 
-				That note extracts the selector model from the full Web Annotation Data Model&nbsp;[[annotation-model]] to make it more palatable for users who are not necessarily interested in other aspects of the Annotation Model. Although normatively this document refers to [[!annotation-model]], readers should probably consult the [[selectors-states]] note to understand the underlying concepts.
+				for further details). 
 			</p>
-			
+						
 			<p class="issue" data-number="27"></p>
 
 		</section>
@@ -125,8 +106,7 @@
 					This specification extends the definitions of some of these terms and 
 					defines additional terms in order to satisfy additional use cases, but all uses conforming to original definitions remain valid.
 					In order to ensure backward compatibility, implementations of this specification MAY ignore any JSON terms not defined in this specification 
-					(directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT treat as invalid any JSON term encountered 
-					that is not defined in this specification.
+					(directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT treat as invalid any JSON term encountered that is not defined in this specification.
 				</p>
 			</section>
 			<section>
@@ -141,80 +121,123 @@
 		</section>
 
         <section id="introduction" class=informative>
-            <h2>Introduction</h2>
+			<h2>Introduction</h2>
+			
+			<section>
+				<h3>The Web Annotation Selection Model</h3>
+				<p>
+					Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, 
+					referencing a <em>position in</em> 
+					a resource representation is often necessary to support curation of and  discourse about Web resources. 
+					Interactive editing of a resource, highlighting an area on the screen, adding an annotation to a specific point 
+					in a resource, or defining a bookmark to a location or a section of a long document are all examples that 
+					involve selection or positioning within a resource.
+				</p>
+	
+				<p>
+					Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
+					These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
+					identifying an element within the DOM tree for an XML source, or using CSS style elements to locate and select content.
+					Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
+				</p>
+	
+				<p>
+					This document relies on a selection technique defined by the Web Annotation Data Model&nbsp;[[!annotation-model]] providing a <em>common model and syntax</em> for such selections. 
+					That specification developed a formalism based on JSON&nbsp;[[json]] to select targets or bodies of various types of Web Resources. 
+					The model relies on the concepts of <em><a href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a JSON object the various ways selections have been defined for different media types, and <em><a href="https://www.w3.org/TR/annotation-model/#stated">States</a></em>, encapsulating selections based on HTTP requests and responses.
+					The model also includes a way to <em>combine</em> and/or <em>refine</em> selections, a feature that may greatly improve the efficiency of applications relying on complex selections. 
+					A selection or a state <em>specifier</em>, as described in the original model and used in this document, may also have its own unique identity in the form of an URL.
+					This URL SHOULD be dereferencable and return the selection/state specifier definition itself.
+				</p>
+	
+				<p class="note">
+					Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen as akin to a server side redirection, returning part of a resource.
+				</p>
+				
+				<p class="note">
+					The Web Annotation Working Group has also published a separate Working Group Note entitled “Selectors and States”&nbsp;[[selectors-states]]. 
+					That note extracts the selector model from the full Web Annotation Data Model&nbsp;[[annotation-model]] to make it more palatable for users who are not necessarily interested in other aspects of the Annotation Model.
+					Although normatively this specification refers to the [[!annotation-model]], readers should probably consult the [[selectors-states]] note for a better understanding of the underlying concepts. Note, however, that the [[selectors-states]] Working Group Note also includes a proposal for a fragment identifier syntax; that syntax has not been used in the current specification.
+				</p>
 
-            <p>
-            	Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, 
-            	referencing a <em>position in</em> 
-            	a resource representation is often necessary to support curation of and  discourse about Web resources. 
-				Interactive editing of a resource, highlighting an area on the screen, adding an annotation to a specific point 
-				in a resource, or defining a bookmark to a location or a section of a long document are all examples that 
-				involve selection or positioning within a resource.</p>
-        	<p>
-				Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
-				These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
-				identifying an element within the DOM tree for an XML source, or using CSS style elements to locate and select content.
-				Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
-			</p>
+				<h4>Examples</h4>
 
-            <p>
-            	This specification relies primarily on existing selection techniques, providing a <em>common model and syntax</em> to express
-            	selections (i.e., using <em>selector</em> objects).
-							Furthermore, the model also includes a way to <em>combine</em> and/or <em>refine</em> selections, 
-            	a feature that may greatly improve the efficiency of applications relying on complex selections. This specification
-            	also models objects (<em>position</em> and <em>state</em>) supporting two additional curation and use tasks, 
-            	thereby extending the selection model with ways to   
-            	express the information needed to retrieve a desired representation of a resource and/or to identify 
-            	a precise location in the text stream or byte stream of a resource representation.
-            	Lastly, the model also provides methods for selecting a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
-            	that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
-            	even when the segment of interest spans parts of more than one included resource. 
-				The common model for selection as described in this specification makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
-			</p>
+				<p>The example below shows the usage of a <a href="https://www.w3.org/TR/annotation-model/#text-quote-selector">Text Quote Selector</a> referring to a specific portion of text in a resource:</p>
 
-            <p>
-				A selection, position, or state <em>specifier</em>, as described in this document, may have its own unique identity 
-				in the form of an URL.
-				This URL SHOULD be dereferencable and return the selection/position/state specifier definition itself.
-			</p>
+				<pre class="example highlight" title="Text Quote Selector" id="TextQuoteSelector_ex">
+{
+  "source": "http://example.org/page1",
+  "selector": {
+    "type": "TextQuoteSelector",
+    "exact": "annotation",
+    "prefix": "this is an ",
+    "suffix": " that has some"
+  }
+}
+</pre>
 
-            <p class="note">
-				Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen 
-				as akin to a server side redirection, returning part of a resource.
-            </p>
+				<p>The next example shows the usage of refinement: specific portion of text is selected from a paragraph; the latter is identified via a “traditional” fragment identification.</p>
+        		<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
+{
+  "source": "http://example.org/page1",
+  "selector": {
+    "type": "FragmentSelector",
+    "value": "para5",
+    "refinedBy": {
+      "type": "TextQuoteSelector",
+      "exact": "Selected Text",
+      "prefix": "text before the ",
+      "suffix": " and text after it"
+    }
+  }
+}</pre>
 
-            <p>
-				The data model is defined in [[json]], in the form of JSON objects and keys.
-				The formal specification and the semantics of these objects and keys originate from a larger model, namely the 
-				Web Annotation Data Model&nbsp;[[!annotation-model]], where it is used to select targets and bodies of annotations.
-				The current document “extracts” <a data-lt="Selector">Selectors</a> from that data model; 
-        by doing so, it makes their usage easier for application developers whose concerns are not related to annotations. 
-				Compared to the Web Annotation Data Model, however, this document does <em>add</em> three new selectors, namely:
-			</p>
+				<p class=note>
+					See the [[selectors-states]] Note for more examples for the usage of the Web Annotation Model for selection.
+				</p>
+			</section>
 
-			<ul>
-				<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource from a collection or group of resources collectively identified with a URL;</li>
-				<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment Identifiers</a></li>
-				<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive resources in an ordered group or collection of resources, e.g, a “Web Publication”&nbsp;[[wpub]].</li>
-				<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete selections, whether within the same resource or spread over several resources.</li>
-			</ul>
+			<section>
+				<h3>Extensions of the Web Annotation Approach</h3>
 
-        	<p>
-				These changes aim at addressing the particular requirements of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].
-			</p>
-        	
-        	<p>
-        		Additionally the current document augments the Web Annotation Data Model of selectors and states with a new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined:
-        	</p>
-        	
-     		<ul>
-				<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
-				<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
-			</ul>
-        	<p>Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
-        		Web Resource.
-        	</p> 
-        	
+				<p>
+					The approach defined by the [[annotation-model]] has been extended in this specification by adding selector types applicable to collective resources and a new model component for describing positions in text and byte streams. 
+					It provides methods for selecting a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
+					that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
+					even when the segment of interest spans parts of more than one included resource. 
+					The common model for selection as described in this specification makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
+				</p>
+	
+				<p>
+					More specifically, this document extends the Web Annotation Data Model by <em>adding</em> three new selectors, namely:
+				</p>
+	
+				<ul>
+					<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource from a collection or group of resources collectively identified with a URL;</li>
+					<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment Identifiers</a></li>
+					<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive resources in an ordered group or collection of resources, e.g, a “Web Publication”&nbsp;[[wpub]].</li>
+					<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete selections, whether within the same resource or spread over several resources.</li>
+				</ul>
+	
+				<p>
+					These changes aim at addressing the particular requirements of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].
+				</p>
+				
+				<p>
+					Additionally the current document augments the Web Annotation Data Model of selectors and states with a new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined:
+				</p>
+				
+					<ul>
+					<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
+					<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+				</ul>
+	
+				<p>Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
+					Web Resource.
+				</p> 
+				
+			</section>
+
             <section class=normative id="terminology">
 				<h3>Terminology</h3>
 
@@ -233,7 +256,8 @@
 					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn>Locator</dfn></dt>
-                	<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term.</dd>
+					<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term. The original [[!annotation-model]] document used the term <a href="https://www.w3.org/TR/annotation-model/#specific-resources" class="externalDFN">Specific Resource</a> as a generic term encompassing usages that go beyond selection. This specification uses the term “Locator” as an alias.
+					 </dd>
 
 					<dt><dfn data-lt="Sources">Source</dfn></dt>
                 	<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s).</dd>
@@ -241,10 +265,10 @@
 					<dt><dfn data-lt="segment">Segment (of Interest)</dfn></dt>
 					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a> specifier.</dd>
 
-          <dt><dfn data-lt="locus">Locus (of Interest)</dfn></dt>
-          <dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a> specifier.</dd>
+					<dt><dfn data-lt="locus">Locus (of Interest)</dfn></dt>
+					<dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a> specifier.</dd>
                 	
-           <dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>                	
+		           <dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>                	
 					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
@@ -257,13 +281,14 @@
                 	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <aclass="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier.</dd>
                 </dl>
 
-				<p class=ednote>The reference to the TR version of the WPUB document must be used (for the url definition), when available.</p>
-
 			</section>
         </section>
 
-        <section id="locators" class="informative">
-            <h3>Locators</h3>
+        <section id="locators">
+			<h3>Locators</h3>
+			
+			<p class=note>This term is formally defined in the [[!annotation-model]]; the (somewhat shortened) specification is kept for an easier reference only. Note, however, that the Position Specifier is <em>not</em> part of the original specification, and has been added by this specification.</p>
+
             <p>
             	A <a>Resource</a> that specifies a location in or a portion of another <a>Web Resource</a>. 
 				It does this using <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be any of:
@@ -298,7 +323,7 @@
                     <td>Relationship</td>
                     <td>The relationship between a Locator and an additional resource other than the <code>source</code> that 
                     	provides scope or context for the Locator.<br/>
-												There MAY be 0 or more scope relationships for each Locator. When the <code>source</code>
+						There MAY be 0 or more scope relationships for each Locator. When the <code>source</code>
                     	is part of a group or collection of resources that has its own URL, <code>scope</code> MAY be used to 
                     	record this URL.</td>
 				</tr>
@@ -308,7 +333,9 @@
 
         <section id="selectors" class="informative">
             <h3>Selectors</h3>
-
+			
+			<p class=note>This term is formally defined in the [[!annotation-model]]; this (somewhat shortened) specification is kept for an easier reference only.</p>
+						
             <p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
 
             <ol>
@@ -444,7 +471,7 @@
 					
 					<p>
 						For some simple use cases involving collective resources (of a registered collective resource media type), e.g., Packaged Web Publications, it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] that can be appended to the url of the collective resource, i.e., the <code>source</code> associated with the Embedded Resource selection. 
-						(An informative precedent for this approach is the International Digital Publishing Forum  Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifer serialized model for selecting and positioning	within resources of the	<code>application/epub+zip</code> media type.) 
+						(An informative precedent for this approach is the International Digital Publishing Forum  Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifier serialized model for selecting and positioning	within resources of the <code>application/epub+zip</code> media type.) 
 					</p>
         		
         			<p>
@@ -584,6 +611,8 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 					last resource prior to the start of the refined selection (i.e., excluding what is identified by refinement) 
 					is included in the selection.
 				</p>
+
+				<p class=note>The ordering of resources does <em>not</em> make use of external features, like the default reading order in a Web Publication&nbsp;[[wpub]]. The order is exclusively established via the <code>selectors</code> property.</p>
 				
 				<p>
 					<b>Example Use Case:</b> Misha wants to comment on text in a Web Publication that spreads over <em>several constituent resources</em>.
@@ -626,8 +655,8 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 				</table>
 
 				<p class=issue data-number=28></p>
-					<p class=issue data-number=32></p>
-						<p class=issue data-number=34></p>
+				<p class=issue data-number=32></p>
+				<p class=issue data-number=34></p>
 							
 				<h4>Example</h4>
 
@@ -968,7 +997,7 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 			<h3>Changes from Previous Versions</h3>
 
 			<section id="changes_from_wa">
-				<h4>Changes Relative to the Annotation Model</h4>
+				<h4>Changes Relative to the Web Annotation Model</h4>
 
 				<p><strong>Editorial Changes</strong></p>
 				<ul>
@@ -995,10 +1024,6 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
 							<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
 						</ul>					
-					</li>
-							
-					<li>
-						The section on expressing any <a>Locator</a> as fragment identifier has been deleted in favor of a short section entitled, <a href="#ErsFragmentId_def"></a>.					  
 					</li>
 				</ul>
 			</section>
