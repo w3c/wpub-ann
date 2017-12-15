@@ -459,22 +459,20 @@
         			<p><em>This section is normative</em></p>
         		
 					<p class="ednote">
-						This assumes WPs and/or PWPs will have their own media type. 
-						If the group decides to define a media type for PWPub (and/or WPub) resources, 
-						this section will remain in the document and the examples and illustrations may be updated using file extension associated with new media type(s), i.e., the .wpub file extension below is a placeholder. 							
-						<em>However, if no new media type for PWP or WP is defined, this section will be removed.</em> 							
+						This section is predicated on the assumption that Packaged Web Publications (PWPs) rely on a packaging format of a media type intended exclusively for packaging PWPs or only for packaging PWPs and EPUBs. If the Working Group decides that PWPs should be packaged using a more generic packaging format with a more generally used media type, 
+						or if the Group for any other reason decides not to pursue registering this fragment identifier scheme, then this section (including subsection) should be removed.  							
 					</p>						
 					<p class="issue" data-number="6"></p>
 					
 					<p>
-						For some simple use cases involving collective resources (of a registered collective resource media type), e.g., Packaged Web Publications, it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] that can be appended to the url of the collective resource, i.e., the <code>source</code> associated with the Embedded Resource selection. 
+						For some simple use cases involving Packaged Web Publications, it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] that can be appended to the URL of the collective resource, i.e., the <code>source</code> associated with the Embedded Resource selection. 
 						(An informative precedent for this approach is the International Digital Publishing Forum  Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifier serialized model for selecting and positioning	within resources of the <code>application/epub+zip</code> media type.) 
 					</p>
         		
         			<p>
 						A mapping for serializing simple Embedded Resource selections as fragment identifiers is defined below.	
 						This mapping allows the <a>Segment (of interest)</a> to be expressed in a single URL. 
-						Note that this representation is valid only if the URL for the <a>Source</a> (the collective resource) does not itself already include a fragment identifier of its own.
+						Note that this mapping is valid only if the URL of the <a>Source</a> is the URL of a Packaged Web Publication and does not itself already include a fragment identifier of its own.
 					 </p>
 					 
 					<p>
@@ -486,7 +484,7 @@
 						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single 'parameter' enclosed in parentheses.</li>
 						<li>
 							The single 'parameter' of the function-like notation is a URL&nbsp;[[!url]], i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector. 
-							The parameter MAY be and absolute URL or relative to the base URL.
+							The parameter MAY be an absolute URL or relative to the base URL.
 						</li>
 					</ul>
 
@@ -525,7 +523,7 @@
         		
         			<p class="note">
 						A fragment identifier is defined for a specific media type. 
-						This means that, formally, the fragment identifier syntax and semantics defined in this section must be registered for each relevant media type separately by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
+						This means that, formally, the fragment identifier syntax and semantics defined in this section must be registered for any PWP media type(s) by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
         				Until such a registration is done, these fragment identifiers have the potential to conflict with other fragment identifier schemes specified by media type registrations.
 					</p>
 
@@ -534,7 +532,7 @@
 					<p>The example below is semantically equivalent to the <a href="#EmbeddedResourceSelector_ex">example</a> on the usage of an Embedded Resource Selector:</p>
 
 					<pre class="example highlight" title="Embedded Resource used with refinement reformulated as a fragment identifier" id="EmbeddedResourceSelector_fragId_ex">
-https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
+https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
   https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg)
 </pre>		
 
@@ -542,11 +540,11 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
 						(A new line character has been introduced into the Example above to facilitate readability; in real usage such new line characters are not allowed in a URL.)
 					</p>
 
-					<p>The usage of a fragment identifier may also make the usage of explicit refinement unnecessary. The example below is semantically equivalent to the <a href="#RefinedEmbeddedResourceSelector_ex">example</a> combining an embedded resource selector with refinement:</p>
+					<p>The usage of a fragment identifier may also make the usage of explicit refinement unnecessary. The example below, which incidentally uses a relative rather than absolute URL, is semantically equivalent to the <a href="#RefinedEmbeddedResourceSelector_ex">example</a> combining an embedded resource selector with refinement:</p>
 
 					<pre class="example highlight" title="Refinement of an embedded resource expressed with a fragment identifier" id="#Refinement_with_fragId_ex">
 {
-  "source": "https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(MobyDickNav/html/c001.html)",
+  "source": "https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/html/c001.html)",
   "selector": {
     "type": "CssSelector",
     "value": "#elemid > .elemclass + p"
@@ -558,19 +556,18 @@ https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
            				<h4>Refinement of ERS fragment identifiers</h4>
 						<p>
 							The fragment identifier serialization mapping of Embedded Resource Selectors generally does not support refinement, except that the URL 'fragment' may include its own fragment identifier, appropriate to the media type of the resource identified by the URL.  
-							The following example illustrates such a pattern. (To increase readability, the percent encoding has been omitted from the example and a new line has been added to it.)
+							The following example illustrates such a pattern. (To increase readability, the percent encoding has been omitted from the example.)
 						</p>
         		
 						<pre class="example highlight" title="Refined Embedded Resource Selector as Fragment Identifier" id="RefinedEmbeddedResourceSelector_fragId_ex">
-https://dauwhe.github.io/html-first/MobyDick.wpub#ERS(
-  https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>	        		
+https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>	        		
 						<p>
 							The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note that the link
 							to the Media Fragments URI 1.0 Recommendation [[!media-frags]] cannot be mapped to the fragment identifier serialization, so the mapping is not entirely lossless.
 						</p>
         		
 	        			<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
-  "source": "https://dauwhe.github.io/html-first/MobyDick.wpub",
+  "source": "https://dauwhe.github.io/html-first/MobyDick.pwpub",
   "selector": {
     "type": "EmbeddedResourceSelector",
     "value": "https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg",
