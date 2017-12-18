@@ -141,7 +141,7 @@
 				<p>
 					This document relies on a selection technique defined by the Web Annotation Data Model&nbsp;[[!annotation-model]] providing a <em>common model and syntax</em> for such selections. 
 					That specification developed a formalism based on JSON&nbsp;[[json]] to select targets or bodies of various types of Web Resources. 
-					The model relies on the concepts of <em><a href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a JSON object the various ways selections have been defined for different media types, and <em><a href="https://www.w3.org/TR/annotation-model/#stated">States</a></em>, encapsulating selections based on HTTP requests and responses.
+					The model relies on the concepts of <em><a href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a JSON object the various ways selections have been defined for different media types, and <em><a href="https://www.w3.org/TR/annotation-model/#states">States</a></em>, encapsulating selections based on HTTP requests and responses.
 					The model also includes a way to <em>combine</em> and/or <em>refine</em> selections, a feature that may greatly improve the efficiency of applications relying on complex selections. 
 					A selection or a state <em>specifier</em>, as described in the original model and used in this document, may also have its own unique identity in the form of an URL.
 					This URL SHOULD be dereferencable and return the selection/state specifier definition itself.
@@ -393,7 +393,7 @@
 					Selector can be used to select and identify an item within the collection, e.g., the chapter, through 
 					its <code>value</code> relationship.
 					This Selector is usually used in conjunction with additional Selectors, e.g., through 
-					<a href="#SelectorRefinement_def">refinement</a>.
+					<a href="https://www.w3.org/TR/annotation-model/#refinement-of-selection" class="externalDFN">refinement</a>.
 				</p>
 				
 				<p>
@@ -448,9 +448,6 @@
 
 				<p>
 					Note the usage of a relative URL in the example; it is considered to be good practice to use relative URL, when applicable.
-				</p>
-				<p class="note">
-					For such a simple case, the usage of <code>scope</code> provides for a more succinct way of expressing the same information, see <a href="#scope_example">the example for a CSS Selector</a>. However, when combined with other selectors like, for example, a <a href="#SpanSelector_def">Span Selector</a>, the usage of this pattern becomes essential.
 				</p>
 				
 				<p class=issue data-number=12></p>
@@ -595,7 +592,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 					Selectors</a>, refined as appropriate. Embedded Resource Selectors (without refinement) are also used in enumerating any intervening resources between the beginning and end of the
 					selection that are included in the selection. 
 					A Span Selection MUST span at least two resources. (For continuous selections wholly contained within a single
-					resource, use a <a href="#RangeSelector_def">Range Selector</a>.) 
+					resource, use a <a href="https://www.w3.org/TR/annotation-model/#range-selector" class="externalDFN">Range Selector</a>.) 
 					In the absence of refinement, the selection consists of the member resource identified by the <code>startSelector</code> property
 					(the first resource in the selection), the member resource identified by the <code>endSelector</code> (the last resource
 					in the selection), and the intervening member resource(s) (in some ordering of the group) between the starting and ending member resources
@@ -875,7 +872,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 					</table>
 					
 					<p>
-						The text MUST be selected and normalized in the same way as for the <a href="#TextQuoteSelector_def">Text Quote Selector</a> before counting the number of characters to determine the <code>value</code> to be used.
+						The text MUST be selected and normalized in the same way as for the <a href="https://www.w3.org/TR/annotation-model/#text-quote-selector" class="externalDFN">Text Quote Selector</a> before counting the number of characters to determine the <code>value</code> to be used.
 					</p>
 				
 				<h4>Example</h4>
@@ -954,7 +951,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. 
 					He needs to generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to be inserted in one of the paragraphs he alone has been assigned to edit. 
 					He doesn't want to specify a text character count within the text stream representation of the entire HTML file, since he knows other edits are in progress that could affect that character count. 
-					So instead he uses a <a href="#CssSelector_def">CssSelector</a> to select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the paragraph where the insertion is needed.
+					So instead he uses a <a href="https://www.w3.org/TR/annotation-model/#css-selector" class="externalDFN">CssSelector</a> to select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the paragraph where the insertion is needed.
 				</p>
 				
 				<h4>Example</h4>
@@ -1011,7 +1008,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 						<ul>
 							<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
 							<li><a href="#SpanSelector_def">Span Selectors</a> identify a continuous selection that spans multiple embedded resources in some ordered reading of a collection or group of resources identified with a URL.</li>
-							<li><a href="#MultipleResourceSelector_def">Multiple Resource Selectors</a> identify a ordered list of discrete selections, whether within a single resource or spread over multiple embedded resources included in a collection or group of resources identified with a URL
+							<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a ordered list of discrete selections, whether within a single resource or spread over multiple embedded resources included in a collection or group of resources identified with a URL
 					</li>
 
 					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types have been added: 
