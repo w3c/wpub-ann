@@ -6,7 +6,7 @@ branches:
  
 env:
   global:
-    - URL="https://rawgit.com/w3c/publ-loc/publish_wd/snapshot/ECHIDNA"
+    - URL="https://rawgit.com/w3c/wpub-ann/publish_wd/snapshot/ECHIDNA"
     - DECISION="@@@@"
     - secure: "@@@@"
  

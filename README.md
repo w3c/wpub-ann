@@ -2,9 +2,9 @@
 
 ![W3C Logo](https://www.w3.org/Icons/w3c_home)
 
-# Locators for Web Publications
+# Web Annotation Extensions for Web Publications
 
-This is the repository of the W3C’s specification on Locators Web Publications, developed by the [Publishing Working Group](https://www.w3.org/publishing/groups/publ-wg/). The editors’ draft of the specification can also be [read directly](https://w3c.github.io/publ-loc/).
+This is the repository of the W3C’s specification on Web Annotation Extensions for Web Publications, developed by the [Publishing Working Group](https://www.w3.org/publishing/groups/publ-wg/). The editors’ draft of the specification can also be [read directly](https://w3c.github.io/wpub-ann/).
 
 ## Contributing to the Repository
 
