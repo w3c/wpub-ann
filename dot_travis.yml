@@ -8,7 +8,7 @@ env:
   global:
     - URL="https://rawgit.com/w3c/wpub-ann/publish_wd/snapshot/ECHIDNA"
     - DECISION="https://www.w3.org/publishing/groups/publ-wg/Meetings/Minutes/2017/2017-12-18-minutes#resolution2"
-    - secure: "@@@@"
+    - secure: "XciDF3XH/WOsG5ThGpo0kxd4miznBw9h24srnV6aj25hgeEx0D7Au9QIOzHFsn/f90dfLVUunlL/Toa+dA1NcSxb4c0BUGcMSW/uOoqEsloOdLayAqitYRp2ClAS9PYj6+So7qUMk4GprTM329mNO8HqEghFckHpDxmGw580EH8d8FEV1Xhf4KwQE1NMJFrvhKUFFxH/CIQPFmkC0LeAqv5SW7hy/s47AXnOdw+o/tKV5sgG3mkwtEjNx8MuKiAaionPAO+pt/ziDmSYZYrbUT/D6QYMDWQOQyUkRRWGaFqXN/NCgkibNyUivu/p/WBhziPXRqvu/Y/hlsM5uA/9XU/Uw/ysw7r+TWEbSP42s5CDWgXH24gQofdaKcfOYm7QZ+lyQ6Y9JGO6WPbYQYzPMBcnFxq4ceTDrYLNb7ejxO76+yFB71Nr4gf7T/Wdz5QKmF1vhjInpWO7ioX+7GFcfP9tHSj0qrAF8iCngkiJbvUtd7SvTpTocQr+ZC30p+ZxeABO3v/BXrVpurn/nTuTbePg6puSgLSlyUeHbWJvUVWjxUO7y4aRwXcn4j6FwRmu7lW3vEQStrLmfTQRqrvGxmL1Ss0Lf2xf9nDqleUhFx4iQ7D37iagtDcXIxFkPdjXYdYb3EpdLj07SQP7+AGkUJcayio99mf6TZpG25k68qI="
  
 script:
   - echo "ok"
