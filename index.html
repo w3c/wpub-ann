@@ -5,11 +5,13 @@
 		<title>Web Annotation Extensions for Web Publications</title>
 		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove" defer="defer"></script>
 		<script src="https://w3c.github.io/wpub/common/js/biblio.js" class="remove"></script>
+		<script src="common/js/orcid.js" class="remove"></script>
 		<link href="common/css/common.css" rel="stylesheet" type="text/css" />
 		<link href="extras.css" rel="stylesheet" type="text/css" />
 		<script class="remove">
 			// <![CDATA[
           	var respecConfig = {
+				postProcess: [show_orcid],
             	wg: "Publishing Working Group",
             	specStatus: "ED",
             	shortName: "wpub-ann",
@@ -24,25 +26,15 @@
                     	"company": "University of Illinois at Urbana-Champaign",
                     	"companyURL": "http://illinois.edu",
 						"w3cid": 53965,
-                    	"extras": [{
-                        	// "name": "<img src='https://orcid.org/sites/default/files/images/orcid_16x16.gif' alt='orcid logo'/>",
-                        	"name": "orcid",
-                        	"href": "https://orcid.org/0000-0002-5906-4581",
-                        	"class": "orcid"
-                      	}]
+						"orcid": "0000-0002-5906-4581"
                   	},
                   	{
                     	"name": "Ivan Herman",
                     	"url": "https://www.w3.org/People/Ivan/",
                     	"company": "W3C",
 						"w3cid": 7382,
-                    	"extras": [{
-                      		// "name": "<img src='https://orcid.org/sites/default/files/images/orcid_16x16.gif' alt='orcid logo'/>",
-                      		"name": "orcid",
-                      		"href": "http://orcid.org/0000-0003-0782-2704",
-                      		"class": "orcid"
-                    	}],
-                    	"companyURL": "http://www.w3.org",
+						"orcid": "0000-0003-0782-2704",
+                    	"companyURL": "http://www.w3.org"
                   	}
               	],
 				otherLinks: [{
@@ -78,93 +70,87 @@
 	</head>
 	<body>
 		<section id="abstract">
-			<p>
-				Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection techniques have 
-				been developed, usually in conjunction with the media type of the resource. 
-				Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], 
-				but that is not always the case.
-			</p>
+			<p> Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection
+				techniques have been developed, usually in conjunction with the media type of the resource. Often these
+				selections are expressed as <em>fragment identifiers</em>&#160;[[url]], but that is not always the case. </p>
 
-			<p>
-				This document relies on existing selection techniques, providing a <em>common model and syntax</em> defined by the Web Annotation Data Model&nbsp;[[!annotation-model]]. That specification developed a JSON-based approach to select targets or bodies of various types of Web Resources. 
-				This foundational model has been extended by adding selector types applicable to collective resources
-				and a new model component for describing positions in text and byte streams (see the <a href="#introduction">Introduction</a> 
-				for further details). 
-			</p>
-						
+			<p> This document relies on existing selection techniques, providing a <em>common model and syntax</em> defined
+				by the Web Annotation Data Model&#160;[[!annotation-model]]. That specification developed a JSON-based
+				approach to select targets or bodies of various types of Web Resources. This foundational model has been
+				extended by adding selector types applicable to collective resources and a new model component for describing
+				positions in text and byte streams (see the <a href="#introduction">Introduction</a> for further details). </p>
+
 			<p class="issue" data-number="27"></p>
 
 		</section>
-
-        <section id="sotd">
-		</section>
-
+		<section id="sotd"> </section>
 		<section id="conformance">
 
 			<section id="wa_extensions">
 				<h3>Handling Undefined JSON Properties</h3>
-				<p>
-					This specification relies on a subset of JSON terms originally defined as part of the Web Annotation Data Model&nbsp;[[!annotation-model]] and Vocabulary&nbsp;[[!annotation-vocab]]. 
-					This specification extends the definitions of some of these terms and 
-					defines additional terms in order to satisfy additional use cases, but all uses conforming to original definitions remain valid.
-					In order to ensure backward compatibility, implementations of this specification MAY ignore any JSON terms not defined in this specification 
-					(directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT treat as invalid any JSON term encountered that is not defined in this specification.
-				</p>
+				<p> This specification relies on a subset of JSON terms originally defined as part of the Web Annotation Data
+					Model&#160;[[!annotation-model]] and Vocabulary&#160;[[!annotation-vocab]]. This specification extends
+					the definitions of some of these terms and defines additional terms in order to satisfy additional use
+					cases, but all uses conforming to original definitions remain valid. In order to ensure backward
+					compatibility, implementations of this specification MAY ignore any JSON terms not defined in this
+					specification (directly or by reference to the Web Annotation Data Model and Vocabulary) and MUST NOT
+					treat as invalid any JSON term encountered that is not defined in this specification. </p>
 			</section>
 			<section>
 				<h3>Conformance requirements related to specific selectors</h3>
-				<p>
-					Not all Selectors defined in this specification are relevant for all resource media types.
-					A conforming implementation MAY therefore ignore a certain type of Selector when the corresponding media type(s) associated
-					with the Selector are not handled by that particular implementation.
-				</p>
+				<p> Not all Selectors defined in this specification are relevant for all resource media types. A conforming
+					implementation MAY therefore ignore a certain type of Selector when the corresponding media type(s)
+					associated with the Selector are not handled by that particular implementation. </p>
 			</section>
 
 		</section>
-
-        <section id="introduction" class=informative>
+		<section id="introduction" class="informative">
 			<h2>Introduction</h2>
-			
+
 			<section>
 				<h3>The Web Annotation Selection Model</h3>
-				<p>
-					Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, 
-					referencing a <em>position in</em> 
-					a resource representation is often necessary to support curation of and  discourse about Web resources. 
-					Interactive editing of a resource, highlighting an area on the screen, adding an annotation to a specific point 
-					in a resource, or defining a bookmark to a location or a section of a long document are all examples that 
-					involve selection or positioning within a resource.
-				</p>
-	
-				<p>
-					Over the years several techniques for selection have been developed, usually in conjunction with the media type of the resource.
-					These include referring to a unique identifier within a resource, defining a time interval for an audio or video track, 
-					identifying an element within the DOM tree for an XML source, or using CSS style elements to locate and select content.
-					Often these selections are expressed as <em>fragment identifiers</em>&nbsp;[[url]], but that is not always the case.
-				</p>
-	
-				<p>
-					This document relies on a selection technique defined by the Web Annotation Data Model&nbsp;[[!annotation-model]] providing a <em>common model and syntax</em> for such selections. 
-					That specification developed a formalism based on JSON&nbsp;[[json]] to select targets or bodies of various types of Web Resources. 
-					The model relies on the concepts of <em><a href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a JSON object the various ways selections have been defined for different media types, and <em><a href="https://www.w3.org/TR/annotation-model/#states">States</a></em>, encapsulating selections based on HTTP requests and responses.
-					The model also includes a way to <em>combine</em> and/or <em>refine</em> selections, a feature that may greatly improve the efficiency of applications relying on complex selections. 
-					A selection or a state <em>specifier</em>, as described in the original model and used in this document, may also have its own unique identity in the form of an URL.
-					This URL SHOULD be dereferencable and return the selection/state specifier definition itself.
-				</p>
-	
-				<p class="note">
-					Using the URL of the selection definition, instead of the reference to the “complete” resource could be seen as akin to a server side redirection, returning part of a resource.
-				</p>
-				
-				<p class="note">
-					The Web Annotation Working Group has also published a separate Working Group Note entitled “Selectors and States”&nbsp;[[selectors-states]]. 
-					That note extracts the selector model from the full Web Annotation Data Model&nbsp;[[annotation-model]] to make it more palatable for users who are not necessarily interested in other aspects of the Annotation Model.
-					Although normatively this specification refers to the [[!annotation-model]], readers should probably consult the [[selectors-states]] note for a better understanding of the underlying concepts. Note, however, that the [[selectors-states]] Working Group Note also includes a proposal for a fragment identifier syntax; that syntax has not been used in the current specification.
-				</p>
+				<p> Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, referencing a
+						<em>position in</em> a resource representation is often necessary to support curation of and
+					discourse about Web resources. Interactive editing of a resource, highlighting an area on the screen,
+					adding an annotation to a specific point in a resource, or defining a bookmark to a location or a section
+					of a long document are all examples that involve selection or positioning within a resource. </p>
+
+				<p> Over the years several techniques for selection have been developed, usually in conjunction with the
+					media type of the resource. These include referring to a unique identifier within a resource, defining a
+					time interval for an audio or video track, identifying an element within the DOM tree for an XML source,
+					or using CSS style elements to locate and select content. Often these selections are expressed as
+						<em>fragment identifiers</em>&#160;[[url]], but that is not always the case. </p>
+
+				<p> This document relies on a selection technique defined by the Web Annotation Data
+					Model&#160;[[!annotation-model]] providing a <em>common model and syntax</em> for such selections. That
+					specification developed a formalism based on JSON&#160;[[json]] to select targets or bodies of various
+					types of Web Resources. The model relies on the concepts of <em><a
+							href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a
+					JSON object the various ways selections have been defined for different media types, and <em><a
+							href="https://www.w3.org/TR/annotation-model/#states">States</a></em>, encapsulating selections
+					based on HTTP requests and responses. The model also includes a way to <em>combine</em> and/or
+						<em>refine</em> selections, a feature that may greatly improve the efficiency of applications relying
+					on complex selections. A selection or a state <em>specifier</em>, as described in the original model and
+					used in this document, may also have its own unique identity in the form of an URL. This URL SHOULD be
+					dereferencable and return the selection/state specifier definition itself. </p>
+
+				<p class="note"> Using the URL of the selection definition, instead of the reference to the “complete”
+					resource could be seen as akin to a server side redirection, returning part of a resource. </p>
+
+				<p class="note"> The Web Annotation Working Group has also published a separate Working Group Note entitled
+					“Selectors and States”&#160;[[selectors-states]]. That note extracts the selector model from the full Web
+					Annotation Data Model&#160;[[annotation-model]] to make it more palatable for users who are not
+					necessarily interested in other aspects of the Annotation Model. Although normatively this specification
+					refers to the [[!annotation-model]], readers should probably consult the [[selectors-states]] note for a
+					better understanding of the underlying concepts. Note, however, that the [[selectors-states]] Working
+					Group Note also includes a proposal for a fragment identifier syntax; that syntax has not been used in
+					the current specification. </p>
 
 				<h4>Examples</h4>
 
-				<p>The example below shows the usage of a <a href="https://www.w3.org/TR/annotation-model/#text-quote-selector">Text Quote Selector</a> referring to a specific portion of text in a resource:</p>
+				<p>The example below shows the usage of a <a
+						href="https://www.w3.org/TR/annotation-model/#text-quote-selector">Text Quote Selector</a> referring
+					to a specific portion of text in a resource:</p>
 
 				<pre class="example highlight" title="Text Quote Selector" id="TextQuoteSelector_ex">
 {
@@ -178,8 +164,9 @@
 }
 </pre>
 
-				<p>The next example shows the usage of refinement: specific portion of text is selected from a paragraph; the latter is identified via a “traditional” fragment identification.</p>
-        		<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
+				<p>The next example shows the usage of refinement: specific portion of text is selected from a paragraph; the
+					latter is identified via a “traditional” fragment identification.</p>
+				<pre class="example highlight" title="Selector Refinement" id="SelectorRefinement_ex">
 {
   "source": "http://example.org/page1",
   "selector": {
@@ -194,190 +181,230 @@
   }
 }</pre>
 
-				<p class=note>
-					See the [[selectors-states]] Note for more examples for the usage of the Web Annotation Model for selection.
-				</p>
+				<p class="note"> See the [[selectors-states]] Note for more examples for the usage of the Web Annotation
+					Model for selection. </p>
 			</section>
 
 			<section>
 				<h3>Extensions of the Web Annotation Approach</h3>
 
-				<p>
-					The approach defined by the [[annotation-model]] has been extended in this specification by adding selector types applicable to collective resources and a new model component for describing positions in text and byte streams. 
-					It provides methods for selecting a segment of a collective resource (e.g., a “Web Publication”&nbsp;[[wpub]])
-					that itself <em>contains</em> or is <em>composed of</em> other discrete and individually identifiable resources, 
-					even when the segment of interest spans parts of more than one included resource. 
-					The common model for selection as described in this specification makes it easier to provide generic and interoperable tools and APIs to handle selections in various applications.
-				</p>
-	
-				<p>
-					More specifically, this document extends the Web Annotation Data Model by <em>adding</em> three new selectors, namely:
-				</p>
-	
+				<p> The approach defined by the [[annotation-model]] has been extended in this specification by adding
+					selector types applicable to collective resources and a new model component for describing positions in
+					text and byte streams. It provides methods for selecting a segment of a collective resource (e.g., a “Web
+					Publication”&#160;[[wpub]]) that itself <em>contains</em> or is <em>composed of</em> other discrete and
+					individually identifiable resources, even when the segment of interest spans parts of more than one
+					included resource. The common model for selection as described in this specification makes it easier to
+					provide generic and interoperable tools and APIs to handle selections in various applications. </p>
+
+				<p> More specifically, this document extends the Web Annotation Data Model by <em>adding</em> three new
+					selectors, namely: </p>
+
 				<ul>
-					<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource from a collection or group of resources collectively identified with a URL;</li>
-					<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment Identifiers</a></li>
-					<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive resources in an ordered group or collection of resources, e.g, a “Web Publication”&nbsp;[[wpub]].</li>
-					<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete selections, whether within the same resource or spread over several resources.</li>
+					<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full
+						resource from a collection or group of resources collectively identified with a URL;</li>
+					<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment
+							Identifiers</a></li>
+					<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive
+						resources in an ordered group or collection of resources, e.g, a “Web
+						Publication”&#160;[[wpub]].</li>
+					<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete
+						selections, whether within the same resource or spread over several resources.</li>
 				</ul>
-	
-				<p>
-					These changes aim at addressing the particular requirements of resource collections on the Web, like Web Applications or Web Publications&nbsp;[[wpub]].
-				</p>
-				
-				<p>
-					Additionally the current document augments the Web Annotation Data Model of selectors and states with a new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined:
-				</p>
-				
-					<ul>
-					<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
-					<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
+
+				<p> These changes aim at addressing the particular requirements of resource collections on the Web, like Web
+					Applications or Web Publications&#160;[[wpub]]. </p>
+
+				<p> Additionally the current document augments the Web Annotation Data Model of selectors and states with a
+					new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined: </p>
+
+				<ul>
+					<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a
+						text stream representation of a resource.</li>
+					<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a
+						byte stream representation of a resource.</li>
 				</ul>
-	
-				<p>Although defined in conjunction with Web Publications, the techniques described in this document can be used for any type of 
-					Web Resource.
-				</p> 
-				
+
+				<p>Although defined in conjunction with Web Publications, the techniques described in this document can be
+					used for any type of Web Resource. </p>
+
 			</section>
 
-            <section class=normative id="terminology">
+			<section class="normative" id="terminology">
 				<h3>Terminology</h3>
 
 				<p><em>This section is normative</em></p>
-				
-				<p>
-					Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking on the Web”&nbsp;[[!publishing-linking]], including, in particular, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
-					Furthermore, the document also relies on some additional terms defined by the “Web Publication”&nbsp;[[wpub]], including a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url" class="externalDFN">URL</a>.
-				</p>
-			
-                <dl>
+
+				<p> Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking
+					on the Web”&#160;[[!publishing-linking]], including, in particular, <a class="externalDFN"
+						href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN"
+						href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a
+						class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a
+						class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
+					Furthermore, the document also relies on some additional terms defined by the “Web
+					Publication”&#160;[[wpub]], including a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url"
+						class="externalDFN">URL</a>. </p>
+
+				<dl>
 					<dt><dfn data-lt="Resource|Resources">Resource</dfn></dt>
-					<dd>An item of interest that MAY be identified by a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
+					<dd>An item of interest that MAY be identified by a <a
+							href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Web Resource|Web Resources">Web Resource</dfn></dt>
-					<dd>A <a>Resource</a> that MUST be identified by a <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>, as described in the Web Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
+					<dd>A <a>Resource</a> that MUST be identified by a <a
+							href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>, as described in the Web
+						Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn>Locator</dfn></dt>
-					<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a <code>source</code> term, and MAY express a contextual relationship to an additional <a>Web Resource</a> through a <code>scope</code> term. The original [[!annotation-model]] document used the term <a href="https://www.w3.org/TR/annotation-model/#specific-resources" class="externalDFN">Specific Resource</a> as a generic term encompassing usages that go beyond selection. This specification uses the term “Locator” as an alias.
-					 </dd>
+					<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator
+						expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a
+							<code>source</code> term, and MAY express a contextual relationship to an additional <a>Web
+							Resource</a> through a <code>scope</code> term. The original [[!annotation-model]] document used
+						the term <a href="https://www.w3.org/TR/annotation-model/#specific-resources" class="externalDFN"
+							>Specific Resource</a> as a generic term encompassing usages that go beyond selection. This
+						specification uses the term “Locator” as an alias. </dd>
 
 					<dt><dfn data-lt="Sources">Source</dfn></dt>
-                	<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s).</dd>
+					<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector"
+							>Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN"
+							href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s).</dd>
 
 					<dt><dfn data-lt="segment">Segment (of Interest)</dfn></dt>
-					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a> specifier.</dd>
+					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a>
+						specifier.</dd>
 
 					<dt><dfn data-lt="locus">Locus (of Interest)</dfn></dt>
-					<dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a> specifier.</dd>
-                	
-		           <dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>                	
-					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page, image, or video. External Web Resources are dereferencable from their <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
+					<dd>The location in the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Position</a>
+						specifier.</dd>
+
+					<dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>
+					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page,
+						image, or video. External Web Resources are dereferencable from their <a
+							href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
-					<dd>A feature of a <a>Resource</a>, that often has a particular data type.  In the model sections, the term “Property” is used to refer to only those features which are <em>not</em> <a>Relationships</a> and instead have a literal value such as a string, integer, or date.  The valid values for a Property are thus any data type other than object, or an array containing members of that data type if more than one is allowed.</dd>
+					<dd>A feature of a <a>Resource</a>, that often has a particular data type. In the model sections, the
+						term “Property” is used to refer to only those features which are <em>not</em>
+						<a>Relationships</a> and instead have a literal value such as a string, integer, or date. The valid
+						values for a Property are thus any data type other than object, or an array containing members of
+						that data type if more than one is allowed.</dd>
 
 					<dt><dfn data-lt="Relationship|Relationships">Relationship</dfn></dt>
-					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> or by including a description of the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string containing a URL, an object that has the “id” property, or an array containing either of these if more than one is allowed.</dd>
+					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to
+						other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a
+							href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> or by including a description of
+						the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string
+						containing a URL, an object that has the “id” property, or an array containing either of these if
+						more than one is allowed.</dd>
 
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
-                	<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document) denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier.</dd>
-                </dl>
+					<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document)
+						denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position"
+							>Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states"
+							>State</a> specifier.</dd>
+				</dl>
 
 			</section>
-        </section>
-
-        <section id="locators">
+		</section>
+		<section id="locators">
 			<h3>Locators</h3>
-			
-			<p class=note>This term is formally defined in the [[!annotation-model]]; this (somewhat shortened) specification is a provided as a convenient reference only. Note, however, that the Position Specifier is <em>not</em> part of the original specification, and has been added by this specification.</p>
 
-            <p>
-            	A <a>Resource</a> that specifies a location in or a portion of another <a>Web Resource</a>. 
-				It does this using <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be any of:
-			</p>
+			<p class="note">This term is formally defined in the [[!annotation-model]]; this (somewhat shortened)
+				specification is a provided as a convenient reference only. Note, however, that the Position Specifier is
+					<em>not</em> part of the original specification, and has been added by this specification.</p>
 
-            <ul>
-              	<li><a>Selector</a>: Describes the desired segment of interest in the source</li>
-            	<li><a>Position</a>: Describes the desired locus of interest in the source</li>
-            </ul>
+			<p> A <a>Resource</a> that specifies a location in or a portion of another <a>Web Resource</a>. It does this
+				using <dfn data-lt="Specifiers|Specifier">Specifiers</dfn> that can be any of: </p>
 
-            <p>
-				Specifiers MAY be External Web Resources with their own URLs, such as in the example for the <a href="#selectors">Selector</a> construction, however it is RECOMMENDED that they be included in full within the Locator representation to avoid requiring unnecessary network interactions to retrieve all of the information.
-			</p>
-			
-            <h4>Model</h4>
+			<ul>
+				<li><a>Selector</a>: Describes the desired segment of interest in the source</li>
+				<li><a>Position</a>: Describes the desired locus of interest in the source</li>
+			</ul>
 
-            <table class="model">
-                <tr><th>Term</th><th>Type</th><th>Description</th></tr>
-                <tr>
-                    <td>id</td>
-                    <td>Property</td>
-                    <td>The identity of the Locator<br/> A Locator SHOULD have exactly 1 URL that identifies it.</td>
-                </tr>
-                <tr>
-                    <td>source</td>
-                    <td>Relationship</td>
-                    <td>The relationship between a Locator and the resource that it is a more specific representation of, i.e., the <a>Source</a>.
-                    	<br/>There MUST be exactly 1 <code>source</code> relationship associated with a Locator.  The source resource MAY be described in detail as discussed in the Web Annotation Data Model&nbsp;[[!annotation-model]] or it MAY simply be identified by the resource’s URL.</td>
+			<p> Specifiers MAY be External Web Resources with their own URLs, such as in the example for the <a
+					href="#selectors">Selector</a> construction, however it is RECOMMENDED that they be included in full
+				within the Locator representation to avoid requiring unnecessary network interactions to retrieve all of the
+				information. </p>
+
+			<h4>Model</h4>
+
+			<table class="model">
+				<tr>
+					<th>Term</th>
+					<th>Type</th>
+					<th>Description</th>
 				</tr>
-                <tr>
-                    <td>scope</td>
-                    <td>Relationship</td>
-                    <td>The relationship between a Locator and an additional resource other than the <code>source</code> that 
-                    	provides scope or context for the Locator.<br/>
-						There MAY be 0 or more scope relationships for each Locator. When the <code>source</code>
-                    	is part of a group or collection of resources that has its own URL, <code>scope</code> MAY be used to 
-                    	record this URL.</td>
+				<tr>
+					<td>id</td>
+					<td>Property</td>
+					<td>The identity of the Locator<br /> A Locator SHOULD have exactly 1 URL that identifies it.</td>
+				</tr>
+				<tr>
+					<td>source</td>
+					<td>Relationship</td>
+					<td>The relationship between a Locator and the resource that it is a more specific representation of,
+						i.e., the <a>Source</a>. <br />There MUST be exactly 1 <code>source</code> relationship associated
+						with a Locator. The source resource MAY be described in detail as discussed in the Web Annotation
+						Data Model&#160;[[!annotation-model]] or it MAY simply be identified by the resource’s URL.</td>
+				</tr>
+				<tr>
+					<td>scope</td>
+					<td>Relationship</td>
+					<td>The relationship between a Locator and an additional resource other than the <code>source</code> that
+						provides scope or context for the Locator.<br /> There MAY be 0 or more scope relationships for each
+						Locator. When the <code>source</code> is part of a group or collection of resources that has its own
+						URL, <code>scope</code> MAY be used to record this URL.</td>
 				</tr>
 			</table>
 
-        </section>
+		</section>
+		<section id="selectors" class="informative">
+			<h3>Selectors</h3>
 
-        <section id="selectors" class="informative">
-            <h3>Selectors</h3>
-			
-			<p class=note>This term is formally defined in the [[!annotation-model]]; this (somewhat shortened) specification is provided as a convenient reference only.</p>
-     	<p class="ednote">The definition of 'Selector' as used in this specification differs from the normative definition of the term in [[!css3-selectors]]. The text / terminology in this specification regarding Selectors may need to be revised.</p>			
-        	<p class="issue" data-number="40"></p>
-        	<p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
+			<p class="note">This term is formally defined in the [[!annotation-model]]; this (somewhat shortened)
+				specification is provided as a convenient reference only.</p>
+			<p class="ednote">The definition of 'Selector' as used in this specification differs from the normative
+				definition of the term in [[!css3-selectors]]. The text / terminology in this specification regarding
+				Selectors may need to be revised.</p>
+			<p class="issue" data-number="40"></p>
+			<p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
 
-            <ol>
-                <li>
-                	the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; we will refer to this as the <a>Source</a> (see <a>Locator</a>).
-				</li>
-                <li>
-					the identification for the part of that resource; we will refer to this as the <a data-lt="segment">Segment (of Interest)</a>.
-				</li>
-            </ol>
+			<ol>
+				<li> the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; we will
+					refer to this as the <a>Source</a> (see <a>Locator</a>). </li>
+				<li> the identification for the part of that resource; we will refer to this as the <a data-lt="segment"
+						>Segment (of Interest)</a>. </li>
+			</ol>
 
-            <p>
-				A <dfn data-lt="Selectors">Selector</dfn> specifies how to determine the <a>Segment</a> from within the <a>Source</a> resource.
-				The nature of the Selector is dependent on the selection technique chosen (which determines the class of the Selector) and the media-type of the Source, as the methods to describe Segments from various media-types differ. 
-				The Source and the Selector(s) are encapsulated in a <a>Locator</a>.
-			</p>
+			<p> A <dfn data-lt="Selectors">Selector</dfn> specifies how to determine the <a>Segment</a> from within the
+					<a>Source</a> resource. The nature of the Selector is dependent on the selection technique chosen (which
+				determines the class of the Selector) and the media-type of the Source, as the methods to describe Segments
+				from various media-types differ. The Source and the Selector(s) are encapsulated in a <a>Locator</a>. </p>
 
-            <p>
-				<b>Example Use Case:</b> Qitara wants to associate a selection of text in a web page with a slice of a dataset.
-				She selects both using her client, and creates Locators with Selectors for both entities before associating them with one another.
-			</p>
+			<p>
+				<b>Example Use Case:</b> Qitara wants to associate a selection of text in a web page with a slice of a
+				dataset. She selects both using her client, and creates Locators with Selectors for both entities before
+				associating them with one another. </p>
 
-            <h4>Model</h4>
+			<h4>Model</h4>
 
-            <table class="model">
-                <tr><th>Term</th><th>Type</th><th>Description</th></tr>
-                <tr>
-                    <td>selector</td>
-                    <td>Relationship</td>
-                    <td>The relationship between a Locator and a Selector.
-						<br/>There MAY be 0 or more <code>selector</code> relationships associated with a Locator. 
-						Multiple Selectors SHOULD select the same content, however some Selectors will not have the same precision as others.
-						User Agents MUST pick one of the described <a data-lt="segment">segments</a>, if they are different.
-                    </td>
-                </tr>
+			<table class="model">
+				<tr>
+					<th>Term</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>selector</td>
+					<td>Relationship</td>
+					<td>The relationship between a Locator and a Selector. <br />There MAY be 0 or more <code>selector</code>
+						relationships associated with a Locator. Multiple Selectors SHOULD select the same content, however
+						some Selectors will not have the same precision as others. User Agents MUST pick one of the described
+							<a data-lt="segment">segments</a>, if they are different. </td>
+				</tr>
 			</table>
-            <h4>Example</h4>
+			<h4>Example</h4>
 
-            <pre class="example highlight" title="Selectors">
+			<pre class="example highlight" title="Selectors">
 			{
 			  "source": "http://example.org/page1",
 			  "selector": "http://example.org/paraselector1"
@@ -390,36 +417,42 @@
 
 				<p><em>This section is normative</em></p>
 
+				<p> For some use cases it is required to identify a resource that is part of a collection or group of
+					resources, where that collection has its own identity on the Web (and can be identified via its own URL).
+					An example is selecting a resource that is a chapter of a Web Publication [[!wpub]] or Packaged Web
+					Publication&#160;[[!pwpub]]. Given the URL of such a collective resource as the value of
+						<code>source</code>, an Embedded Resource Selector can be used to select and identify an item within
+					the collection, e.g., the chapter, through its <code>value</code> relationship. This Selector is usually
+					used in conjunction with additional Selectors, e.g., through <a
+						href="https://www.w3.org/TR/annotation-model/#refinement-of-selection" class="externalDFN"
+						>refinement</a>. </p>
+
 				<p>
-					For some use cases it is required to identify a resource that is part of a collection or group of resources, 
-					where that collection has its own identity on the Web (and can be identified via its own URL). 
-					An example is selecting a resource that is a chapter of a Web Publication [[!wpub]] or Packaged Web Publication&nbsp;[[!pwpub]].
-					Given the URL of such a collective resource as the value of <code>source</code>, an Embedded Resource 
-					Selector can be used to select and identify an item within the collection, e.g., the chapter, through 
-					its <code>value</code> relationship.
-					This Selector is usually used in conjunction with additional Selectors, e.g., through 
-					<a href="https://www.w3.org/TR/annotation-model/#refinement-of-selection" class="externalDFN">refinement</a>.
-				</p>
-				
-				<p>
-					<b>Example Use Case:</b> Janine wants to select the cover image of a Web Publication, which is linked to the Web Publication as a whole.
-					She uses an Embedded Resource Selector to designate the image, with the Web Publication’s address as the <a>Source</a> for the selector. 
-				</p>
-	
+					<b>Example Use Case:</b> Janine wants to select the cover image of a Web Publication, which is linked to
+					the Web Publication as a whole. She uses an Embedded Resource Selector to designate the image, with the
+					Web Publication’s address as the <a>Source</a> for the selector. </p>
+
 				<h4>Model</h4>
 
 				<table class="model">
-					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<th>Term</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
 					<tr>
 						<td>type</td>
 						<td>Relationship</td>
-						<td>The class of the Selector.<br/>Range Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>EmbeddedResourceSelector</code>.</td>
+						<td>The class of the Selector.<br />Range Selectors MUST have exactly 1 <code>type</code> and the
+							value MUST be <code>EmbeddedResourceSelector</code>.</td>
 					</tr>
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
-						<td>The URL&nbsp;[[!url]] of the resource within the collection or group of resources identified by the <a>Source</a>.<br/>An EmbeddedResourceSelector MUST have exactly 1 <code>value</code> property.<br/>
-						The URL MAY be a relative URL, with the value of <a>Source</a> serving as a base URL.</td>
+						<td>The URL&#160;[[!url]] of the resource within the collection or group of resources identified by
+							the <a>Source</a>.<br />An EmbeddedResourceSelector MUST have exactly 1 <code>value</code>
+							property.<br /> The URL MAY be a relative URL, with the value of <a>Source</a> serving as a base
+							URL.</td>
 					</tr>
 				</table>
 
@@ -433,10 +466,9 @@
   }
 }				</pre>
 
-				<p>
-					A frequent usage of refinement is in combination with an <a href="#EmbeddedResourceSelector_def">Embedded Resource Selector</a> to denote the fact that a particular selection is related to, e.g., a Web Publication.
-					For example:
-				</p> 
+				<p> A frequent usage of refinement is in combination with an <a href="#EmbeddedResourceSelector_def">Embedded
+						Resource Selector</a> to denote the fact that a particular selection is related to, e.g., a Web
+					Publication. For example: </p>
 
 				<pre class="example highlight" title="Refined Embedded Resource Selector" id="RefinedEmbeddedResourceSelector_ex">
 {
@@ -451,53 +483,56 @@
   }
 }	</pre>
 
-				<p>
-					Note the usage of a relative URL in the example; it is considered to be good practice to use relative URL, when applicable.
-				</p>
-				
-				<p class=issue data-number=12></p>
-										
-        		<section id="ErsFragmentId_def" class="normative">
-        			<h3>Embedded Resource Selector serialized as a fragment identifier</h3>
-        			<p><em>This section is normative</em></p>
-        		
-					<p class="ednote">
-						This section is predicated on the assumption that Packaged Web Publications (PWPs) rely on a packaging format of a media type intended exclusively for packaging PWPs or only for packaging PWPs and EPUBs. If the Working Group decides that PWPs should be packaged using a more generic packaging format with a more generally used media type, 
-						or if the Group for any other reason decides not to pursue registering this fragment identifier scheme, then this section (including subsection) should be removed.  							
-					</p>						
+				<p> Note the usage of a relative URL in the example; it is considered to be good practice to use relative
+					URL, when applicable. </p>
+
+				<p class="issue" data-number="12"></p>
+
+				<section id="ErsFragmentId_def" class="normative">
+					<h3>Embedded Resource Selector serialized as a fragment identifier</h3>
+					<p><em>This section is normative</em></p>
+
+					<p class="ednote"> This section is predicated on the assumption that Packaged Web Publications (PWPs)
+						rely on a packaging format of a media type intended exclusively for packaging PWPs or only for
+						packaging PWPs and EPUBs. If the Working Group decides that PWPs should be packaged using a more
+						generic packaging format with a more generally used media type, or if the Group for any other reason
+						decides not to pursue registering this fragment identifier scheme, then this section (including
+						subsection) should be removed. </p>
 					<p class="issue" data-number="6"></p>
-					
-					<p>
-						For some simple use cases involving Packaged Web Publications, it may be more convenient or more consistent with past practice to express a simple Embedded Resource selection as a fragment identifier&nbsp;[[url]] that can be appended to the URL of the collective resource, i.e., the <code>source</code> associated with the Embedded Resource selection. 
-						(An informative precedent for this approach is the International Digital Publishing Forum  Recommended Specification, <em>EPUB Canonical Fragment Identifiers 1.1</em>&nbsp;[[cfi]], which defines a fragment identifier serialized model for selecting and positioning	within resources of the <code>application/epub+zip</code> media type.) 
-					</p>
-        		
-        			<p>
-						A mapping for serializing simple Embedded Resource selections as fragment identifiers is defined below.	
-						This mapping allows the <a>Segment (of interest)</a> to be expressed in a single URL. 
-						Note that this mapping is valid only if the URL of the <a>Source</a> is the URL of a Packaged Web Publication and does not itself already include a fragment identifier of its own.
-					 </p>
-					 
-					<p>
-						An Embedded Resource Selector is serialized as a fragment identifier using a function-like syntax, i.e.: 
-					</p>
-        		
+
+					<p> For some simple use cases involving Packaged Web Publications, it may be more convenient or more
+						consistent with past practice to express a simple Embedded Resource selection as a fragment
+						identifier&#160;[[url]] that can be appended to the URL of the collective resource, i.e., the
+							<code>source</code> associated with the Embedded Resource selection. (An informative precedent
+						for this approach is the International Digital Publishing Forum Recommended Specification, <em>EPUB
+							Canonical Fragment Identifiers 1.1</em>&#160;[[cfi]], which defines a fragment identifier
+						serialized model for selecting and positioning within resources of the
+							<code>application/epub+zip</code> media type.) </p>
+
+					<p> A mapping for serializing simple Embedded Resource selections as fragment identifiers is defined
+						below. This mapping allows the <a>Segment (of interest)</a> to be expressed in a single URL. Note
+						that this mapping is valid only if the URL of the <a>Source</a> is the URL of a Packaged Web
+						Publication and does not itself already include a fragment identifier of its own. </p>
+
+					<p> An Embedded Resource Selector is serialized as a fragment identifier using a function-like syntax,
+						i.e.: </p>
+
 					<ul>
-						<li>The <code>source</code> for the selection is the base URL to which a <code>#</code> character is appended.</li>
-						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single 'parameter' enclosed in parentheses.</li>
-						<li>
-							The single 'parameter' of the function-like notation is a URL&nbsp;[[!url]], i.e., the <code>value</code> from the JSON serialization of the Embedded Resource Selector. 
-							The parameter MAY be an absolute URL or relative to the base URL.
-						</li>
+						<li>The <code>source</code> for the selection is the base URL to which a <code>#</code> character is
+							appended.</li>
+						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single
+							'parameter' enclosed in parentheses.</li>
+						<li> The single 'parameter' of the function-like notation is a URL&#160;[[!url]], i.e., the
+								<code>value</code> from the JSON serialization of the Embedded Resource Selector. The
+							parameter MAY be an absolute URL or relative to the base URL. </li>
 					</ul>
 
-        			<p>
-						The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent encoded&nbsp;[[!rfc3986]]. 
-						The encoding is a MUST for characters that may make the URL ambiguous, namely:
-        			</p>
-        		
+					<p> The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent
+						encoded&#160;[[!rfc3986]]. The encoding is a MUST for characters that may make the URL ambiguous,
+						namely: </p>
+
 					<!-- should be <table class="data"> but the stylesheet has issues.... -->
-					<table >
+					<table>
 						<thead>
 							<tr>
 								<td><strong>character</strong></td>
@@ -523,27 +558,30 @@
 							</tr>
 						</tbody>
 					</table>
-        		
-        			<p class="note">
-						A fragment identifier is defined for a specific media type. 
-						This means that, formally, the fragment identifier syntax and semantics defined in this section must be registered for any PWP media type(s) by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
-        				Until such a registration is done, these fragment identifiers have the potential to conflict with other fragment identifier schemes specified by media type registrations.
-					</p>
+
+					<p class="note"> A fragment identifier is defined for a specific media type. This means that, formally,
+						the fragment identifier syntax and semantics defined in this section must be registered for any PWP
+						media type(s) by <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
+						Until such a registration is done, these fragment identifiers have the potential to conflict with
+						other fragment identifier schemes specified by media type registrations. </p>
 
 					<h4>Example</h4>
 
-					<p>The example below is semantically equivalent to the <a href="#EmbeddedResourceSelector_ex">example</a> on the usage of an Embedded Resource Selector:</p>
+					<p>The example below is semantically equivalent to the <a href="#EmbeddedResourceSelector_ex">example</a>
+						on the usage of an Embedded Resource Selector:</p>
 
 					<pre class="example highlight" title="Embedded Resource used with refinement reformulated as a fragment identifier" id="EmbeddedResourceSelector_fragId_ex">
 https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
   https://dauwhe.github.io/html-first/MobyDickNav/images/cover.jpg)
-</pre>		
+</pre>
 
-					<p>
-						(A new line character has been introduced into the Example above to facilitate readability; in real usage such new line characters are not allowed in a URL.)
-					</p>
+					<p> (A new line character has been introduced into the Example above to facilitate readability; in real
+						usage such new line characters are not allowed in a URL.) </p>
 
-					<p>The usage of a fragment identifier may also make the usage of explicit refinement unnecessary. The example below, which incidentally uses a relative rather than absolute URL, is semantically equivalent to the <a href="#RefinedEmbeddedResourceSelector_ex">example</a> combining an embedded resource selector with refinement:</p>
+					<p>The usage of a fragment identifier may also make the usage of explicit refinement unnecessary. The
+						example below, which incidentally uses a relative rather than absolute URL, is semantically
+						equivalent to the <a href="#RefinedEmbeddedResourceSelector_ex">example</a> combining an embedded
+						resource selector with refinement:</p>
 
 					<pre class="example highlight" title="Refinement of an embedded resource expressed with a fragment identifier" id="#Refinement_with_fragId_ex">
 {
@@ -554,22 +592,22 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
   }
 }	
 					</pre>
-					
-            		<section id="ErsFragIdRefinement" class="informative">
-           				<h4>Refinement of ERS fragment identifiers</h4>
-						<p>
-							The fragment identifier serialization mapping of Embedded Resource Selectors generally does not support refinement, except that the URL 'fragment' may include its own fragment identifier, appropriate to the media type of the resource identified by the URL.  
-							The following example illustrates such a pattern. (To increase readability, the percent encoding has been omitted from the example.)
-						</p>
-        		
+
+					<section id="ErsFragIdRefinement" class="informative">
+						<h4>Refinement of ERS fragment identifiers</h4>
+						<p> The fragment identifier serialization mapping of Embedded Resource Selectors generally does not
+							support refinement, except that the URL 'fragment' may include its own fragment identifier,
+							appropriate to the media type of the resource identified by the URL. The following example
+							illustrates such a pattern. (To increase readability, the percent encoding has been omitted from
+							the example.) </p>
+
 						<pre class="example highlight" title="Refined Embedded Resource Selector as Fragment Identifier" id="RefinedEmbeddedResourceSelector_fragId_ex">
-https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>	        		
-						<p>
-							The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note that the link
-							to the Media Fragments URI 1.0 Recommendation [[!media-frags]] cannot be mapped to the fragment identifier serialization, so the mapping is not entirely lossless.
-						</p>
-        		
-	        			<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
+https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>
+						<p> The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note
+							that the link to the Media Fragments URI 1.0 Recommendation [[!media-frags]] cannot be mapped to
+							the fragment identifier serialization, so the mapping is not entirely lossless. </p>
+
+						<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
   "source": "https://dauwhe.github.io/html-first/MobyDick.pwpub",
   "selector": {
     "type": "EmbeddedResourceSelector",
@@ -581,7 +619,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
     }		
   }
 }   </pre>
-           			</section>
+					</section>
 				</section>
 			</section>
 
@@ -589,72 +627,82 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 				<h3>Span Selector</h3>
 
 				<p><em>This section is normative</em></p>
-				
-				<p>
-					Selections from a group of resources, e.g., the group of resources which comprise a Web Publication&nbsp;[[!wpub]]), may be extensive 
-					and may span member resource boundaries. For resource-spanning selections that are continuous in some ordering of the group of resources, a
-					Span Selector can be used to identify the beginning and the end of the selection using <a href="#EmbeddedResourceSelector_def">Embedded Resource
-					Selectors</a>, refined as appropriate. Embedded Resource Selectors (without refinement) are also used in enumerating any intervening resources between the beginning and end of the
-					selection that are included in the selection. 
-					A Span Selection MUST span at least two resources. (For continuous selections wholly contained within a single
-					resource, use a <a href="https://www.w3.org/TR/annotation-model/#range-selector" class="externalDFN">Range Selector</a>.) 
-					In the absence of refinement, the selection consists of the member resource identified by the <code>startSelector</code> property
-					(the first resource in the selection), the member resource identified by the <code>endSelector</code> (the last resource
-					in the selection), and the intervening member resource(s) (in some ordering of the group) between the starting and ending member resources
-					as enumerated by the <code>selectors</code> property. 
-					If the <code>startSelector</code> is refined with another selector, then only the part of the first resource from the 
-					start of the refined selection to that resource's end (i.e., including what is identified by refinement)
-					is included in the span selection. If the <code>endSelector</code> is refined with another selector, then only the part of the 
-					last resource prior to the start of the refined selection (i.e., excluding what is identified by refinement) 
-					is included in the selection.
-				</p>
 
-				<p class=note>The ordering of resources does <em>not</em> make use of external features, like the default reading order in a Web Publication&nbsp;[[wpub]]. The order is exclusively established via the <code>selectors</code> property.</p>
-				
+				<p> Selections from a group of resources, e.g., the group of resources which comprise a Web
+					Publication&#160;[[!wpub]]), may be extensive and may span member resource boundaries. For
+					resource-spanning selections that are continuous in some ordering of the group of resources, a Span
+					Selector can be used to identify the beginning and the end of the selection using <a
+						href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, refined as appropriate.
+					Embedded Resource Selectors (without refinement) are also used in enumerating any intervening resources
+					between the beginning and end of the selection that are included in the selection. A Span Selection MUST
+					span at least two resources. (For continuous selections wholly contained within a single resource, use a
+						<a href="https://www.w3.org/TR/annotation-model/#range-selector" class="externalDFN">Range
+						Selector</a>.) In the absence of refinement, the selection consists of the member resource identified
+					by the <code>startSelector</code> property (the first resource in the selection), the member resource
+					identified by the <code>endSelector</code> (the last resource in the selection), and the intervening
+					member resource(s) (in some ordering of the group) between the starting and ending member resources as
+					enumerated by the <code>selectors</code> property. If the <code>startSelector</code> is refined with
+					another selector, then only the part of the first resource from the start of the refined selection to
+					that resource's end (i.e., including what is identified by refinement) is included in the span selection.
+					If the <code>endSelector</code> is refined with another selector, then only the part of the last resource
+					prior to the start of the refined selection (i.e., excluding what is identified by refinement) is
+					included in the selection. </p>
+
+				<p class="note">The ordering of resources does <em>not</em> make use of external features, like the default
+					reading order in a Web Publication&#160;[[wpub]]. The order is exclusively established via the
+						<code>selectors</code> property.</p>
+
 				<p>
-					<b>Example Use Case:</b> Misha wants to comment on text in a Web Publication that spreads over <em>several constituent resources</em>.
-					He selects the start and the end of the selection in different of those resources; his User Agent calculates the Span Selector using a 
-					series of Embedded Resource Selections from the first selection as a start and the last selector as the end to provide a continuous span.
-				</p>
+					<b>Example Use Case:</b> Misha wants to comment on text in a Web Publication that spreads over
+						<em>several constituent resources</em>. He selects the start and the end of the selection in
+					different of those resources; his User Agent calculates the Span Selector using a series of Embedded
+					Resource Selections from the first selection as a start and the last selector as the end to provide a
+					continuous span. </p>
 
 				<h4>Model</h4>
 
 				<table class="model">
-					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<th>Term</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
 					<tr>
 						<td>type</td>
 						<td>Relationship</td>
-						<td>The class of the Selector.<br/>Span Selectors MUST have exactly 1 <code>type</code> and the value MUST 
-							be <code>SpanSelector</code>.</td>
+						<td>The class of the Selector.<br />Span Selectors MUST have exactly 1 <code>type</code> and the
+							value MUST be <code>SpanSelector</code>.</td>
 					</tr>
 					<tr>
 						<td>startSelector</td>
 						<td>Relationship</td>
-						<td>The Selector which describes the inclusive starting point of the span. <br/>There MUST be exactly 1 <code>startSelector</code> 
-							associated with a Span Selector and it MUST be an Embedded Resource Selector, which MAY be refined with other selectors.</td>
+						<td>The Selector which describes the inclusive starting point of the span. <br />There MUST be
+							exactly 1 <code>startSelector</code> associated with a Span Selector and it MUST be an Embedded
+							Resource Selector, which MAY be refined with other selectors.</td>
 					</tr>
 					<tr>
 						<td>selectors</td>
 						<td>Relationship</td>
-						<td>Provides an ordered, possibly empty, list of <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, 
-							which identify intermediate resources subsumed in the full selection. These Embedded Resource Selectors
-							MUST NOT be refined with other selectors.
-						<br/>There MAY at most 1 <code>selectors</code> relationship associated with a Span Selector. In the absence of a <code>selectors</code>
-						relationship, a user agent SHOULD assume that the start and end resources are contiguous.</td>
-					</tr>					
+						<td>Provides an ordered, possibly empty, list of <a href="#EmbeddedResourceSelector_def">Embedded
+								Resource Selectors</a>, which identify intermediate resources subsumed in the full selection.
+							These Embedded Resource Selectors MUST NOT be refined with other selectors. <br />There MAY at
+							most 1 <code>selectors</code> relationship associated with a Span Selector. In the absence of a
+								<code>selectors</code> relationship, a user agent SHOULD assume that the start and end
+							resources are contiguous.</td>
+					</tr>
 					<tr>
 						<td>endSelector</td>
 						<td>Relationship</td>
-						<td>The Selector which describes the exclusive ending point of the span. <br/>There MUST be exactly 1 
-							<code>endSelector</code> associated with a Span Selector and it MUST be an Embedded Resource Selector, which
-							MAY be refined with other selectors.</td>
+						<td>The Selector which describes the exclusive ending point of the span. <br />There MUST be exactly
+							1 <code>endSelector</code> associated with a Span Selector and it MUST be an Embedded Resource
+							Selector, which MAY be refined with other selectors.</td>
 					</tr>
 				</table>
 
-				<p class=issue data-number=28></p>
-				<p class=issue data-number=32></p>
-				<p class=issue data-number=34></p>
-							
+				<p class="issue" data-number="28"></p>
+				<p class="issue" data-number="32"></p>
+				<p class="issue" data-number="34"></p>
+
 				<h4>Example</h4>
 
 				<pre class="example highlight" title="Span Selector Over Several Resources" id="SpanSelector_ex_1">
@@ -697,32 +745,41 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 				<p><em>This section is normative</em></p>
 
+				<p> For some use cases it is required to identify a <a>segment (of interest)</a> that spans multiple
+					selections, possibly over multiple members of a group of resources (e.g., spanning a subset of the
+					resources which comprise a Web Publication&#160;[[!wpub]]). A Multi Resource Selection can be used to
+					identify such a segment of interest by creating an ordered list of selectors. A Multi Resource Selection
+					identifies a collection of discrete selections, whether within a single resource or spread over several
+					resources included in a single <a>Source</a>. If the segment of interest spans more than one resource,
+					these selectors MUST all be <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, each
+					of which MAY be refined. </p>
+
 				<p>
-					For some use cases it is required to identify a <a>segment (of interest)</a> that spans multiple selections, possibly over multiple members of a group of resources (e.g., spanning a subset of the resources which comprise a Web Publication&nbsp;[[!wpub]]). 
-					A Multi Resource Selection can be used to identify such a segment of interest by creating an ordered list of selectors.
-					A Multi Resource Selection identifies a collection of discrete selections, whether within a single resource or spread over several resources included in a single <a>Source</a>.
-					If the segment of interest spans more than one resource, these selectors MUST all be <a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, each of which MAY be refined.
-				</p>
-					
-				<p>
-					<b>Example Use Case:</b> Example Use Case: Rachel is writing a summative assessment question with hints pointing back to the textbook. The questions pulls on material presented in Chapter 2, a-head 3, Chapter 4, a-head 6, and in Chapter 7, a-head 8. She uses the Multi Resource Selector defining a single link to add to the hints section of her assessment questions that references Sections 2.3, Section 4.6, and Section 7.8, but nothing in between them. 					
-				</p>
-	
+					<b>Example Use Case:</b> Example Use Case: Rachel is writing a summative assessment question with hints
+					pointing back to the textbook. The questions pulls on material presented in Chapter 2, a-head 3, Chapter
+					4, a-head 6, and in Chapter 7, a-head 8. She uses the Multi Resource Selector defining a single link to
+					add to the hints section of her assessment questions that references Sections 2.3, Section 4.6, and
+					Section 7.8, but nothing in between them. </p>
+
 				<h4>Model</h4>
 
 				<table class="model">
-					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<th>Term</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
 					<tr>
 						<td>type</td>
 						<td>Relationship</td>
-						<td>The class of the Selector.<br/>Multi Resource Selectors MUST have exactly 1 <code>type</code> and the value MUST be <code>MultiResourceSelector</code>.</td>
+						<td>The class of the Selector.<br />Multi Resource Selectors MUST have exactly 1 <code>type</code>
+							and the value MUST be <code>MultiResourceSelector</code>.</td>
 					</tr>
 					<tr>
 						<td>selectors</td>
 						<td>Relationship</td>
-						<td>A list of Selectors. <br/>There MUST be exactly 1 <code>selectors</code> list associated with a Multi Resource Selector.
-							<br/>The list MUST have at least 2 elements. 
-						</td>
+						<td>A list of Selectors. <br />There MUST be exactly 1 <code>selectors</code> list associated with a
+							Multi Resource Selector. <br />The list MUST have at least 2 elements. </td>
 					</tr>
 				</table>
 
@@ -758,50 +815,50 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
   }    
 }
 				</pre>
-			</section>			
-		</section> <!-- /Selectors -->
-
-
+			</section>
+		</section>
+		<!-- /Selectors -->
 		<section id="position">
 			<h3>Positions</h3>
-			
-			<p>
-				A <dfn data-lt="Positions">Position</dfn> object describes a <a>Locus (of Interest)</a> within a stream 
-				representation of a <a>Web Resource</a>. 				
-				</p>
-			
-			<p>A Position specifier requires knowledge of two distinct entities:</p>			
+
+			<p> A <dfn data-lt="Positions">Position</dfn> object describes a <a>Locus (of Interest)</a> within a stream
+				representation of a <a>Web Resource</a>. </p>
+
+			<p>A Position specifier requires knowledge of two distinct entities:</p>
 			<ol>
-				<li>
-					the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; this is the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). 
-				</li>
-				<li>an integer representing the count of bytes or characters in the stream preceding the locus of interest.</li>
+				<li> the <a href="https://www.w3.org/TR/wpub/Overview.html#dfn-url">URL</a> of the overall resource; this is
+					the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). </li>
+				<li>an integer representing the count of bytes or characters in the stream preceding the locus of
+					interest.</li>
 			</ol>
-			
+
 			<p>
-				<b>Example Use Case:</b> Allen, while reading chapter 1 of a digital edition of <em>Moby Dick</em>,
-				generates (as a separate resource with its own URL) a Position specifier to note the position in the digital 
-				text stream representation where the first page break in chapter 1 of a <em>Moby Dick</em> print edition occurred. 
-			</p>
-			
+				<b>Example Use Case:</b> Allen, while reading chapter 1 of a digital edition of <em>Moby Dick</em>, generates
+				(as a separate resource with its own URL) a Position specifier to note the position in the digital text
+				stream representation where the first page break in chapter 1 of a <em>Moby Dick</em> print edition occurred. </p>
+
 			<h4>Model</h4>
-			
+
 			<table class="model">
-				<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+				<tr>
+					<th>Term</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
 				<tr>
 					<td>position</td>
 					<td>Relationship</td>
-					<td>The relationship between the Locator and a <a>Position</a> specifier.<br/>
-						A Locator MAY have 0 or 1 <code>position</code> relationships. </td>
+					<td>The relationship between the Locator and a <a>Position</a> specifier.<br /> A Locator MAY have 0 or 1
+							<code>position</code> relationships. </td>
 				</tr>
 			</table>
-			
-			<p>
-				When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s) the Position specifier (if present) MUST be processed last.
-			</p>
-			
+
+			<p> When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a class="externalDFN"
+					href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s) the Position specifier (if
+				present) MUST be processed last. </p>
+
 			<h4>Example</h4>
-			
+
 			<pre class="example highlight" title="Position">
 {
   "scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
@@ -814,74 +871,83 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 			<section id="TextStreamPosition_def">
 				<h3>Text Stream Position</h3>
-				
+
+				<p> The <dfn>TextStreamPosition</dfn> specifier describes an inter-character position in a text stream by
+					recording the number of characters that precede the position. The property <code>value</code> is used to
+					record this character count. A <code>value</code> of 0 would describe the position immediately before the
+					first character, a <code>value</code> of 1 would describe the position immediately after the first
+					character and before the second character (i.e., the position between the first two characters of the
+					stream), and so on. For example, if the text stream was “abcdefghijklmnopqrstuvwxyz” and the
+						<code>value</code> was 7, then the position referenced would be the position between "g" and "h". If
+					n is the length of the text stream, then a <code>value</code> equal to n denotes the position immediately
+					following the last character in the text stream. </p>
+
+				<p> In some situations, it is important to preserve which side of a position a location reference points to.
+					For example, when resolving a text stream position in a dynamically paginated environment, it could make
+					a difference if a position is attached to the content before or after the location being referenced
+					(e.g., to determine whether to display the verso or recto side at a page break). In a
+						<code>TextStreamPosition</code> object, the <code>bias</code> property MAY be used to attach a
+					position reference to the character preceding the position identified by the <code>value</code> property
+						(<code>"bias": "before"</code>) or to the character following the position (<code>"bias":
+						"after"</code>). For example, if the text stream was “abcdefghijklmnopqrstuvwxyz”, the
+						<code>value</code> was 7, and the <code>bias</code> was <code>before</code>, then the position
+					referenced would be the position between "g" and "h" and would be attached to "g". </p>
+
+				<p class="note"> The property <code>bias</code> is only meaningful when some type of break (e.g., a page
+					break or line break) falls or might fall at the position specified by the TextStreamPosition specifier. </p>
+
 				<p>
-					The <dfn>TextStreamPosition</dfn> specifier describes an inter-character position in a text stream by recording the 
-					number of characters that precede the position. 
-					The property <code>value</code> is used to record this character count. 
-				  	A <code>value</code> of 0 would describe the position immediately before the first character, a <code>value</code> of 1 would describe the position immediately after the first character and before the second character (i.e., the position between the first two characters of the stream), and so on. 
-					For example, if the text stream was “abcdefghijklmnopqrstuvwxyz” and the <code>value</code> was 7, then the position referenced would be the position between "g" and "h". If n is the length of the text stream, then a <code>value</code> equal to n denotes the position immediately	following the last character in the text stream. 
-				</p>
-				
-				<p>
-					In some situations, it is important to preserve which side of a position a location reference points to. 
-					For example, when resolving a text stream position in a dynamically paginated environment, it could make a difference if a position is attached to the content before or after the location being referenced (e.g., to determine whether to display the verso or recto side at a page break). 
-					In a <code>TextStreamPosition</code> object, the <code>bias</code> property MAY be used to attach a position reference to the character preceding the position identified by the <code>value</code> property (<code>"bias": "before"</code>) or to the character following the position (<code>"bias": "after"</code>). 
-					For example, if the text stream was “abcdefghijklmnopqrstuvwxyz”, the <code>value</code> was 7, and the <code>bias</code> was <code>before</code>, then the position referenced would be the position between "g" and "h" and would be attached to "g".	
-				</p>
-				
-				<p class="note">
-					The property <code>bias</code> is only meaningful when some type of break (e.g., a page break or line break) falls or might fall at the position specified by the TextStreamPosition specifier.
-				</p>				
-				
-				<p>
-					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in the text of an HTML file he is reading and decides he wants to mark the position of the missing letter by generating a TextStreamPosition specifier so that the letter can be inserted later during editing. 
-					He also wants to ensure that if a hyphen and line break should be dynamically inserted in this position the missing character would follow the break, and so he uses the bias property to associate the position reference with the character that follows the position being referenced (i.e., character 323).
-				</p>
-								
-				<p class="ednote">
-					Is this a valid example as regards bias? 
-					Or is this kind of situation better handled by an application rather than conflating a side-bias property with the position reference.
-					If not compelling enough, we need a better more concrete, real-world use case for side-bias!
-					Otherwise we should drop side-bias.
-				</p>
-			
-				<p class=issue data-number=9></p>
-					<p class=issue data-number=29></p>
-						
+					<b>Example Use Case:</b> George notices that a letter is missing between characters 322 and 323 in the
+					text of an HTML file he is reading and decides he wants to mark the position of the missing letter by
+					generating a TextStreamPosition specifier so that the letter can be inserted later during editing. He
+					also wants to ensure that if a hyphen and line break should be dynamically inserted in this position the
+					missing character would follow the break, and so he uses the bias property to associate the position
+					reference with the character that follows the position being referenced (i.e., character 323). </p>
+
+				<p class="ednote"> Is this a valid example as regards bias? Or is this kind of situation better handled by an
+					application rather than conflating a side-bias property with the position reference. If not compelling
+					enough, we need a better more concrete, real-world use case for side-bias! Otherwise we should drop
+					side-bias. </p>
+
+				<p class="issue" data-number="9"></p>
+				<p class="issue" data-number="29"></p>
+
 				<h4>Model</h4>
-					<table class="model">
-						<tr><th>Term</th><th>Type</th><th>Description</th></tr>
-						<tr>
-							<td>type</td>
-							<td>Relationship</td>
-							<td>The class of the Position specifier.<br/>
-								A Text Stream Position specifier MUST have exactly 1 <code>type</code> and the value MUST be 
-								<code>TextStreamPosition</code>.</td>
-						</tr>
-						<tr>
-							<td>value</td>
-							<td>Property</td>
-							<td>The count of characters in the text stream preceding the <a>Locus (of interest)</a>.
-								<br/>Each TextStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative integer
-								less than or equal to the number of characters in the text stream.</td>
-						</tr>
-						<tr>
-							<td>bias</td>
-							<td>Property</td>
-							<td>This property is used to associate a position reference with either the character that 
-								preceeds it or follows it. <br/>
-								Each TextPositionSelector MAY include 0 or 1 <code>bias</code> properties, and the value 		
-								of <code>bias</code> MUST be either <code>before</code> or <code>after</code>.	</td>
-						</tr>
-					</table>
-					
-					<p>
-						The text MUST be selected and normalized in the same way as for the <a href="https://www.w3.org/TR/annotation-model/#text-quote-selector" class="externalDFN">Text Quote Selector</a> before counting the number of characters to determine the <code>value</code> to be used.
-					</p>
-				
+				<table class="model">
+					<tr>
+						<th>Term</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>type</td>
+						<td>Relationship</td>
+						<td>The class of the Position specifier.<br /> A Text Stream Position specifier MUST have exactly 1
+								<code>type</code> and the value MUST be <code>TextStreamPosition</code>.</td>
+					</tr>
+					<tr>
+						<td>value</td>
+						<td>Property</td>
+						<td>The count of characters in the text stream preceding the <a>Locus (of interest)</a>. <br />Each
+							TextStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative
+							integer less than or equal to the number of characters in the text stream.</td>
+					</tr>
+					<tr>
+						<td>bias</td>
+						<td>Property</td>
+						<td>This property is used to associate a position reference with either the character that preceeds
+							it or follows it. <br /> Each TextPositionSelector MAY include 0 or 1 <code>bias</code>
+							properties, and the value of <code>bias</code> MUST be either <code>before</code> or
+								<code>after</code>. </td>
+					</tr>
+				</table>
+
+				<p> The text MUST be selected and normalized in the same way as for the <a
+						href="https://www.w3.org/TR/annotation-model/#text-quote-selector" class="externalDFN">Text Quote
+						Selector</a> before counting the number of characters to determine the <code>value</code> to be used. </p>
+
 				<h4>Example</h4>
-				
+
 				<pre class="example highlight" title="TextStreamPosition" id="TextStreamPosition_ex">
 {
   "scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
@@ -894,45 +960,50 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 }
 				</pre>
 			</section>
-			
+
 			<section id="DataStreamPosition_def">
 				<h3>Data Stream Position</h3>
-				
+
+				<p> Similar to the <a>TextStreamPosition</a> specifier, the <dfn>DataStreamPosition</dfn> specifier describes
+					a position between two bytes in a byte stream representation of a resource by recording the number of
+					bytes that precede the position. The property <code>value</code> is used to record this byte count. A
+						<code>value</code> of 0 would describe the position immediately before the first byte, a
+						<code>value</code> 1 would describe the position immediately after the first byte and before the
+					second byte (i.e., the position between the first two bytes of the stream), and so on. If n is the length
+					of the byte stream, then a <code>value</code> equal to n denotes the position immediately following the
+					last byte in the stream. </p>
+
 				<p>
-					Similar to the <a>TextStreamPosition</a> specifier, the <dfn>DataStreamPosition</dfn> specifier describes a position between two bytes in a byte stream representation of a resource by recording the number of bytes that precede the position. 
-					The property <code>value</code> is used to record this byte count. 
-					A <code>value</code> of 0 would describe the position immediately before the first byte, a <code>value</code> 1 would describe the position immediately after the first byte and before the second byte (i.e., the position between the first two bytes of the stream), and so on. 
-					If n is the length of the byte stream, then a <code>value</code> equal to n denotes the position immediately following the last byte in the stream. 
-				</p>
-								
-				<p>
-					<b>Example Use Case:</b> Paul's data processing application fails after processing the first 401 bytes of a resource's byte stream representation. 
-					Before exiting, the application generates a <code>DataStreamPosition</code> object to record the position where processing was interrupted. 
-					This will facilitate resumption of processing after the processing bug is resolved.
-				</p>				
-				
+					<b>Example Use Case:</b> Paul's data processing application fails after processing the first 401 bytes of
+					a resource's byte stream representation. Before exiting, the application generates a
+						<code>DataStreamPosition</code> object to record the position where processing was interrupted. This
+					will facilitate resumption of processing after the processing bug is resolved. </p>
+
 				<h4>Model</h4>
-				
+
 				<table class="model">
-					<tr><th>Term</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<th>Term</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
 					<tr>
 						<td>type</td>
 						<td>Relationship</td>
-						<td>The class of the Position specifier.<br/>
-							A Data Stream Position specifier MUST have exactly 1 <code>type</code> and the value MUST be 
-							<code>DataStreamPosition</code>.</td>
+						<td>The class of the Position specifier.<br /> A Data Stream Position specifier MUST have exactly 1
+								<code>type</code> and the value MUST be <code>DataStreamPosition</code>.</td>
 					</tr>
 					<tr>
 						<td>value</td>
 						<td>Property</td>
-						<td>The count of bytes in the byte stream preceding the <a>Locus (of interest)</a>. 							
-							<br/>Each DataStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative integer
-							less than or equal to the number of bytes in the stream.</td>
+						<td>The count of bytes in the byte stream preceding the <a>Locus (of interest)</a>. <br />Each
+							DataStreamPosition MUST have exactly 1 <code>value</code> property, and it MUST be a non-negative
+							integer less than or equal to the number of bytes in the stream.</td>
 					</tr>
 				</table>
-				
+
 				<h4>Example</h4>
-				
+
 				<pre class="example highlight" title="DataStreamPosition" id="DataStreamPosition_ex">
 {
   "source": "https://example.org/MyData.json",
@@ -946,22 +1017,28 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 			<section id="PositionRefinement_def">
 				<h3>Using Position to Refine</h3>
-				
+
+				<p> Unlike <a>Selector</a> and <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states"
+						>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in
+					a stream rather than a part of a resource or a representation of a resource). However, it may be easier,
+					more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of
+					a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a
+						class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a>. Thus a Position
+					specifier may be used to refine a Selector or State (including refined Selectors or States), as long as
+					the Position specifier is the final refinement step processed. </p>
 				<p>
-					Unlike <a>Selector</a> and <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in a stream rather than a part of a resource or a representation of a resource). 
-					However, it may be easier, more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a>. 
-					Thus a Position specifier may be used to refine a Selector or State (including refined Selectors or States), as long as the Position specifier is the final refinement step processed.
-				</p>
-				<p>
-					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. 
-					He needs to generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to be inserted in one of the paragraphs he alone has been assigned to edit. 
-					He doesn't want to specify a text character count within the text stream representation of the entire HTML file, since he knows other edits are in progress that could affect that character count. 
-					So instead he uses a <a href="https://www.w3.org/TR/annotation-model/#css-selector" class="externalDFN">CssSelector</a> to select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a> specifier to reference the position within the paragraph where the insertion is needed.
-				</p>
-				
+					<b>Example Use Case:</b> Deren is one of several people who are collaboratively editing an HTML file. He
+					needs to generate a TextStreamPosition specifier identifying a position where the word "Mister" needs to
+					be inserted in one of the paragraphs he alone has been assigned to edit. He doesn't want to specify a
+					text character count within the text stream representation of the entire HTML file, since he knows other
+					edits are in progress that could affect that character count. So instead he uses a <a
+						href="https://www.w3.org/TR/annotation-model/#css-selector" class="externalDFN">CssSelector</a> to
+					select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a>
+					specifier to reference the position within the paragraph where the insertion is needed. </p>
+
 				<h4>Example</h4>
-				
-				<pre class="example highlight" title="Refinement by Position Specifier"  id="PositionRefinement_ex">
+
+				<pre class="example highlight" title="Refinement by Position Specifier" id="PositionRefinement_ex">
 {
   "scope": "https://dauwhe.github.io/html-first/MobyDick.wpub",
   "source": "https://dauwhe.github.io/html-first/MobyDickNav/html/c001.html",
@@ -976,8 +1053,8 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 }
 				</pre>
 			</section>
-		</section> <!-- /Position -->
-
+		</section>
+		<!-- /Position -->
 		<section id="security">
 			<h2>Security</h2>
 
@@ -988,9 +1065,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 			<div class="ednote">Placeholder for privacy issues.</div>
 		</section>
-
-
-		<section class=appendix id=changes>
+		<section class="appendix" id="changes">
 			<h3>Changes from Previous Versions</h3>
 
 			<section id="changes_from_wa">
@@ -998,48 +1073,51 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 				<p><strong>Editorial Changes</strong></p>
 				<ul>
-					<li>
-						All references to RDF and JSON-LD have been removed.
-					</li>
-					<li>
-						The term <a href="https://www.w3.org/TR/selectors-states/#specific-resources" class="externalDFN">“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific Resource”, hence does not change the original semantics.)
-					</li>
+					<li> All references to RDF and JSON-LD have been removed. </li>
+					<li> The term <a href="https://www.w3.org/TR/selectors-states/#specific-resources" class="externalDFN"
+							>“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific
+						Resource”, hence does not change the original semantics.) </li>
 				</ul>
 
 				<p><strong>Non-editorial Changes</strong></p>
 				<ul>
-					<li>
-						Three new Selectors have been added, namely
-						<ul>
-							<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full resource, with its a, from a collection of resources, also identified with a URL;</li>
-							<li><a href="#SpanSelector_def">Span Selectors</a> identify a continuous selection that spans multiple embedded resources in some ordered reading of a collection or group of resources identified with a URL.</li>
-							<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a ordered list of discrete selections, whether within a single resource or spread over multiple embedded resources included in a collection or group of resources identified with a URL
+					<li> Three new Selectors have been added, namely <ul>
+							<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select
+								a full resource, with its a, from a collection of resources, also identified with a URL;</li>
+							<li><a href="#SpanSelector_def">Span Selectors</a> identify a continuous selection that spans
+								multiple embedded resources in some ordered reading of a collection or group of resources
+								identified with a URL.</li>
+							<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a ordered list of
+								discrete selections, whether within a single resource or spread over multiple embedded
+								resources included in a collection or group of resources identified with a URL.</li>
+						</ul>
 					</li>
 
-					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types have been added: 
-						<ul>
-							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position within a text stream representation of a resource.</li>
-							<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position within a byte stream representation of a resource.</li>
-						</ul>					
+					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types
+						have been added: <ul>
+							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position
+								within a text stream representation of a resource.</li>
+							<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position
+								within a byte stream representation of a resource.</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
 		</section>
-		
 		<section class="appendix">
 			<h3>Index of JSON Terms</h3>
 
 			<p class="ednote">T.B.D.</p>
 		</section>
-
 		<section>
 			<h3>Relationships to the Web Annotation Model</h3>
 
-			<p class="ednote">This is just a placeholder for now; once the specification is, overall, complete, a section should come to summarize the exact relationships to the Web Annotation Model, the relationships in the conformance of the two standards, etc.</p>
+			<p class="ednote">This is just a placeholder for now; once the specification is, overall, complete, a section
+				should come to summarize the exact relationships to the Web Annotation Model, the relationships in the
+				conformance of the two standards, etc.</p>
 		</section>
-
-		<section class=appendix id="issue-summary"></section>
-		
-		<section id="ack" data-include="https://w3c.github.io/wpub/common/html/acknowledgements.html" data-include-replace="true"></section>
+		<section class="appendix" id="issue-summary"></section>
+		<section id="ack" data-include="https://w3c.github.io/wpub/common/html/acknowledgements.html"
+			data-include-replace="true"></section>
 	</body>
 </html>
