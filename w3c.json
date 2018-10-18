@@ -1,4 +1,9 @@
- {
-    "group":      ["100074"]
-,   "contacts":   ["iherman"]
+{
+  "group": [
+    "100074"
+  ],
+  "contacts": [
+    "iherman"
+  ],
+  "repo-type": "rec-track"
 }
