@@ -4,66 +4,62 @@
 		<meta charset="utf-8" />
 		<title>Web Annotation Extensions for Web Publications</title>
 		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove" defer="defer"></script>
-		<script src="https://w3c.github.io/wpub/common/js/biblio.js" class="remove"></script>
+		<script src="common/js/biblio.js" class="remove"></script>
 		<link href="common/css/common.css" rel="stylesheet" type="text/css" />
 		<link href="extras.css" rel="stylesheet" type="text/css" />
 		<script class="remove">
-			// <![CDATA[
-				var respecConfig = {
-					wg: "Publishing Working Group",
-					specStatus: "WG-NOTE",
-					shortName: "wpub-ann",
-					noRecTrack: true,
-					// previousPublishDate: 2018-01-04,
-					previousMaturity: "WD",
-					editors: [
-						{
-							"name": "Timothy W. Cole",
-							"url": "http://www.library.illinois.edu/people/bios/t-cole3/",
-							"company": "University of Illinois at Urbana-Champaign",
-							"companyURL": "http://illinois.edu",
-							"w3cid": 53965,
-							"orcid": "0000-0002-5906-4581"
-						},
-						{
-							"name": "Ivan Herman",
-							"url": "https://www.w3.org/People/Ivan/",
-							"company": "W3C",
-							"w3cid": 7382,
-							"orcid": "0000-0003-0782-2704",
-							"companyURL": "http://www.w3.org"
-						}
-					],
-					otherLinks: [{
-						key: "Editors/Authors of the original version",
-						data: [{
-								value: "Robert Sanderson, J Paul Getty Trust",
-								href: "http://getty.edu/"
-							}, {
-								value: "Paulo Ciccarese, Massachusetts General Hospital",
-								href: "http://www.paolociccarese.info"
-							}, {
-								value: "Benjamin Young, John Wiley & Sons, Inc.",
-								href: "http://www.wiley.com/"
-							}]
-						}],
-						processVersion: 2019,
-						includePermalinks: true,
-						permalinkEdge:     true,
-						permalinkHide:     false,
-						diffTool:          "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
-						wgURI:             "https://www.w3.org/publishing/groups/publ-wg/",
-						wgPublicList:      "public-publ-wg",
-						wgPatentURI:       "https://www.w3.org/2004/01/pp-impl/100074/status",
-						license: 		   "w3c-software-doc",
-						github:			 {
-							repoURL: "https://github.com/w3c/wpub-ann/",
-							branch: "master"
-						},
-						localBiblio: biblio
-				};
-				// ]]>
-      	</script>
+			var respecConfig = {
+				wg:                  "Publishing Working Group",
+				wgPublicList:        "public-publ-wg",
+				edDraftURI:          "https://w3c.github.io/wpub-ann",
+				previousPublishDate: "2018-01-04",
+				previousMaturity:    "WD",
+				// specStatus:          "WG-NOTE",
+				specStatus:          "ED",
+				noRecTrack: true,
+				shortName:           "wpub-ann",
+				copyrightStart:      "2019",
+				editors:[ {
+					name: "Timothy W. Cole",
+					company: "University of Illinois at Urbana-Champaign",
+					companyURL: "http://illinois.edu",
+					"w3cid": 53965,
+					"orcid": "0000-0002-5906-4581"
+
+				},{
+					"name": "Ivan Herman",
+					"company": "Ivan Herman",
+					"companyURL": "https://www.w3.org",
+					"orcid": "0000-0003-0782-2704",
+					"w3cid": 7382
+				}],
+				otherLinks: [{
+					key: "Editors/Authors of the original version",
+					data: [{
+						value: "Robert Sanderson, J Paul Getty Trust",
+						href:  "http://getty.edu/"
+					}, {
+						value: "Paulo Ciccarese, Massachusetts General Hospital",
+						href:  "http://www.paolociccarese.info"
+					}, {
+						value: "Benjamin Young, John Wiley & Sons, Inc.",
+						href:  "http://www.wiley.com/"
+					}]
+				}],
+				processVersion:       2019,
+				includePermalinks:    true,
+				permalinkEdge:        true,
+				permalinkHide:        false,
+				wgPatentURI:          "https://www.w3.org/2004/01/pp-impl/100074/status",
+				wgId:                 "100074",
+				wgURI:                "https://www.w3.org/publishing/groups/publ-wg/",
+				diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
+				github: {
+					repoURL: "https://github.com/w3c/wpub-ann",
+					branch: "master"
+				},
+				localBiblio:           localBiblio
+			};</script>
 	</head>
 	<body>
 		<section id="abstract">
@@ -75,7 +71,7 @@
 				by the Web Annotation Data Model&#160;[[annotation-model]]. That specification developed a JSON-based
 				approach to select targets or bodies of various types of Web Resources. This foundational model has been
 				extended by adding selector types applicable to collective resources and a new model component for describing
-				positions in text and byte streams (see the <a href="#introduction">Introduction</a> for further details). </p>
+				positions in text and byte streams. </p>
 
 			<p class="issue" data-number="27"></p>
 
@@ -198,9 +194,9 @@
 
 				<ul>
 					<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select a full
-						resource from a collection or group of resources collectively identified with a URL;</li>
+						resource from a collection or group of resources collectively identified with a URL.</li>
 					<li>Embedded Resource Selectors can also be <a href="#ErsFragmentId_def">serialized as Fragment
-							Identifiers</a></li>
+							Identifiers</a>.</li>
 					<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive
 						resources in an ordered group or collection of resources, e.g, a “Web
 						Publication”&#160;[[wpub]].</li>
@@ -211,7 +207,7 @@
 				<p> These changes aim at addressing the particular requirements of resource collections on the Web, like Web
 					Applications or Web Publications&#160;[[wpub]]. </p>
 
-				<p> Additionally the current document augments the Web Annotation Data Model of selectors and states with a
+				<p> Additionally, the current document augments the Web Annotation Data Model of selectors and states with a
 					new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined: </p>
 
 				<ul>
@@ -1063,58 +1059,43 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 			<div class="ednote">Placeholder for privacy issues.</div>
 		</section> -->
 		<section class="appendix" id="changes">
-			<h3>Changes from Previous Versions</h3>
+			<h3>Changes Relative to the Web Annotation Model</h3>
 
-			<section id="changes_from_wa">
-				<h4>Changes Relative to the Web Annotation Model</h4>
+			<p><strong>Editorial Changes</strong></p>
+			<ul>
+				<li> All references to RDF and JSON-LD have been removed. </li>
+				<li> The term <a data-cite="!selectors-states/#specific-resources" class="externalDFN"
+						>“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific
+					Resource”, hence does not change the original semantics.) </li>
+			</ul>
 
-				<p><strong>Editorial Changes</strong></p>
-				<ul>
-					<li> All references to RDF and JSON-LD have been removed. </li>
-					<li> The term <a data-cite="!selectors-states/#specific-resources" class="externalDFN"
-							>“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific
-						Resource”, hence does not change the original semantics.) </li>
-				</ul>
+			<p><strong>Non-editorial Changes</strong></p>
+			<ul>
+				<li> Three new Selectors have been added, namely <ul>
+						<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select
+							a full resource, with its a, from a collection of resources, also identified with a URL;</li>
+						<li><a href="#SpanSelector_def">Span Selectors</a> identify a continuous selection that spans
+							multiple embedded resources in some ordered reading of a collection or group of resources
+							identified with a URL.</li>
+						<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a ordered list of
+							discrete selections, whether within a single resource or spread over multiple embedded
+							resources included in a collection or group of resources identified with a URL.</li>
+					</ul>
+				</li>
 
-				<p><strong>Non-editorial Changes</strong></p>
-				<ul>
-					<li> Three new Selectors have been added, namely <ul>
-							<li><a href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a> can be used to select
-								a full resource, with its a, from a collection of resources, also identified with a URL;</li>
-							<li><a href="#SpanSelector_def">Span Selectors</a> identify a continuous selection that spans
-								multiple embedded resources in some ordered reading of a collection or group of resources
-								identified with a URL.</li>
-							<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a ordered list of
-								discrete selections, whether within a single resource or spread over multiple embedded
-								resources included in a collection or group of resources identified with a URL.</li>
-						</ul>
-					</li>
-
-					<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types
-						have been added: <ul>
-							<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position
-								within a text stream representation of a resource.</li>
-							<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position
-								within a byte stream representation of a resource.</li>
-						</ul>
-					</li>
-				</ul>
-			</section>
+				<li>A new kind of specifier, the <a>Position</a> specifier, has been added. Two Position specifier types
+					have been added: <ul>
+						<li><a href="#TextStreamPosition_def">Text Stream Position</a> can be used to define a position
+							within a text stream representation of a resource.</li>
+						<li><a href="#DataStreamPosition_def">Data Stream Position</a> can be used to define a position
+							within a byte stream representation of a resource.</li>
+					</ul>
+				</li>
+			</ul>
 		</section>
-		<!-- <section class="appendix">
-			<h3>Index of JSON Terms</h3>
-
-			<p class="ednote">T.B.D.</p>
-		</section> -->
-		<!-- <section>
-			<h3>Relationships to the Web Annotation Model</h3>
-
-			<p class="ednote">This is just a placeholder for now; once the specification is, overall, complete, a section
-				should come to summarize the exact relationships to the Web Annotation Model, the relationships in the
-				conformance of the two standards, etc.</p>
-		</section> -->
 		<section class="appendix" id="issue-summary"></section>
 		<section id="ack" data-include="common/html/acknowledgements.html"
 			data-include-replace="true"></section>
+
 	</body>
 </html>
