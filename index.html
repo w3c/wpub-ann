@@ -3,35 +3,33 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Web Annotation Extensions for Web Publications</title>
-		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove" defer="defer"></script>
+		<script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer="defer"></script>
 		<script src="common/js/biblio.js" class="remove"></script>
 		<link href="common/css/common.css" rel="stylesheet" type="text/css" />
 		<link href="extras.css" rel="stylesheet" type="text/css" />
 		<script class="remove">
 			var respecConfig = {
-				wg:                  "Publishing Working Group",
+				group:               "publishing",
 				wgPublicList:        "public-publ-wg",
 				edDraftURI:          "https://w3c.github.io/wpub-ann",
 				previousPublishDate: "2018-01-04",
 				previousMaturity:    "WD",
-				// specStatus:          "WG-NOTE",
-				specStatus:          "ED",
-				noRecTrack: true,
+				specStatus:          "WG-NOTE",
+				noRecTrack:          true,
 				shortName:           "wpub-ann",
 				copyrightStart:      "2019",
 				editors:[ {
 					name: "Timothy W. Cole",
 					company: "University of Illinois at Urbana-Champaign",
 					companyURL: "http://illinois.edu",
-					"w3cid": 53965,
-					"orcid": "0000-0002-5906-4581"
-
+					orcid: "0000-0002-5906-4581",
+					w3cid: 53965,
 				},{
-					"name": "Ivan Herman",
-					"company": "Ivan Herman",
-					"companyURL": "https://www.w3.org",
-					"orcid": "0000-0003-0782-2704",
-					"w3cid": 7382
+					name: "Ivan Herman",
+					company: "W3C",
+					companyURL: "https://www.w3.org",
+					orcid: "0000-0003-0782-2704",
+					w3cid: 7382
 				}],
 				otherLinks: [{
 					key: "Editors/Authors of the original version",
@@ -46,13 +44,9 @@
 						href:  "http://www.wiley.com/"
 					}]
 				}],
-				processVersion:       2019,
 				includePermalinks:    true,
 				permalinkEdge:        true,
 				permalinkHide:        false,
-				wgPatentURI:          "https://www.w3.org/2004/01/pp-impl/100074/status",
-				wgId:                 "100074",
-				wgURI:                "https://www.w3.org/publishing/groups/publ-wg/",
 				diffTool:             "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
 				github: {
 					repoURL: "https://github.com/w3c/wpub-ann",
@@ -65,10 +59,10 @@
 		<section id="abstract">
 			<p> Selecting <em>part of</em> a resource on the Web is an ubiquitous action. Over the years several selection
 				techniques have been developed, usually in conjunction with the media type of the resource. Often these
-				selections are expressed as <em>fragment identifiers</em>&#160;[[url]], but that is not always the case. </p>
+				selections are expressed as <em>fragment identifiers</em>&#160;[[?url]], but that is not always the case. </p>
 
 			<p> This document relies on existing selection techniques, providing a <em>common model and syntax</em> defined
-				by the Web Annotation Data Model&#160;[[annotation-model]]. That specification developed a JSON-based
+				by the Web Annotation Data Model&#160;[[?annotation-model]]. That specification developed a JSON-based
 				approach to select targets or bodies of various types of Web Resources. This foundational model has been
 				extended by adding selector types applicable to collective resources and a new model component for describing
 				positions in text and byte streams. </p>
@@ -76,13 +70,21 @@
 			<p class="issue" data-number="27"></p>
 
 		</section>
-		<section id="sotd"> </section>
+		<section id="sotd">
+			<p>
+				Due to the lack of practical business cases for <a href="https://www.w3.org/TR/wpub/">Web Publications</a>, and the consequent lack of commitment to implement the technology, the <a href="https://www.w3.org/publishing/groups/publ-wg/">Publishing Working Group</a> has chosen to discontinue the work on Web Publications, archive the work in the form of a Working Group Note, and focus on other areas of interest. As a consequence, the present document has also been <a href='https://www.w3.org/2020/Process-20200915/#abandon-draft'>discontinued</a> and is being published as a Working Group Note. The public record of the group's discussions is available in group's <a href='https://www.w3.org/publishing/groups/publ-wg/Meetings/Minutes/'>archive of meeting minutes</a>.
+			</p>
+
+			<p>
+				This document was still a work in progress at the time of its publication. As a result, anyone seeking to extend the Web Annotation Data Model&#160;[[?annotation-model]] to select targets and bodies of various types of Web resources should read the approach and proposals outlined in this document with an abundance of caution. It is being published to archive the work and allow incubation, should interest emerge in the future to resume its development.
+			</p>
+		</section>
 		<section id="conformance">
 
 			<section id="wa_extensions">
 				<h3>Handling Undefined JSON Properties</h3>
 				<p> This specification relies on a subset of JSON terms originally defined as part of the Web Annotation Data
-					Model&#160;[[annotation-model]] and Vocabulary&#160;[[annotation-vocab]]. This specification extends
+					Model&#160;[[?annotation-model]] and Vocabulary&#160;[[?annotation-vocab]]. This specification extends
 					the definitions of some of these terms and defines additional terms in order to satisfy additional use
 					cases, but all uses conforming to original definitions remain valid. In order to ensure backward
 					compatibility, implementations of this specification MAY ignore any JSON terms not defined in this
@@ -99,7 +101,6 @@
 		</section>
 		<section id="introduction" class="informative">
 			<h2>Introduction</h2>
-
 			<section>
 				<h3>The Web Annotation Selection Model</h3>
 				<p> Selecting a <em>part of</em> a resource on the Web is an ubiquitous action. Similarly, referencing a
@@ -112,15 +113,15 @@
 					media type of the resource. These include referring to a unique identifier within a resource, defining a
 					time interval for an audio or video track, identifying an element within the DOM tree for an XML source,
 					or using CSS style elements to locate and select content. Often these selections are expressed as
-						<em>fragment identifiers</em>&#160;[[url]], but that is not always the case. </p>
+						<em>fragment identifiers</em>&#160;[[?url]], but that is not always the case. </p>
 
 				<p> This document relies on a selection technique defined by the Web Annotation Data
-					Model&#160;[[annotation-model]] providing a <em>common model and syntax</em> for such selections. That
-					specification developed a formalism based on JSON&#160;[[json]] to select targets or bodies of various
+					Model&#160;[[?annotation-model]] providing a <em>common model and syntax</em> for such selections. That
+					specification developed a formalism based on JSON&#160;[[?json]] to select targets or bodies of various
 					types of Web Resources. The model relies on the concepts of <em><a
-							data-cite="!annotation-model/#selectors">Selectors</a></em>, encapsulating in a
+							href="https://www.w3.org/TR/annotation-model/#selectors">Selectors</a></em>, encapsulating in a
 					JSON object the various ways selections have been defined for different media types, and <em><a
-						data-cite="!annotation-model/#states">States</a></em>, encapsulating selections
+						href="https://www.w3.org/TR/annotation-model/#states">States</a></em>, encapsulating selections
 					based on HTTP requests and responses. The model also includes a way to <em>combine</em> and/or
 						<em>refine</em> selections, a feature that may greatly improve the efficiency of applications relying
 					on complex selections. A selection or a state <em>specifier</em>, as described in the original model and
@@ -131,18 +132,18 @@
 					resource could be seen as akin to a server side redirection, returning part of a resource. </p>
 
 				<p class="note"> The Web Annotation Working Group has also published a separate Working Group Note entitled
-					“Selectors and States”&#160;[[selectors-states]]. That note extracts the selector model from the full Web
-					Annotation Data Model&#160;[[annotation-model]] to make it more palatable for users who are not
+					“Selectors and States”&#160;[[?selectors-states]]. That note extracts the selector model from the full Web
+					Annotation Data Model&#160;[[?annotation-model]] to make it more palatable for users who are not
 					necessarily interested in other aspects of the Annotation Model. Although normatively this specification
-					refers to the [[annotation-model]], readers should probably consult the [[selectors-states]] note for a
-					better understanding of the underlying concepts. Note, however, that the [[selectors-states]] Working
+					refers to the [[?annotation-model]], readers should probably consult the [[?selectors-states]] note for a
+					better understanding of the underlying concepts. Note, however, that the [[?selectors-states]] Working
 					Group Note also includes a proposal for a fragment identifier syntax; that syntax has not been used in
 					the current specification. </p>
 
 				<h4>Examples</h4>
 
 				<p>The example below shows the usage of a <a
-					data-cite="!annotation-model/#text-quote-selector">Text Quote Selector</a> referring
+					href="https://www.w3.org/TR/annotation-model/#text-quote-selector">Text Quote Selector</a> referring
 					to a specific portion of text in a resource:</p>
 
 				<pre class="example highlight" title="Text Quote Selector" id="TextQuoteSelector_ex">
@@ -174,17 +175,17 @@
   }
 }</pre>
 
-				<p class="note"> See the [[selectors-states]] Note for more examples for the usage of the Web Annotation
+				<p class="note"> See the [[?selectors-states]] Note for more examples for the usage of the Web Annotation
 					Model for selection. </p>
 			</section>
 
 			<section>
 				<h3>Extensions of the Web Annotation Approach</h3>
 
-				<p> The approach defined by the [[annotation-model]] has been extended in this specification by adding
+				<p> The approach defined by the [[?annotation-model]] has been extended in this specification by adding
 					selector types applicable to collective resources and a new model component for describing positions in
 					text and byte streams. It provides methods for selecting a segment of a collective resource (e.g., a “Web
-					Publication”&#160;[[wpub]]) that itself <em>contains</em> or is <em>composed of</em> other discrete and
+					Publication”&#160;[[?wpub]]) that itself <em>contains</em> or is <em>composed of</em> other discrete and
 					individually identifiable resources, even when the segment of interest spans parts of more than one
 					included resource. The common model for selection as described in this specification makes it easier to
 					provide generic and interoperable tools and APIs to handle selections in various applications. </p>
@@ -199,13 +200,13 @@
 							Identifiers</a>.</li>
 					<li><a href="#SpanSelector_def">Span Selectors</a> identify a selection spanning two or more consecutive
 						resources in an ordered group or collection of resources, e.g, a “Web
-						Publication”&#160;[[wpub]].</li>
+						Publication”&#160;[[?wpub]].</li>
 					<li><a href="#MultiResourceSelector_def">Multi Resource Selectors</a> identify a collection of discrete
 						selections, whether within the same resource or spread over several resources.</li>
 				</ul>
 
 				<p> These changes aim at addressing the particular requirements of resource collections on the Web, like Web
-					Applications or Web Publications&#160;[[wpub]]. </p>
+					Applications or Web Publications&#160;[[?wpub]]. </p>
 
 				<p> Additionally, the current document augments the Web Annotation Data Model of selectors and states with a
 					new class of specifier, <a data-lt="Position">Positions</a>. Two position specifiers are defined: </p>
@@ -228,38 +229,38 @@
 				<p><em>This section is normative</em></p>
 
 				<p> Wherever appropriate, this document relies on terminology defined by the note on “Publishing and Linking
-					on the Web”&#160;[[publishing-linking]], including, in particular, <a class="externalDFN"
-					data-cite="!publishing-linking/#dfn-user">user</a>, <a class="externalDFN"
-					data-cite="!publishing-linking/#dfn-user-agent">user agent</a>, <a
-						class="externalDFN" data-cite="!publishing-linking/#dfn-browser">browser</a>, and <a
-						class="externalDFN" data-cite="!publishing-linking/#dfn-address">address</a>.
+					on the Web”&#160;[[?publishing-linking]], including, in particular, <a class="externalDFN"
+					href="https://www.w3.org/TR/publishing-linking/#dfn-user">user</a>, <a class="externalDFN"
+					href="https://www.w3.org/TR/publishing-linking/#dfn-user-agent">user agent</a>, <a
+						class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-browser">browser</a>, and <a
+						class="externalDFN" href="https://www.w3.org/TR/publishing-linking/#dfn-address">address</a>.
 					Furthermore, the document also relies on some additional terms defined by the “Web
-					Publication”&#160;[[wpub]], including a <a data-cite="!wpub/#dfn-urls"
+					Publication”&#160;[[?wpub]], including a <a href="https://www.w3.org/TR/wpub/#dfn-urls"
 						class="externalDFN">URL</a>. </p>
 
 				<dl>
 					<dt><dfn data-lt="Resource|Resources">Resource</dfn></dt>
 					<dd>An item of interest that MAY be identified by a <a
-						data-cite="!wpub/#value-url">URL</a>.</dd>
+						href="https://www.w3.org/TR/wpub/#value-url">URL</a>.</dd>
 
 					<dt><dfn data-lt="Web Resource|Web Resources">Web Resource</dfn></dt>
 					<dd>A <a>Resource</a> that MUST be identified by a <a
-							data-cite="!wpub/#dfn-urls">URL</a>, as described in the Web
-						Architecture [[webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
+							href="https://www.w3.org/TR/wpub/#dfn-urls">URL</a>, as described in the Web
+						Architecture [[?webarch]]. Web Resources MAY be dereferencable via their URL.</dd>
 
 					<dt><dfn>Locator</dfn></dt>
 					<dd>A <a>Resource</a> that specifies a position in or a portion of another <a>Web Resource</a>. A Locator
 						expresses its relationship to the relevant Web Resource (the <a>Source</a>) through a
 							<code>source</code> term, and MAY express a contextual relationship to an additional <a>Web
-							Resource</a> through a <code>scope</code> term. The original [[annotation-model]] document used
-						the term <a data-cite="!annotation-model/#specific-resources" class="externalDFN"
+							Resource</a> through a <code>scope</code> term. The original [[?annotation-model]] document used
+						the term <a href="https://www.w3.org/TR/annotation-model/#specific-resources" class="externalDFN"
 							>Specific Resource</a> as a generic term encompassing usages that go beyond selection. This
 						specification uses the term “Locator” as an alias. </dd>
 
 					<dt><dfn data-lt="Sources">Source</dfn></dt>
 					<dd>The overall <a>Web Resource</a> whose selection is refined through the usage of <a data-lt="Selector"
 							>Selector</a>, <a data-lt="Position">Position</a>, or <a class="externalDFN"
-							data-cite="!annotation-model/#states">State</a> specifier(s).</dd>
+							href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s).</dd>
 
 					<dt><dfn data-lt="segment">Segment (of Interest)</dfn></dt>
 					<dd>The part of the <a>Web Resource</a> that is specified in a <a>Locator</a> using a <a>Selector</a>
@@ -272,7 +273,7 @@
 					<dt><dfn data-lt="External Web Resource|External Web Resources">External Web Resource</dfn></dt>
 					<dd>A <a>Web Resource</a> which is not part of the representation the selection, such as a web page,
 						image, or video. External Web Resources are dereferencable from their <a
-							data-cite="!wpub/#dfn-urls">URL</a>.</dd>
+							href="https://www.w3.org/TR/wpub/#dfn-urls">URL</a>.</dd>
 
 					<dt><dfn data-lt="Property|Properties">Property</dfn></dt>
 					<dd>A feature of a <a>Resource</a>, that often has a particular data type. In the model sections, the
@@ -284,7 +285,7 @@
 					<dt><dfn data-lt="Relationship|Relationships">Relationship</dfn></dt>
 					<dd>In the model sections, the term “Relationship” is used to distinguish those features that refer to
 						other <a>Resources</a>, either by reference to the <a>Resource</a>'s <a
-							data-cite="!wpub/#dfn-urls">URL</a> or by including a description of
+							href="https://www.w3.org/TR/wpub/#dfn-urls">URL</a> or by including a description of
 						the <a>Resource</a> in the representation. The valid values for a Relationship are: a quoted string
 						containing a URL, an object that has the “id” property, or an array containing either of these if
 						more than one is allowed.</dd>
@@ -292,7 +293,7 @@
 					<dt><dfn data-lt="type|types|typing">Type</dfn></dt>
 					<dd>A feature of a <a>Resource</a> whose valid values are predefined strings (defined in this document)
 						denoting the particular type of <a data-lt="Selector">Selector</a>, <a data-lt="Position"
-							>Position</a>, or <a class="externalDFN" data-cite="!annotation-model/#states"
+							>Position</a>, or <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states"
 							>State</a> specifier.</dd>
 				</dl>
 
@@ -301,7 +302,7 @@
 		<section id="locators">
 			<h3>Locators</h3>
 
-			<p class="note">This term is formally defined in the [[annotation-model]]; this (somewhat shortened)
+			<p class="note">This term is formally defined in the [[?annotation-model]]; this (somewhat shortened)
 				specification is a provided as a convenient reference only. Note, however, that the Position Specifier is
 					<em>not</em> part of the original specification, and has been added by this specification.</p>
 
@@ -337,7 +338,7 @@
 					<td>The relationship between a Locator and the resource that it is a more specific representation of,
 						i.e., the <a>Source</a>. <br />There MUST be exactly 1 <code>source</code> relationship associated
 						with a Locator. The source resource MAY be described in detail as discussed in the Web Annotation
-						Data Model&#160;[[annotation-model]] or it MAY simply be identified by the resource’s URL.</td>
+						Data Model&#160;[[?annotation-model]] or it MAY simply be identified by the resource’s URL.</td>
 				</tr>
 				<tr>
 					<td>scope</td>
@@ -353,16 +354,16 @@
 		<section id="selectors" class="informative">
 			<h3>Selectors</h3>
 
-			<p class="note">This term is formally defined in the [[annotation-model]]; this (somewhat shortened)
+			<p class="note">This term is formally defined in the [[?annotation-model]]; this (somewhat shortened)
 				specification is provided as a convenient reference only.</p>
 			<p class="ednote">The definition of 'Selector' as used in this specification differs from the normative
-				definition of the term in [[css3-selectors]]. The text / terminology in this specification regarding
+				definition of the term in [[?css3-selectors]]. The text / terminology in this specification regarding
 				Selectors may need to be revised.</p>
 			<p class="issue" data-number="40"></p>
 			<p>Selection of part of a <a>Web Resource</a> requires two distinct entities:</p>
 
 			<ol>
-				<li> the <a data-cite="!wpub/#dfn-urls">URL</a> of the overall resource; we will
+				<li> the <a href="https://www.w3.org/TR/wpub/#dfn-urls">URL</a> of the overall resource; we will
 					refer to this as the <a>Source</a> (see <a>Locator</a>). </li>
 				<li> the identification for the part of that resource; we will refer to this as the <a data-lt="segment"
 						>Segment (of Interest)</a>. </li>
@@ -412,12 +413,12 @@
 
 				<p> For some use cases it is required to identify a resource that is part of a collection or group of
 					resources, where that collection has its own identity on the Web (and can be identified via its own URL).
-					An example is selecting a resource that is a chapter of a Web Publication [[wpub]] or Packaged Web
-					Publication&#160;[[pwpub]]. Given the URL of such a collective resource as the value of
+					An example is selecting a resource that is a chapter of a Web Publication [[?wpub]] or Packaged Web
+					Publication&#160;[[?pwpub]]. Given the URL of such a collective resource as the value of
 						<code>source</code>, an Embedded Resource Selector can be used to select and identify an item within
 					the collection, e.g., the chapter, through its <code>value</code> relationship. This Selector is usually
 					used in conjunction with additional Selectors, e.g., through <a
-					data-cite="!annotation-model/#refinement-of-selection" class="externalDFN"
+					href="https://www.w3.org/TR/annotation-model/#refinement-of-selection" class="externalDFN"
 						>refinement</a>. </p>
 
 				<p>
@@ -442,7 +443,7 @@
 					<tr>
 						<td>value</td>
 						<td>Relationship</td>
-						<td>The URL&#160;[[url]] of the resource within the collection or group of resources identified by
+						<td>The URL&#160;[[?url]] of the resource within the collection or group of resources identified by
 							the <a>Source</a>.<br />An EmbeddedResourceSelector MUST have exactly 1 <code>value</code>
 							property.<br /> The URL MAY be a relative URL, with the value of <a>Source</a> serving as a base
 							URL.</td>
@@ -495,10 +496,10 @@
 
 					<p> For some simple use cases involving Packaged Web Publications, it may be more convenient or more
 						consistent with past practice to express a simple Embedded Resource selection as a fragment
-						identifier&#160;[[url]] that can be appended to the URL of the collective resource, i.e., the
+						identifier&#160;[[?url]] that can be appended to the URL of the collective resource, i.e., the
 							<code>source</code> associated with the Embedded Resource selection. (An informative precedent
 						for this approach is the International Digital Publishing Forum Recommended Specification, <em>EPUB
-							Canonical Fragment Identifiers 1.1</em>&#160;[[cfi]], which defines a fragment identifier
+							Canonical Fragment Identifiers 1.1</em>&#160;[[?cfi]], which defines a fragment identifier
 						serialized model for selecting and positioning within resources of the
 							<code>application/epub+zip</code> media type.) </p>
 
@@ -515,13 +516,13 @@
 							appended.</li>
 						<li>Next comes the fixed string <code>ERS</code> (in lieu of a function name), followed by a single
 							'parameter' enclosed in parentheses.</li>
-						<li> The single 'parameter' of the function-like notation is a URL&#160;[[url]], i.e., the
+						<li> The single 'parameter' of the function-like notation is a URL&#160;[[?url]], i.e., the
 								<code>value</code> from the JSON serialization of the Embedded Resource Selector. The
 							parameter MAY be an absolute URL or relative to the base URL. </li>
 					</ul>
 
 					<p> The value of the URL 'parameter' appearing in a ERS fragment identifier SHOULD be percent
-						encoded&#160;[[rfc3986]]. The encoding is a MUST for characters that may make the URL ambiguous,
+						encoded&#160;[[?rfc3986]]. The encoding is a MUST for characters that may make the URL ambiguous,
 						namely: </p>
 
 					<!-- should be <table class="data"> but the stylesheet has issues.... -->
@@ -597,7 +598,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(
 						<pre class="example highlight" title="Refined Embedded Resource Selector as Fragment Identifier" id="RefinedEmbeddedResourceSelector_fragId_ex">
 https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.jpg#xywh=50,50,640,480)</pre>
 						<p> The URL above is the result of mapping the JSON-serialized Embedded Resource Selector below; note
-							that the link to the Media Fragments URI 1.0 Recommendation [[media-frags]] cannot be mapped to
+							that the link to the Media Fragments URI 1.0 Recommendation [[?media-frags]] cannot be mapped to
 							the fragment identifier serialization, so the mapping is not entirely lossless. </p>
 
 						<pre class="example highlight" title="Refined Embedded Resource Selector Fragment Identifier" id="FragRefinedEmbeddedResourceSelector_ex">{
@@ -622,14 +623,14 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 				<p><em>This section is normative</em></p>
 
 				<p> Selections from a group of resources, e.g., the group of resources which comprise a Web
-					Publication&#160;[[wpub]]), may be extensive and may span member resource boundaries. For
+					Publication&#160;[[?wpub]]), may be extensive and may span member resource boundaries. For
 					resource-spanning selections that are continuous in some ordering of the group of resources, a Span
 					Selector can be used to identify the beginning and the end of the selection using <a
 						href="#EmbeddedResourceSelector_def">Embedded Resource Selectors</a>, refined as appropriate.
 					Embedded Resource Selectors (without refinement) are also used in enumerating any intervening resources
 					between the beginning and end of the selection that are included in the selection. A Span Selection MUST
 					span at least two resources. (For continuous selections wholly contained within a single resource, use a
-						<a data-cite="!annotation-model/#range-selector" class="externalDFN">Range
+						<a href="https://www.w3.org/TR/annotation-model/#range-selector" class="externalDFN">Range
 						Selector</a>.) In the absence of refinement, the selection consists of the member resource identified
 					by the <code>startSelector</code> property (the first resource in the selection), the member resource
 					identified by the <code>endSelector</code> (the last resource in the selection), and the intervening
@@ -642,7 +643,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 					included in the selection. </p>
 
 				<p class="note">The ordering of resources does <em>not</em> make use of external features, like the default
-					reading order in a Web Publication&#160;[[wpub]]. The order is exclusively established via the
+					reading order in a Web Publication&#160;[[?wpub]]. The order is exclusively established via the
 						<code>selectors</code> property.</p>
 
 				<p>
@@ -740,7 +741,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 				<p> For some use cases it is required to identify a <a>segment (of interest)</a> that spans multiple
 					selections, possibly over multiple members of a group of resources (e.g., spanning a subset of the
-					resources which comprise a Web Publication&#160;[[wpub]]). A Multi Resource Selection can be used to
+					resources which comprise a Web Publication&#160;[[?wpub]]). A Multi Resource Selection can be used to
 					identify such a segment of interest by creating an ordered list of selectors. A Multi Resource Selection
 					identifies a collection of discrete selections, whether within a single resource or spread over several
 					resources included in a single <a>Source</a>. If the segment of interest spans more than one resource,
@@ -819,7 +820,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 
 			<p>A Position specifier requires knowledge of two distinct entities:</p>
 			<ol>
-				<li> the <a data-cite="!wpub/#dfn-urls">URL</a> of the overall resource; this is
+				<li> the <a href="https://www.w3.org/TR/wpub/#dfn-urls">URL</a> of the overall resource; this is
 					the same <a>Source</a> as used for Selectors (see <a href="#selectors"></a>). </li>
 				<li>an integer representing the count of bytes or characters in the stream preceding the locus of
 					interest.</li>
@@ -847,7 +848,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 			</table>
 
 			<p> When processing a <a>Locator</a> that includes <a>Selector</a> and/or <a class="externalDFN"
-				data-cite="!annotation-model/#states">State</a> specifier(s) the Position specifier (if
+				href="https://www.w3.org/TR/annotation-model/#states">State</a> specifier(s) the Position specifier (if
 				present) MUST be processed last. </p>
 
 			<h4>Example</h4>
@@ -936,7 +937,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 				</table>
 
 				<p> The text MUST be selected and normalized in the same way as for the <a
-					data-cite="!annotation-model/#text-quote-selector" class="externalDFN">Text Quote
+					href="https://www.w3.org/TR/annotation-model/#text-quote-selector" class="externalDFN">Text Quote
 						Selector</a> before counting the number of characters to determine the <code>value</code> to be used. </p>
 
 				<h4>Example</h4>
@@ -1011,12 +1012,12 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 			<section id="PositionRefinement_def">
 				<h3>Using Position to Refine</h3>
 
-				<p> Unlike <a>Selector</a> and <a class="externalDFN" data-cite="!annotation-model/#states"
+				<p> Unlike <a>Selector</a> and <a class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states"
 						>State</a> specifiers, a <a>Position</a> specifier can not be refined (since it identifies a point in
 					a stream rather than a part of a resource or a representation of a resource). However, it may be easier,
 					more reliable, more accurate, or less brittle to resolve a Position specifier in the context of a part of
 					a resource defined by a <a>Selector</a> and/or a representation of a resource described by a <a
-						class="externalDFN" data-cite="!annotation-model/#states">State</a>. Thus a Position
+						class="externalDFN" href="https://www.w3.org/TR/annotation-model/#states">State</a>. Thus a Position
 					specifier may be used to refine a Selector or State (including refined Selectors or States), as long as
 					the Position specifier is the final refinement step processed. </p>
 				<p>
@@ -1025,7 +1026,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 					be inserted in one of the paragraphs he alone has been assigned to edit. He doesn't want to specify a
 					text character count within the text stream representation of the entire HTML file, since he knows other
 					edits are in progress that could affect that character count. So instead he uses a <a
-					data-cite="!annotation-model/#css-selector" class="externalDFN">CssSelector</a> to
+					href="https://www.w3.org/TR/annotation-model/#css-selector" class="externalDFN">CssSelector</a> to
 					select the paragraph of interest and then refines this selection with a <a>TextStreamPosition</a>
 					specifier to reference the position within the paragraph where the insertion is needed. </p>
 
@@ -1064,7 +1065,7 @@ https://dauwhe.github.io/html-first/MobyDick.pwpub#ERS(MobyDickNav/images/cover.
 			<p><strong>Editorial Changes</strong></p>
 			<ul>
 				<li> All references to RDF and JSON-LD have been removed. </li>
-				<li> The term <a data-cite="!selectors-states/#specific-resources" class="externalDFN"
+				<li> The term <a href="https://www.w3.org/TR/selectors-states/#specific-resources" class="externalDFN"
 						>“Specific Resource”</a> has been changed to <a>Locator</a>. (This is just an alias to “Specific
 					Resource”, hence does not change the original semantics.) </li>
 			</ul>
