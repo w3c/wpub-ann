@@ -16,4 +16,4 @@ jobs:
           W3C_WG_DECISION_URL: https://www.w3.org/publishing/groups/publ-wg/Meetings/Minutes/2017/2017-12-18-minutes#resolution2
           W3C_BUILD_OVERRIDE: |
              shortName: wpub-ann
-             specStatus: REC
+             specStatus: WG-NOTE
